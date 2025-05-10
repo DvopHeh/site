@@ -1,5 +1,5 @@
 // lanyard.ts
-import type { LanyardData } from './interfaces.ts';
+import type { LanyardData } from './interfaces';
 
 export const fetchPresence = async (): Promise<LanyardData | null> => {
     try {

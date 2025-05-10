@@ -1,10 +1,17 @@
 // navbar.ts
 import type { LanyardData, DiscordUser } from './interfaces';
-import { getStatusColor } from './utils.ts';
+import { getStatusColor } from './utils';
 
 const generateNavbarHTML = ({ display_name = '', username }: DiscordUser): string => `
     <p style="margin: 4px auto; font-weight: 600; font-size: 20px;">
-        ${display_name}<br><span style="color: var(--color-accent);">@${username}</span>
+        <a
+            href="https://discord.com/users/410475909125242901"
+            target="_blank"
+            style="color: var(--color-link); "
+            >${display_name}
+        </a>
+        <br>
+        <span style="color: var(--color-primary);">@${username}</span>
     </p>
 `;
 
@@ -25,32 +32,32 @@ const updateAvatarDecoration = (asset: string | undefined, avatarDecoImg: HTMLIm
     }
 };
 
-export const displayNavbar = (navbarData: LanyardData | null): void => {
-    const navbar = document.querySelector('.vorlie');
+export const displayUser = (userData: LanyardData | null): void => {
+    const navbar = document.querySelector('.dvop');
     if (!navbar) return;
 
     // Set loading text only if navbarData is null
-    if (!navbarData) {
+    if (!userData) {
         navbar.innerHTML = '<p>Loading...</p>';
         return; // Exit if no data is available
     }
 
     const userInfo = navbar.querySelector('.userinfo');
     if (userInfo) {
-        userInfo.innerHTML = generateNavbarHTML(navbarData.discord_user);
+        userInfo.innerHTML = generateNavbarHTML(userData.discord_user);
     }
 
     const avatarImg = document.getElementById('avatar') as HTMLImageElement | null;
     const avatarDecoImg = document.getElementById('avatar-deco') as HTMLImageElement | null;
 
-    if (avatarImg && navbarData.discord_user.avatar) {
-        const avatarUrl = `https://cdn.discordapp.com/avatars/${navbarData.discord_user.id}/${navbarData.discord_user.avatar}.png`;
-        const statusColor = getStatusColor(navbarData.discord_status);
+    if (avatarImg && userData.discord_user.avatar) {
+        const avatarUrl = `https://cdn.discordapp.com/avatars/${userData.discord_user.id}/${userData.discord_user.avatar}.png`;
+        const statusColor = getStatusColor(userData.discord_status);
         updateAvatar(avatarUrl, statusColor, avatarImg);
     }
 
     if (avatarDecoImg) {
-        const asset = navbarData.discord_user.avatar_decoration_data?.asset;
+        const asset = userData.discord_user.avatar_decoration_data?.asset;
         updateAvatarDecoration(asset, avatarDecoImg);
     }
 };

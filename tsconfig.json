@@ -1,5 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "**/*.astro"]
+  "exclude": ["dist", "**/*.astro"],
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"]
+  }
 }
