@@ -36,6 +36,23 @@ body {
     font-family: var(--font-main);
 }
 
+.link-button{
+    text-decoration: none;
+    color: var(--color-text-muted);
+    &:hover {
+        color: var(--color-text);
+    }
+}
+
+a{
+    text-decoration: none;
+    color: var(--color-text);
+    transition: color var(--transition);
+    &:hover {
+        color: var(--color-text-muted);
+    }
+}
+
 .dvop {
     max-width: fit-content;
     position: relative;
@@ -135,8 +152,13 @@ body {
     background: var(--color-surface-alt);
     border-radius: var(--radius-md);
     box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.10);
-    padding: 1.5rem 1.2rem;
+    padding-left:1.2rem;
+    padding-right:1.2rem;
     transition: box-shadow var(--transition);
+}
+.landing-section-lanyard{
+    padding-top:1.2rem;
+    padding-bottom:1.2rem;
 }
 
 .landing-section:hover {
