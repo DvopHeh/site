@@ -2,44 +2,20 @@
 // src/components/Guestbook.astro
 const { request } = Astro;
 
-// Handle form submission
-if (request.method === 'POST') {
-  try {
-    const formData = await request.formData();
-    const name = formData.get('name') as string;
-    const message = formData.get('message') as string;
-    
-    if (name && message) {
-      // Insert into D1 database
-      await Astro.locals.DB.prepare(
-        'INSERT INTO guestbook_entries (name, message) VALUES (?, ?)'
-      ).bind(name, message).run();
-    }
-  } catch (error) {
-    console.error('Error adding entry:', error);
-  }
-}
-
 // Fetch existing entries
-type GuestbookEntry = {
-  name: string;
-  message: string;
-  created_at: string;
-};
-
-let entries: GuestbookEntry[] = [];
+let entries = [];
 try {
-  const result = await Astro.locals.DB.prepare(
+  const result = await Astro.locals.runtime.env.DB.prepare(
     'SELECT * FROM guestbook_entries ORDER BY created_at DESC LIMIT 50'
   ).all();
-  entries = result.results as GuestbookEntry[] || [];
+  entries = result.results || [];
 } catch (error) {
   console.error('Error fetching entries:', error);
 }
 ---
 
 <div class="guestbook">
-  <form class="form" method="POST">
+  <form class="form" action="/src/scripts/otherbs/guestbook" method="POST">
     <input type="text" name="name" placeholder="Name" required>
     <textarea name="message" placeholder="Message" required rows="2"></textarea>
     <button type="submit">Add Entry</button>
