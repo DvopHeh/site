@@ -1,25 +1,25 @@
 :root {
     /* Color palette */
-    --color-bg: #090c14;
-    --color-bg-alt: #000000;
-    --color-surface: #090c14;
-    --color-surface-alt: #110121;
-    --color-border: #2a0a4a;
-    --color-primary: #6002be;
+    --color-bg: #000000;
+    --color-bg-alt: #ffffff;
+    --color-surface: #000000;
+    --color-surface-alt: #000000;
+    --color-border: #400080b0;
+    --color-primary: #400080;
     --color-primary-alt: #de00ee;
     --color-gradient: linear-gradient(83.21deg, var(--color-primary) 0%, var(--color-primary-alt) 100%);
     --color-gradient-alt: linear-gradient(83.21deg, var(--color-primary-alt) 0%, var(--color-primary) 100%);
-    --color-text: #6002be;
+    --color-text: #400080;
     --color-text-muted: #ffffff;
-    --color-link: #8000ff;
-    --color-link-hover: #000000;
-    --color-shadow: 0 2px 16px #ffffff;
+    --color-link: #400080;
+    --color-link-hover: #a74fff;
+    --color-shadow: 2px 4px 32px #ffffff;
     --radius-lg: 1rem;
     --radius-md: 0.75rem;
     --radius-sm: 0.5rem;
     --radius-circle: 50%;
     --font-main: 'Poppins', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
-    --transition: 0.2s;
+    --transition: 0.3s;
     --color-status-online: #9dffa0;
     --color-status-dnd: #ff6a7b;
     --color-status-idle: #ffb07b;
@@ -103,28 +103,41 @@ a{
 
 .landing-page {
     min-height: 70vh;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    /* Define 3 explicit columns */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.2rem; /* Space between columns and rows */
     justify-content: center;
-    align-items: center;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    max-width: 700px;
-    width: 100%;
+    align-items: start; /* Align items to the top of their grid areas */
+    margin: 2rem auto; /* Center the grid with auto margins */
+    max-width: 1600px; /* Adjust max-width as needed for 3 columns */
+    padding: 0 0.5rem; /* Add some padding on the sides */
 }
 
+/* New styles for the column wrappers */
+.column-left,
+.column-middle,
+.column-right {
+    display: flex; /* Use flexbox to stack sections vertically within each column */
+    flex-direction: column;
+    gap: 1.2rem; /* Gap between sections within a column */
+    
+}
+
+
 .landing-title {
-    font-size: 2.7rem;
+    font-size: 3rem;
     font-weight: 800;
     margin-bottom: 0.5em;
     color: var(--color-text);
     letter-spacing: 0.01em;
-    text-align: center;
+    text-align: Middle;
+    margin: auto;
 }
 
 .landing-divider {
     height: 4px;
-    width: 90px;
+    width: 120px;
     background: var(--color-gradient);
     border-radius: 2px;
     margin-bottom: 2em;
@@ -135,7 +148,7 @@ a{
     font-size: 1.25rem;
     color: var(--color-text-muted);
     margin-bottom: 2em;
-    text-align: center;
+    text-align: left;
     line-height: 1.6;
 }
 
@@ -146,31 +159,32 @@ a{
 }
 
 .landing-section {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 2em;
     background: var(--color-surface-alt);
     border-radius: var(--radius-md);
-    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.10);
-    padding-left:1.2rem;
-    padding-right:1.2rem;
+    box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
+    padding: 1.2rem;
     transition: box-shadow var(--transition);
-}
-.landing-section-lanyard{
-    padding-top:1.2rem;
-    padding-bottom:1.2rem;
+    /* Remove margin-bottom as gap handles spacing within columns */
+    margin-bottom: 0;
 }
 
+.lanyard-section {
+    /* Specific styling for the Lanyard section if needed */
+    /* Adjust as necessary for the Lanyard component's size */
+    text-align: left; /* Center content within this section */
+}
+
+
 .landing-section:hover {
-    box-shadow: 0 4px 16px 0 rgba(108, 99, 255, 0.10);
+    box-shadow: 0 4px 16px 0 rgb(132, 0, 158);
 }
 
 .landing-section-title {
     font-size: 1.35rem;
     font-weight: 700;
-    margin-bottom: 0.5em;
     color: var(--color-primary);
     letter-spacing: 0.01em;
+    margin: 0 0 0.5em 0;
 }
 
 .landing-section-desc {
@@ -219,6 +233,8 @@ a{
     font-size: 0.98rem;
     text-align: center;
     opacity: 0.85;
+    /* Make the WIP message span all columns */
+    grid-column: 1 / -1; 
 }
 
 .landing-about-desc {
@@ -234,11 +250,34 @@ a{
     line-height: 1.6;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) { /* Adjust breakpoint for 2 columns */
     .landing-page {
-        padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+        grid-template-columns: 1fr 1fr; /* Two columns */
+    }
+    .column-left {
+        grid-column: 1 / 2; /* Lanyard in first column */
+    }
+    .column-middle {
+        grid-column: 2 / 3; /* About, Friends, Contact in second column */
+    }
+    .column-right {
+        grid-column: 1 / -1; /* Specs and Devices span both columns below */
+    }
+}
+
+@media (max-width: 600px) { /* Adjust breakpoint for 1 column */
+    .landing-page {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+        padding: 1rem 0.5rem 1.5rem 0.5rem;
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
+    }
+
+    /* All columns will stack in a single column */
+    .column-left,
+    .column-middle,
+    .column-right {
+        grid-column: 1 / -1; /* Ensure they span the single column */
     }
 
     .landing-section {
@@ -251,35 +290,6 @@ a{
 
     .landing-divider {
         width: 60px;
-    }
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    columns: 2;
-    align-items: center;
-    justify-content: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.skin-list {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
-}
-
-@media (min-width: 600px) {
-    .skin-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1000px) {
-    .skin-list {
-        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -377,4 +387,128 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
     background: var(--color-surface-alt);
     border-radius: 6px;
+}
+/* Guestbook Styles */
+.guestbook {
+  background: #000000;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  padding: 15px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  height: 495px;
+  display: flex;
+  flex-direction: column;
+}
+
+.guestbook .form {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #400080;
+  flex-shrink: 0;
+}
+
+.guestbook .form input, 
+.guestbook .form textarea {
+  width: 100%;
+  background: #46454581;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: 8px;
+  color: #fff;
+  font-size: 13px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.guestbook .form input:focus,
+.guestbook .form textarea:focus {
+  outline: none;
+  border-color: #400080;
+}
+
+.guestbook .form button {
+  background: #400080;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.guestbook .form button:hover {
+  background: #a74fff;
+}
+
+.guestbook .header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.guestbook .count {
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.guestbook #entries {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.guestbook #entries::-webkit-scrollbar {
+  width: 6px;
+}
+
+.guestbook #entries::-webkit-scrollbar-track {
+  background: #50505079;
+  border-radius: 3px;
+}
+
+.guestbook #entries::-webkit-scrollbar-thumb {
+  background: #8b5cf6;
+  border-radius: 3px;
+}
+
+.guestbook #entries::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+.guestbook .entry {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.guestbook .entry-name {
+  color: #8b5cf6;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.guestbook .entry-date {
+  color: #888;
+  font-size: 11px;
+  margin-left: 10px;
+}
+
+.guestbook .entry-message {
+  color: #ccc;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.guestbook .no-entries {
+  text-align: center;
+  color: #666;
+  padding: 40px 20px;
+  font-style: italic;
 }

@@ -1,95 +1,103 @@
 ---
 import Lanyard from './Lanyard.astro';
+import Guestbook from '../components/Guestbook.astro';
 ---
 
 <div class="container landing-page">
-  <h1 class="landing-title">Dvop</h1>
-  <div class="landing-divider"></div>
-  <p class="landing-welcome">An unimportant, quite boring, annoying person with bunch of mental issues (league player)<br />
-    <span class="landing-placeholder">Hi, I'm Dvop, idk what to tell you, this is just a "I can do it I guess? project"</span
-    >
-  </p>
-  <section class="landing-section landing-section-lanyard">
-    <Lanyard />
-  </section>
-  
-  <section class="landing-section">
-    <h2 class="landing-section-title">More Useless Info about me!</h2>
-    <p class="landing-section-desc">
-    Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch btw.) and Win 10 on my main rig since league and other kernel level anticheats (fuck those.)
-    </p>
-  </section>
-
-  <section class="landing-section">
-    <h2 class="landing-section-title">Who am I?</h2>
-    <ul class="landing-list">
-      <li class="landing-list-item">
-      <li class="landing-section-desc">
-      Idk, a very boring and unimportant person, seriously man, why would you wanna know me? I have diabetes... idk what to tell you, but In case you do know me, congrats. Proud of you
-      </li>
-    </ul>
-  </section>
-
-  <section class="landing-section">
-    <h2 class="landing-section-title">PC Specs</h2>
-    <p class="landing-section-desc">
-      <ul class="landing-list">
-        <li class="landing-list-item">Case - Some random Gamemax case (the cheapest one)</li>
-        <li class="landing-list-item">MOBO - Asus TUF b450-Plus II</li>
-        <li class="landing-list-item">CPU - AMD Ryzen 5 5600x</li>
-        <li class="landing-list-item">RAM - Kingston Fury 32GB (4x8) 3600Mhz</li>
-        <li class="landing-list-item">GPU - ASUS Radeon RX6600 8gb</li>
-        <li class="landing-list-item">PSU - Corsair RM750e</li>
-        <li class="landing-list-item">M.2 NVMe - Apacer AS2280Q4X 2TB (Running Linux)</li>
-        <li class="landing-list-item">SSD - Patriot Burst 120GB (Running Windows 11)</li>
-        <li class="landing-list-item">HDD - TOSHIBA DT01ACA100 1TB</li>
-      </ul>
-    </p>
-  </section>
-  
-  <section class="landing-section">
-    <h2 class="landing-section-title">Accessories and other devices I own</h2>
-    <ul class="landing-list">
-      <li class="landing-list-item">Main Phone - Google Pixel 8 Pro [Husky] (Running AxionOS + KSUN)</li>
-      <li class="landing-list-item">Backup + Testing phone - Sony Xperia XA2 H3113 [Pioneer] (Running SailfishOS)</li>
-      <li class="landing-list-item">Phone for apps that need strong integrity - Infinix Note 12 2023 [Don't know it's codename] (stock)</li>
-      <li class="landing-list-item">Silly Old Phone (sits on my desk) - Sony Xperia Z1 Compact [Amami] (Pixel Experience + Magisk Delta [somehow])</li>
-      <li class="landing-list-item">Xbox 360 Phat (no RGH)</li>
-      <li class="landing-list-item">Playstation 1 (currently broken)</li>
-      <li class="landing-list-item">Mouse - Logitech G305</li>
-      <li class="landing-list-item">Keyboard - Dark Project KD83A</li>
-      <li class="landing-list-item">Microphone - Fifine T732</li>
-      <li class="landing-list-item">Headphones - CZC.gaming Seraphim</li>
-      <li class="landing-list-item">Earphones - Earfun Air Pro 3 (for phone)</li>
-      <li class="landing-list-item">2 Xiaomi P27FBB-RGGL Monitors</li>
-    </ul>
-  </section>
-  <section class="landing-section">
-    <h2 class="landing-section-title">My friends</h2>
-    <p class="landing-section-desc">
-      <img src="/images/frank.png" alt="my button" width="88" height="31" loading="lazy" />
-      <a href="https://vorlie.pl/" target="_blank"><img src="https://vorlie.pl/images/vorlie.png" alt="vorlie button" width="88" height="31" loading="lazy" /></a>
-      <a href="https://maggiepi.fyi" target="_blank"><img src="https://maggiepi.fyi/88x31s/maggie8831.gif" alt="Maggie button" width="88" height="31" loading="lazy" /></a>
-      <a href="https://aveline.fish/" target="_blank"><img src="/images/velbutton.gif" alt="Vel Button" width="88" height="31" loading="lazy" /></a>
-      <a href="https://byeoon.dev" target="_blank"><img src="https://byeoon.dev/img/button.png" alt="B(ottom)yeoon" width="88" height="31" loading="lazy" /></a>
-      <a href="https://pre1ude.dev" target="_blank"><img src="https://pre1ude.dev/blankie.png" height="31" width="88" alt="pre1ude.dev" /></a>
+  <div class="column-left">
+    <section class="landing-section">
+      <h2 class="landing-section-title">My friends</h2>
+      <p class="landing-section-desc">
+        <img src="/images/frank.png" alt="my button" width="88" height="31" loading="lazy" />
+        <a href="https://vorlie.pl/" target="_blank"><img src="https://vorlie.pl/images/vorlie.png" alt="vorlie button" width="88" height="31" loading="lazy" /></a>
+        <a href="https://maggiepi.fyi" target="_blank"><img src="https://maggiepi.fyi/88x31s/maggie8831.gif" alt="Maggie button" width="88" height="31" loading="lazy" /></a>
+        <a href="https://aveline.fish/" target="_blank"><img src="/images/velbutton.gif" alt="Vel Button" width="88" height="31" loading="lazy" /></a>
+        <a href="https://byeoon.dev" target="_blank"><img src="https://byeoon.dev/img/button.png" alt="B(ottom)yeoon" width="88" height="31" loading="lazy" /></a>
+        <a href="https://pre1ude.dev" target="_blank"><img src="https://pre1ude.dev/blankie.png" height="31" width="88" alt="pre1ude.dev" /></a>
+        </p>
+    </section>
+    <section class="landing-section">
+    <h2 class="landing-section-title">My Playlist</h2>
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5nOFMuNsffq8qqe0to4pvj?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </section>
+    <section class="landing-section">
+      <h2 class="landing-section-title">Links & Contact</h2>
+      <p class="landing-section-desc">
+      Mail: <a href="mailto:2259fd108@mozmail.com">Just a relay</a>
+      <p/>
+      <hr>
+      <p class="landing-section-desc">
+        <a class="link-button" href="https://discord.com/users/410475909125242901" target="_blank"><i class="bi bi-discord"></i><a/>
+        <a class="link-button" href="https://github.com/dvopheh" target="_blank"><i class="bi bi-github"></i></a>
+        <a class="link-button" href="https://steamcommunity.com/id/Dvopmensineztri/" target="_blank"><i class="bi bi-steam"></i></a>
       </p>
-  </section>
-
-  <section class="landing-section">
-    <h2 class="landing-section-title">Links & Contact</h2>
-    <p class="landing-section-desc">
-    Mail: <a href="mailto:2259fd108@mozmail.com">Just a relay</a>
-    <p/>
-    <hr>
-    <p class="landing-section-desc">
-      <a class="link-button" href="https://discord.com/users/410475909125242901" target="_blank"><i class="bi bi-discord"></i><a/>
-      <a class="link-button" href="https://github.com/dvopheh" target="_blank"><i class="bi bi-github"></i></a>
-      <a class="link-button" href="https://steamcommunity.com/id/Dvopmensineztri/" target="_blank"><i class="bi bi-steam"></i></a>
-    </p>
-  </section>
-
+    </section>
   <p class="landing-wip">
     This website is currently (and probably forever) <strong>WIP</strong>
-  </p>
+  </p>  
+  </div>
+  
+  <div class="column-middle">
+    <section class="landing-section lanyard-section">
+      <Lanyard />
+    </section>
+    <section class="landing-section">
+      <h2 class="landing-section-title">More Useless Info about me!</h2>
+      <p class="landing-section-desc">
+      Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch btw.) and Win 10 on my main rig since league and other kernel level anticheats (fuck those.)
+      </p>
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">Who am I?</h2>
+      <ul class="landing-list">
+        <li class="landing-list-item">
+        <li class="landing-section-desc">
+        Idk, a very boring and unimportant person, seriously man, why would you wanna know me? I have diabetes... idk what to tell you, but In case you do know me, congrats. Proud of you
+        </li>
+      </ul>
+    </section>
+    <section class="landing-section">
+      <Guestbook />
+    </section>
+
+  </div>
+
+  <div class="column-right">
+    <section class="landing-section">
+      <h2 class="landing-section-title">PC Specs</h2>
+      <p class="landing-section-desc">
+        <ul class="landing-list">
+          <li class="landing-list-item">Case - Some random Gamemax case (the cheapest one)</li>
+          <li class="landing-list-item">MOBO - Asus TUF B450-Plus II</li>
+          <li class="landing-list-item">CPU - AMD Ryzen 5 5600x</li>
+          <li class="landing-list-item">RAM - Kingston Fury 32GB (4x8) 3600Mhz</li>
+          <li class="landing-list-item">GPU - ASUS Radeon RX6600 8gb</li>
+          <li class="landing-list-item">PSU - Corsair RM750e</li>
+          <li class="landing-list-item">M.2 NVMe - Apacer AS2280Q4X 2TB (Running Linux)</li>
+          <li class="landing-list-item">SSD - Patriot Burst 120GB (Running Windows 10)</li>
+          <li class="landing-list-item">HDD - TOSHIBA DT01ACA100 1TB</li>
+          <li class="landing-list-item">2 Xiaomi P27FBB-RGGL Monitors</li>
+          <li class="landing-list-item">Mouse - Logitech G305</li>
+          <li class="landing-list-item">Keyboard - Dark Project KD83A</li>
+          <li class="landing-list-item">Microphone - Fifine T732</li>
+          <li class="landing-list-item">Headphones - CZC.gaming Seraphim</li>
+        </ul>
+      </p>
+    </section>
+    
+    <section class="landing-section">
+      <h2 class="landing-section-title">Accessories and other devices I own</h2>
+      <ul class="landing-list">
+        <li class="landing-list-item">Main Phone - Google Pixel 8 Pro [Husky] (Running AxionOS + KSUN)</li>
+        <li class="landing-list-item">Backup + Testing phone - Sony Xperia XA2 H3113 [Pioneer] (Running SailfishOS)</li>
+        <li class="landing-list-item">Phone for apps that need strong integrity - Infinix Note 12 2023 [Don't know it's codename] (stock)</li>
+        <li class="landing-list-item">Silly Old Phone (sits on my desk) - Sony Xperia Z1 Compact [Amami] (Pixel Experience + Magisk Delta [somehow])</li>
+        <li class="landing-list-item">Xbox 360 Phat (no RGH)</li>
+        <li class="landing-list-item">Playstation 1 (currently broken)</li>
+        <li class="landing-list-item">Earphones - Earfun Air Pro 3 (for phone)</li>
+        <li class="landing-list-item">Smartwatch - TicWatch Pro 3 Ultra GPS</li>
+      </ul>
+    </section>
+  </div>
 </div>

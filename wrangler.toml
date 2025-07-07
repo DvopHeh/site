@@ -1,0 +1,4 @@
+[[d1_databases]]
+binding = "DB"
+database_name = "guestbook-db"
+database_id = "5b90afa1-92a6-4fd4-998c-cd0180cf9420"
