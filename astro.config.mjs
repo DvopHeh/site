@@ -4,8 +4,8 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+    adapter: cloudflare(),
     server: {
         port: 4321,
-    adapter: cloudflare(),
     },
 });

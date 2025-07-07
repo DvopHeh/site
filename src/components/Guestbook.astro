@@ -11,7 +11,7 @@ if (request.method === 'POST') {
     
     if (name && message) {
       // Insert into D1 database
-      await Astro.locals.runtime.env.DB.prepare(
+      await Astro.locals.DB.prepare(
         'INSERT INTO guestbook_entries (name, message) VALUES (?, ?)'
       ).bind(name, message).run();
     }
@@ -21,12 +21,18 @@ if (request.method === 'POST') {
 }
 
 // Fetch existing entries
-let entries = [];
+type GuestbookEntry = {
+  name: string;
+  message: string;
+  created_at: string;
+};
+
+let entries: GuestbookEntry[] = [];
 try {
-  const result = await Astro.locals.runtime.env.DB.prepare(
+  const result = await Astro.locals.DB.prepare(
     'SELECT * FROM guestbook_entries ORDER BY created_at DESC LIMIT 50'
   ).all();
-  entries = result.results || [];
+  entries = result.results as GuestbookEntry[] || [];
 } catch (error) {
   console.error('Error fetching entries:', error);
 }
