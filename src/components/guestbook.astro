@@ -1,0 +1,107 @@
+---
+// guestbook.astro
+export const prerender = false;
+
+let entries = [];
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  try {
+    const formData = await Astro.request.formData();
+    const name = formData.get('name')?.toString().trim();
+    const message = formData.get('message')?.toString().trim();
+
+    if (!name || !message) {
+      error = 'Please fill in both name and message fields.';
+    } else if (name.length > 20) {
+      error = 'Name must be 50 characters or less.';
+    } else if (message.length > 500) {
+      error = 'Message must be 500 characters or less.';
+    } else {
+      // Insert into D1 database
+      const result = await Astro.locals.runtime.env.DB.prepare(
+        'INSERT INTO guestbook (name, message) VALUES (?, ?)'
+      ).bind(name, message).run();
+
+      if (!result.success) {
+        error = 'Failed to save entry. Please try again.';
+      }
+    }
+  } catch (e) {
+    error = 'Something went wrong. Please try again.';
+  }
+}
+
+// Fetch entries from D1 database
+try {
+  const result = await Astro.locals.runtime.env.DB.prepare(
+    'SELECT * FROM guestbook ORDER BY created_at DESC LIMIT 50'
+  ).all();
+  
+  entries = result.results || [];
+} catch (e) {
+  console.error('Error fetching entries:', e);
+  entries = [];
+}
+
+const formatDate = (dateString) => {
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch {
+    return 'Unknown date';
+  }
+};
+---
+
+<div class="guestbook">
+  <h3>Guestbook</h3>
+  
+  {error && <div class="error">{error}</div>}
+  
+  <form method="POST" class="guestbook-form">
+    <div class="form-group">
+      <input 
+        type="text" 
+        name="name" 
+        placeholder="Your name" 
+        maxlength="20"
+        required 
+      />
+    </div>
+    
+    <div class="form-group">
+      <textarea 
+        name="message" 
+        placeholder="Your message" 
+        maxlength="500"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+    
+    <button type="submit" class="submit-btn">Sign Guestbook</button>
+  </form>
+
+  <div class="entries">
+    {entries.length === 0 ? (
+      <p class="no-entries">No entries yet. Be the first to sign!</p>
+    ) : (
+      entries.map((entry) => (
+        <div class="entry" key={entry.id}>
+          <div class="entry-header">
+            <strong class="entry-name">{entry.name}</strong>
+            <span class="entry-date">{formatDate(entry.created_at)}</span>
+          </div>
+          <div class="entry-message">{entry.message}</div>
+        </div>
+      ))
+    )}
+  </div>
+</div>

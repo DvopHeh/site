@@ -8,4 +8,9 @@ export default defineConfig({
     server: {
         port: 4321,
     },
+    vite: {
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }
+  }
 });
