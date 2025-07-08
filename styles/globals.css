@@ -551,6 +551,16 @@ body::-webkit-scrollbar-thumb {
   background: #5a4a6a;
 }
 
+/* Success message styles */
+.guestbook .success {
+  color: #00aa00;
+  background: #e8f5e8;
+  border: 1px solid #c8e6c9;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
 /* Responsive improvements */
 @media (max-width: 768px) {
   .guestbook {

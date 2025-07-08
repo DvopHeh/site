@@ -11,38 +11,10 @@ type GuestbookEntry = {
 };
 
 let entries: GuestbookEntry[] = [];
-let error = '';
 
 // Ensure Astro.locals.DB is typed correctly
 type LocalsWithDB = typeof Astro.locals & { DB: any };
 const locals = Astro.locals as LocalsWithDB;
-
-if (Astro.request.method === 'POST') {
-  try {
-    const formData = await Astro.request.formData();
-    const name = formData.get('name')?.toString().trim();
-    const message = formData.get('message')?.toString().trim();
-
-    if (!name || !message) {
-      error = 'Please fill in both name and message fields.';
-    } else if (name.length > 20) {
-      error = 'Name must be 50 characters or less.';
-    } else if (message.length > 500) {
-      error = 'Message must be 500 characters or less.';
-    } else {
-      // Insert into D1 database
-      const result = await locals.DB.prepare(
-        'INSERT INTO guestbook (name, message) VALUES (?, ?)'
-      ).bind(name, message).run();
-
-      if (!result.success) {
-        error = 'Failed to save entry. Please try again.';
-      }
-    }
-  } catch (e) {
-    error = 'Failed to save entry. Please try again.';
-  }
-}
 
 // Fetch entries from D1 database
 try {
@@ -75,9 +47,10 @@ const formatDate = (dateString) => {
 <div class="guestbook">
   <h3>Guestbook</h3>
   
-  {error && <div class="error">{error}</div>}
+  <div id="error-message" class="error" style="display: none;"></div>
+  <div id="success-message" class="success" style="display: none;">Entry added successfully!</div>
   
-  <form method="POST" class="guestbook-form">
+  <form id="guestbook-form" class="guestbook-form">
     <div class="form-group">
       <input 
         type="text" 
@@ -117,3 +90,54 @@ const formatDate = (dateString) => {
     )}
   </div>
 </div>
+
+<script>
+document.getElementById('guestbook-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const form = e.target as HTMLFormElement;
+  const formData = new FormData(form);
+  const errorDiv = document.getElementById('error-message');
+  const successDiv = document.getElementById('success-message');
+  
+  // Hide previous messages
+  if (errorDiv) errorDiv.style.display = 'none';
+  if (successDiv) successDiv.style.display = 'none';
+  
+  try {
+    const response = await fetch('/api/guestbook', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      // Success
+      if (successDiv) {
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+          successDiv.style.display = 'none';
+        }, 3000);
+      }
+      form.reset();
+      // Reload page to show new entry
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else {
+      // Error
+      if (errorDiv) {
+        errorDiv.textContent = data.error || 'An error occurred';
+        errorDiv.style.display = 'block';
+      }
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    if (errorDiv) {
+      errorDiv.textContent = 'Network error. Please try again.';
+      errorDiv.style.display = 'block';
+    }
+  }
+});
+</script>
