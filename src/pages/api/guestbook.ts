@@ -3,8 +3,9 @@ import type { APIRoute } from 'astro';
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     console.log('API called - locals keys:', Object.keys(locals || {}));
-    console.log('DB available:', !!locals?.DB);
-    console.log('locals type:', typeof locals);
+    console.log('runtime available:', !!locals?.runtime);
+    console.log('env available:', !!locals?.runtime?.env);
+    console.log('DB available:', !!locals?.runtime?.env?.DB);
     
     const formData = await request.formData();
     const name = formData.get('name')?.toString().trim();
@@ -31,8 +32,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Type assertion for DB
-    const db = (locals as any).DB;
+    // Correct way to access D1 binding in Astro
+    const db = locals?.runtime?.env?.DB;
     if (!db) {
       return new Response(
         JSON.stringify({ error: 'Database not available.' }),
@@ -67,9 +68,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
 export const GET: APIRoute = async ({ locals }) => {
   try {
     console.log('GET API called - locals keys:', Object.keys(locals || {}));
-    console.log('DB available:', !!locals?.DB);
+    console.log('runtime available:', !!locals?.runtime);
+    console.log('DB available:', !!locals?.runtime?.env?.DB);
     
-    const db = (locals as any).DB;
+    const db = locals?.runtime?.env?.DB;
     if (!db) {
       return new Response(
         JSON.stringify({ error: 'Database not available.' }),

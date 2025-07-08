@@ -12,17 +12,23 @@ type GuestbookEntry = {
 
 let entries: GuestbookEntry[] = [];
 
-// Ensure Astro.locals.DB is typed correctly
-type LocalsWithDB = typeof Astro.locals & { DB: any };
+// Ensure Astro.locals has runtime.env.DB typed correctly
+type LocalsWithDB = typeof Astro.locals & { runtime?: { env?: { DB?: any } } };
 const locals = Astro.locals as LocalsWithDB;
 
 // Fetch entries from D1 database
 try {
-  const result = await locals.DB.prepare(
-    'SELECT * FROM guestbook ORDER BY created_at DESC LIMIT 50'
-  ).all();
+  const db = locals?.runtime?.env?.DB;
+  if (!db) {
+    console.error('Database binding not available in component');
+    entries = [];
+  } else {
+    const result = await db.prepare(
+      'SELECT * FROM guestbook ORDER BY created_at DESC LIMIT 50'
+    ).all();
 
-  entries = result.results || [];
+    entries = result.results || [];
+  }
 } catch (e) {
   console.error('Error fetching entries:', e);
   entries = [];
