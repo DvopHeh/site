@@ -492,16 +492,16 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entry {
-  background: #5200a3;
-  border: 1px solid #FFFFFF;
+  background: #180030;
+  border: 1px solid #000000;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 4px #3400524f;
+  box-shadow: 0 2px 4px #a550faa2;
 }
 
 .guestbook .entry:hover {
-  border-color: #000000;
+  border-color: #ffffff;
 }
 
 .guestbook .entry-header {
@@ -512,18 +512,18 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entry-name {
-  color: #a884c7;
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
 }
 
 .guestbook .entry-date {
-  color: #6a5a7a;
+  color: #ffffff;
   font-size: 12px;
 }
 
 .guestbook .entry-message {
-  color: #e0d0f0;
+  color: #ffffff;
   font-size: 14px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -535,17 +535,17 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entries::-webkit-scrollbar-track {
-  background: #2a1a3a;
+  background: #ffffff;
   border-radius: 4px;
 }
 
 .guestbook .entries::-webkit-scrollbar-thumb {
-  background: #4a3a5a;
+  background: #ffffff;
   border-radius: 4px;
 }
 
 .guestbook .entries::-webkit-scrollbar-thumb:hover {
-  background: #5a4a6a;
+  background: #bc78ff;
 }
 
 /* Success message styles */
