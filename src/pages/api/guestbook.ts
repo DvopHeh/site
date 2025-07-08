@@ -2,6 +2,10 @@ import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    console.log('API called - locals keys:', Object.keys(locals || {}));
+    console.log('DB available:', !!locals?.DB);
+    console.log('locals type:', typeof locals);
+    
     const formData = await request.formData();
     const name = formData.get('name')?.toString().trim();
     const message = formData.get('message')?.toString().trim();
@@ -62,6 +66,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
 export const GET: APIRoute = async ({ locals }) => {
   try {
+    console.log('GET API called - locals keys:', Object.keys(locals || {}));
+    console.log('DB available:', !!locals?.DB);
+    
     const db = (locals as any).DB;
     if (!db) {
       return new Response(
