@@ -5,15 +5,3 @@ compatibility_date = "2024-01-01"
 binding = "DB"
 database_name = "guestbook-db"
 database_id = "47bc8f67-d59e-46c5-91c4-de42fb295d0b"
-
-[env.production]
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "guestbook-db"
-database_id = "47bc8f67-d59e-46c5-91c4-de42fb295d0b"
-
-[env.development]
-[[env.development.d1_databases]]
-binding = "DB"
-database_name = "guestbook-db"
-database_id = "47bc8f67-d59e-46c5-91c4-de42fb295d0b"

@@ -2,8 +2,20 @@
 // guestbook.astro
 export const prerender = false;
 
-let entries = [];
+// Define the type for a guestbook entry
+type GuestbookEntry = {
+  id: number;
+  name: string;
+  message: string;
+  created_at: string;
+};
+
+let entries: GuestbookEntry[] = [];
 let error = '';
+
+// Ensure Astro.locals.DB is typed correctly
+type LocalsWithDB = typeof Astro.locals & { DB: any };
+const locals = Astro.locals as LocalsWithDB;
 
 if (Astro.request.method === 'POST') {
   try {
@@ -19,7 +31,7 @@ if (Astro.request.method === 'POST') {
       error = 'Message must be 500 characters or less.';
     } else {
       // Insert into D1 database
-      const result = await Astro.locals.runtime.env.DB.prepare(
+      const result = await locals.DB.prepare(
         'INSERT INTO guestbook (name, message) VALUES (?, ?)'
       ).bind(name, message).run();
 
@@ -28,16 +40,16 @@ if (Astro.request.method === 'POST') {
       }
     }
   } catch (e) {
-    error = 'Something went wrong. Please try again.';
+    error = 'Failed to save entry. Please try again.';
   }
 }
 
 // Fetch entries from D1 database
 try {
-  const result = await Astro.locals.runtime.env.DB.prepare(
+  const result = await locals.DB.prepare(
     'SELECT * FROM guestbook ORDER BY created_at DESC LIMIT 50'
   ).all();
-  
+
   entries = result.results || [];
 } catch (e) {
   console.error('Error fetching entries:', e);
@@ -94,7 +106,7 @@ const formatDate = (dateString) => {
       <p class="no-entries">No entries yet. Be the first to sign!</p>
     ) : (
       entries.map((entry) => (
-        <div class="entry" key={entry.id}>
+        <div class="entry">
           <div class="entry-header">
             <strong class="entry-name">{entry.name}</strong>
             <span class="entry-date">{formatDate(entry.created_at)}</span>
