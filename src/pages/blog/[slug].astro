@@ -136,12 +136,12 @@ const { slug } = Astro.params;
   }
   
   function displayPost(post) {
-    let date = 'Unknown date';
+    let createdDate = 'Unknown date';
     if (post.created_at && post.created_at !== 'CURRENT_TIMESTAMP') {
       try {
         const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
         if (!isNaN(dateObj.getTime())) {
-          date = dateObj.toLocaleString();
+          createdDate = dateObj.toLocaleString();
         } else {
           console.error('Invalid date parsed:', post.created_at);
         }
@@ -150,8 +150,20 @@ const { slug } = Astro.params;
       }
     }
     
+    let updatedDate = '';
+    if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
+      try {
+        const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
+        if (!isNaN(dateObj.getTime())) {
+          updatedDate = ` • Updated: ${dateObj.toLocaleString()}`;
+        }
+      } catch (error) {
+        console.error('Error parsing updated date:', post.updated_at, error);
+      }
+    }
+    
     document.getElementById('postTitle').textContent = post.title;
-    document.getElementById('postDate').textContent = date;
+    document.getElementById('postDate').textContent = `Created: ${createdDate}${updatedDate}`;
     
     const htmlContent = post.content.replace(/\n/g, '<br>');
     document.getElementById('postBody').innerHTML = htmlContent;

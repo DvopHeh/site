@@ -110,12 +110,12 @@ import Layout from '../../layouts/Layout.astro';
       }
       
       postsContainer.innerHTML = publishedPosts.map(post => {
-        let date = 'Unknown date';
+        let createdDate = 'Unknown date';
         if (post.created_at && post.created_at !== 'CURRENT_TIMESTAMP') {
           try {
             const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
             if (!isNaN(dateObj.getTime())) {
-              date = dateObj.toLocaleString();
+              createdDate = dateObj.toLocaleString();
             } else {
               console.error('Invalid date parsed:', post.created_at);
             }
@@ -123,6 +123,19 @@ import Layout from '../../layouts/Layout.astro';
             console.error('Error parsing date:', post.created_at, error);
           }
         }
+        
+        let updatedDate = '';
+        if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
+          try {
+            const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
+            if (!isNaN(dateObj.getTime())) {
+              updatedDate = ` • Updated: ${dateObj.toLocaleString()}`;
+            }
+          } catch (error) {
+            console.error('Error parsing updated date:', post.updated_at, error);
+          }
+        }
+        
         const excerpt = post.description || post.content.substring(0, 150) + '...';
         
         return `
@@ -130,7 +143,7 @@ import Layout from '../../layouts/Layout.astro';
             <h2 class="post-title">
               <a href="/blog/${post.slug}">${post.title}</a>
             </h2>
-            <div class="post-date">${date}</div>
+            <div class="post-date">Created: ${createdDate}${updatedDate}</div>
             <p class="post-excerpt">${excerpt}</p>
           </article>
         `;
