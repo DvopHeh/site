@@ -640,14 +640,9 @@ body::-webkit-scrollbar-thumb {
     border-radius: 12px;
     padding: 24px;
     max-width: 600px;
-    min-height: 565px;
-    height: 565px;
     margin: 0 auto;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     overflow: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
 }
 
 .guestbook-form {
@@ -658,13 +653,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entries {
-    flex: 1 1 0;
-    max-height: none;
+    max-height: 350px;
     overflow-y: auto;
     padding-right: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
 }
 
 .guestbook .form-group {
