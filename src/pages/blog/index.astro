@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+  <div class="blog-container">
+    <h1>Blog</h1>
+    
+    <div id="postsContainer" class="posts-list">
+      <div class="loading">Loading posts...</div>
+    </div>
+    
+    <div id="noPosts" class="no-posts" style="display: none;">
+      <p>No posts yet.</p>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .blog-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .blog-container h1 {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+  }
+  
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .post-item {
+    border-bottom: 1px solid #333;
+    padding-bottom: 1.5rem;
+  }
+  
+  .post-item:last-child {
+    border-bottom: none;
+  }
+  
+  .post-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-title a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .post-title a:hover {
+    color: #667eea;
+  }
+  
+  .post-date {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  .post-excerpt {
+    color: #ccc;
+    line-height: 1.6;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+  }
+  
+  .no-posts {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+  }
+</style>
+
+<script>
+  async function loadPosts() {
+    try {
+      const response = await fetch('/api/blog');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      
+      const posts = await response.json();
+      const postsContainer = document.getElementById('postsContainer');
+      const noPosts = document.getElementById('noPosts');
+      
+      if (posts.length === 0) {
+        postsContainer.style.display = 'none';
+        noPosts.style.display = 'block';
+        return;
+      }
+      
+      // Only show published posts
+      const publishedPosts = posts.filter(post => post.published);
+      
+      if (publishedPosts.length === 0) {
+        postsContainer.style.display = 'none';
+        noPosts.style.display = 'block';
+        return;
+      }
+      
+      postsContainer.innerHTML = publishedPosts.map(post => {
+        const date = new Date(post.created_at).toLocaleDateString();
+        const excerpt = post.description || post.content.substring(0, 150) + '...';
+        
+        return `
+          <article class="post-item">
+            <h2 class="post-title">
+              <a href="/blog/${post.slug}">${post.title}</a>
+            </h2>
+            <div class="post-date">${date}</div>
+            <p class="post-excerpt">${excerpt}</p>
+          </article>
+        `;
+      }).join('');
+      
+    } catch (error) {
+      console.error('Error loading posts:', error);
+      document.getElementById('postsContainer').innerHTML = `
+        <div class="loading">Error loading posts. Please try again later.</div>
+      `;
+    }
+  }
+  
+  // Load posts when page loads
+  document.addEventListener('DOMContentLoaded', loadPosts);
+</script>

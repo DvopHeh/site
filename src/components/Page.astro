@@ -1,6 +1,7 @@
 ---
 import Lanyard from './Lanyard.astro';
 import Guestbook from '../components/guestbook.astro';
+import RecentTracks from './RecentTracks.astro';
 ---
 
 <div class="container landing-page">
@@ -17,8 +18,8 @@ import Guestbook from '../components/guestbook.astro';
         </p>
     </section>
     <section class="landing-section">
-    <h2 class="landing-section-title">My Playlist</h2>
-      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5nOFMuNsffq8qqe0to4pvj?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <h2 class="landing-section-title">Recently Played</h2>
+      <RecentTracks limit={20} />
     </section>
     <section class="landing-section">
       <h2 class="landing-section-title">Links & Contact</h2>
