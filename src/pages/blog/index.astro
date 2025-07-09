@@ -111,10 +111,14 @@ import Layout from '../../layouts/Layout.astro';
       
       postsContainer.innerHTML = publishedPosts.map(post => {
         let date = 'Unknown date';
-        if (post.created_at) {
+        if (post.created_at && post.created_at !== 'CURRENT_TIMESTAMP') {
           try {
             const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
-            date = dateObj.toLocaleDateString();
+            if (!isNaN(dateObj.getTime())) {
+              date = dateObj.toLocaleString();
+            } else {
+              console.error('Invalid date parsed:', post.created_at);
+            }
           } catch (error) {
             console.error('Error parsing date:', post.created_at, error);
           }
