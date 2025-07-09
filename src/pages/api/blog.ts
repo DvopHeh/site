@@ -39,8 +39,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     
     const { success } = await env.DB.prepare(`
-      INSERT INTO blog (title, content, slug, description, published, tags, author, featured_image)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO blog (title, content, slug, description, published, tags, author, featured_image, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
     `).bind(title, content, finalSlug, description, published || false, tags || '[]', author || 'dvop', featured_image || null).run();
     
     if (success) {

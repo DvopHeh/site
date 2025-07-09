@@ -136,7 +136,15 @@ const { slug } = Astro.params;
   }
   
   function displayPost(post) {
-    const date = new Date(post.created_at.replace(' ', 'T') + 'Z').toLocaleDateString();
+    let date = 'Unknown date';
+    if (post.created_at) {
+      try {
+        const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
+        date = dateObj.toLocaleDateString();
+      } catch (error) {
+        console.error('Error parsing date:', post.created_at, error);
+      }
+    }
     
     document.getElementById('postTitle').textContent = post.title;
     document.getElementById('postDate').textContent = date;

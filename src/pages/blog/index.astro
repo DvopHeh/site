@@ -110,7 +110,15 @@ import Layout from '../../layouts/Layout.astro';
       }
       
       postsContainer.innerHTML = publishedPosts.map(post => {
-        const date = new Date(post.created_at.replace(' ', 'T') + 'Z').toLocaleDateString();
+        let date = 'Unknown date';
+        if (post.created_at) {
+          try {
+            const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
+            date = dateObj.toLocaleDateString();
+          } catch (error) {
+            console.error('Error parsing date:', post.created_at, error);
+          }
+        }
         const excerpt = post.description || post.content.substring(0, 150) + '...';
         
         return `
