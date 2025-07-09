@@ -1,5 +1,5 @@
 // navbar.ts
-import type { LanyardData, DiscordUser } from './interfaces';
+import type { PresenceData, DiscordUser } from '../../types/interfaces';
 import { getStatusColor } from './utils';
 
 const generateNavbarHTML = ({ display_name = '', username }: DiscordUser): string => `
@@ -32,7 +32,7 @@ const updateAvatarDecoration = (asset: string | undefined, avatarDecoImg: HTMLIm
     }
 };
 
-export const displayUser = (userData: LanyardData | null): void => {
+export const displayUser = (userData: PresenceData | null): void => {
     const navbar = document.querySelector('.dvop');
     if (!navbar) return;
 

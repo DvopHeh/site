@@ -17,6 +17,23 @@ export const extractImageUrl = (url: string, application_id?: string): string =>
     }
 };
 
+export const formatElapsedTime = (start: number, end?: number): string => {
+    const now = Date.now();
+    const elapsed = end ? end - start : now - start;
+    const hours = Math.floor(elapsed / 3600000);
+    const minutes = Math.floor((elapsed % 3600000) / 60000);
+    const seconds = Math.floor((elapsed % 60000) / 1000);
+    return `${hours > 0 ? hours + ':' : ''}${hours > 0 && minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+export const formatDuration = (start: number, end: number): string => {
+    const duration = end - start;
+    const hours = Math.floor(duration / 3600000);
+    const minutes = Math.floor((duration % 3600000) / 60000);
+    const seconds = Math.floor((duration % 60000) / 1000);
+    return `${hours > 0 ? hours + ':' : ''}${hours > 0 && minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
 export const getStatusColor = (status: string): string => {
     switch (status) {
         case 'online':
