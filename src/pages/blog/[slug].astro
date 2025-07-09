@@ -1,0 +1,164 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  return [];
+}
+
+const { slug } = Astro.params;
+---
+
+<Layout>
+  <div class="blog-post-container">
+    <div id="loadingPost" class="loading">
+      <p>Loading...</p>
+    </div>
+    
+    <div id="postNotFound" class="not-found" style="display: none;">
+      <h1>Post Not Found</h1>
+      <a href="/blog">← Back to Blog</a>
+    </div>
+    
+    <article id="blogPost" class="blog-post" style="display: none;">
+      <a href="/blog" class="back-link">← Back to Blog</a>
+      
+      <header class="post-header">
+        <h1 id="postTitle" class="post-title"></h1>
+        <div id="postDate" class="post-date"></div>
+      </header>
+      
+      <div class="post-content">
+        <div id="postBody" class="post-body"></div>
+      </div>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .blog-post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+  }
+  
+  .not-found {
+    text-align: center;
+    padding: 2rem;
+    color: #888;
+  }
+  
+  .back-link {
+    color: #888;
+    text-decoration: none;
+    margin-bottom: 2rem;
+    display: inline-block;
+  }
+  
+  .back-link:hover {
+    color: #667eea;
+  }
+  
+  .post-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
+  }
+  
+  .post-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .post-date {
+    color: #888;
+    font-size: 0.9rem;
+  }
+  
+  .post-content {
+    line-height: 1.6;
+  }
+  
+  .post-body {
+    color: #ccc;
+  }
+  
+  .post-body p {
+    margin-bottom: 1rem;
+  }
+  
+  .post-body h1,
+  .post-body h2,
+  .post-body h3 {
+    color: #fff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<script define:vars={{ slug }}>
+  async function loadPost() {
+    try {
+      const response = await fetch('/api/blog');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      
+      const posts = await response.json();
+      const post = posts.find(p => p.slug === slug);
+      
+      if (!post) {
+        showNotFound();
+        return;
+      }
+      
+      // Update view count
+      await updateViewCount(post.id);
+      
+      // Display post
+      displayPost(post);
+      
+    } catch (error) {
+      console.error('Error loading post:', error);
+      showNotFound();
+    }
+  }
+  
+  async function updateViewCount(postId) {
+    try {
+      // This would need a separate API endpoint to update view count
+      // For now, we'll just increment locally
+    } catch (error) {
+      console.error('Error updating view count:', error);
+    }
+  }
+  
+  function displayPost(post) {
+    const date = new Date(post.created_at).toLocaleDateString();
+    
+    document.getElementById('postTitle').textContent = post.title;
+    document.getElementById('postDate').textContent = date;
+    
+    // Convert content to HTML (simple line breaks)
+    const htmlContent = post.content.replace(/\n/g, '<br>');
+    document.getElementById('postBody').innerHTML = htmlContent;
+    
+    // Show post, hide loading
+    document.getElementById('loadingPost').style.display = 'none';
+    document.getElementById('blogPost').style.display = 'block';
+  }
+  
+  function showNotFound() {
+    document.getElementById('loadingPost').style.display = 'none';
+    document.getElementById('postNotFound').style.display = 'block';
+  }
+  
+  // Load post when page loads
+  document.addEventListener('DOMContentLoaded', loadPost);
+</script>

@@ -1,0 +1,155 @@
+---
+// src/components/RecentTracks.astro
+interface Track {
+  name: string;
+  artist: string;
+  album: string;
+  image: string;
+  url: string;
+  nowPlaying: boolean;
+  playedAt: string | null;
+}
+
+interface Props {
+  limit?: number;
+}
+
+const { limit = 5 } = Astro.props;
+
+let tracks: Track[] = [];
+let error = false;
+
+try {
+  // Use relative path for API call
+  const apiUrl = import.meta.env.DEV 
+    ? 'http://localhost:4321/api/lastfm'
+    : `${Astro.url.origin}/api/lastfm`;
+    
+  const response = await fetch(apiUrl);
+  
+  if (!response.ok) {
+    console.error('API response not OK:', response.status, response.statusText);
+    error = true;
+  } else {
+    const data = await response.json();
+    if (data.tracks && Array.isArray(data.tracks)) {
+      tracks = data.tracks.slice(0, limit);
+    } else {
+      console.error('Invalid data structure:', data);
+      error = true;
+    }
+  }
+} catch (e) {
+  console.error('Fetch error:', e);
+  error = true;
+}
+
+function timeAgo(date: string | null): string {
+  if (!date) return '';
+  
+  const minutes = Math.floor((Date.now() - new Date(date).getTime()) / 60000);
+  if (minutes < 60) return `${minutes}m ago`;
+  if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`;
+  return `${Math.floor(minutes / 1440)}d ago`;
+}
+---
+
+<div class="recent-tracks">
+  
+  {error ? (
+    <p class="error">Unable to load tracks</p>
+  ) : (
+    <div class="tracks" id="tracks-container">
+      {tracks.map((track) => (
+        <div class={`track ${track.nowPlaying ? 'playing' : ''}`}>
+          {track.image && <img src={track.image} alt="" />}
+          <div class="info">
+            <a href={track.url} target="_blank">{track.name}</a>
+            <div class="artist">{track.artist}</div>
+            <div class="time">
+              {track.nowPlaying ? '♪ Now playing' : timeAgo(track.playedAt)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  interface Track {
+    name: string;
+    artist: string;
+    album: string;
+    image: string;
+    url: string;
+    nowPlaying: boolean;
+    playedAt: string | null;
+  }
+
+  interface LastFmResponse {
+    tracks: Track[];
+  }
+
+  let updateInterval: ReturnType<typeof setInterval>;
+  
+  async function updateTracks(): Promise<void> {
+    try {
+      const response = await fetch('/api/lastfm');
+      if (!response.ok) return;
+      
+      const data: LastFmResponse = await response.json();
+      const container = document.getElementById('tracks-container');
+      if (!container || !data.tracks) return;
+      
+      // Clear existing tracks
+      container.innerHTML = '';
+      
+      // Add updated tracks
+      data.tracks.forEach((track: Track) => {
+        const trackEl = document.createElement('div');
+        trackEl.className = `track ${track.nowPlaying ? 'playing' : ''}`;
+        
+        const timeAgo = (date: string | null): string => {
+          if (!date) return '';
+          const minutes = Math.floor((Date.now() - new Date(date).getTime()) / 60000);
+          if (minutes < 60) return `${minutes}m ago`;
+          if (minutes < 1440) return `${Math.floor(minutes / 60)}h ago`;
+          return `${Math.floor(minutes / 1440)}d ago`;
+        };
+        
+        trackEl.innerHTML = `
+          ${track.image ? `<img src="${track.image}" alt="" />` : ''}
+          <div class="info">
+            <a href="${track.url}" target="_blank">${track.name}</a>
+            <div class="artist">${track.artist}</div>
+            <div class="time">
+              ${track.nowPlaying ? '♪ Now playing' : timeAgo(track.playedAt)}
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(trackEl);
+      });
+    } catch (error) {
+      console.error('Failed to update tracks:', error);
+    }
+  }
+  
+  // Update every 30 seconds
+  updateInterval = setInterval(updateTracks, 30000);
+  
+  // Clean up when page unloads
+  window.addEventListener('beforeunload', () => {
+    if (updateInterval) {
+      clearInterval(updateInterval);
+    }
+  });
+  
+  // Also update when page becomes visible again
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updateTracks();
+    }
+  });
+</script>
