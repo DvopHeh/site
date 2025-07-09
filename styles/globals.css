@@ -23,6 +23,14 @@
     --color-status-dnd: #ff6a7b;
     --color-status-idle: #ffb07b;
     --color-status-offline: #525252;
+
+
+    --border-radius-base: 16px;
+    --border-radius-small: calc(var(--border-radius-base) / 2);
+    --spacing-base: 10px;
+    --color-bg-surface: #283044;
+    --color-bg-base: #400080;
+    --color-accent: #a74fff;
 }
 
 html,
@@ -688,4 +696,113 @@ body::-webkit-scrollbar-thumb {
     width: 40px;
     height: 40px;
   }
+}
+
+
+.activity-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-base);
+    align-items: stretch;
+    justify-content: left;
+}
+
+.activity {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    white-space: pre;
+    overflow: hidden;
+    padding: 0.2rem;
+    width: 430px;
+    margin: 0.4rem;
+    position: relative;
+    gap: 4px;
+}
+
+.activityWrapper {
+    display: flex;
+}
+
+.activityImageContainer {
+    display: flex;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+.activityImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-small);
+    position: relative;
+    z-index: 1;
+}
+
+
+
+.activitySmallImage {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--color-bg-surface-alpha);
+    border: 3px solid transparent;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    z-index: 2;
+}
+
+.activityDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    vertical-align: top;
+    margin-left: 10px;
+}
+
+.activityName {
+    margin: 0 0 8px 0;
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 10px;
+}
+
+.activityName,
+.activityDetails,
+.activityState,
+.activityTimestamp {
+    z-index: 2 !important;
+}
+
+.activityDetails,
+.activityState,
+.activityTimestamp {
+    margin: 0;
+}
+
+.activityProgressBarContainer {
+    display: flex;
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-bg-base);
+    margin-top: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.activityProgressBar {
+    height: 100%;
+    background-color: var(--color-accent);
+    width: 0;
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    z-index: 2;
 }
