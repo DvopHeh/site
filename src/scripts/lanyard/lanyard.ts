@@ -1,6 +1,5 @@
-<<<<<<< HEAD
+
 import type { LanyardData } from './interfaces';
-=======
 // lanyard.ts
 import type { PresenceData } from '../../types/interfaces';
 >>>>>>> 1c352eab93a957738df584ec7034aec99f5eda86
