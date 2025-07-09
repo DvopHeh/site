@@ -1,4 +1,3 @@
-// interfaces.ts
 export interface Activity {
     name: string;
     application_id?: string;

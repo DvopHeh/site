@@ -1,4 +1,3 @@
-// updateLanyard.ts
 import { fetchPresence } from './lanyard';
 import { displayUser } from './user';
 

@@ -101,7 +101,6 @@ import Layout from '../../layouts/Layout.astro';
         return;
       }
       
-      // Only show published posts
       const publishedPosts = posts.filter(post => post.published);
       
       if (publishedPosts.length === 0) {
@@ -111,7 +110,7 @@ import Layout from '../../layouts/Layout.astro';
       }
       
       postsContainer.innerHTML = publishedPosts.map(post => {
-        const date = new Date(post.created_at).toLocaleDateString();
+        const date = new Date(post.created_at.replace(' ', 'T') + 'Z').toLocaleDateString();
         const excerpt = post.description || post.content.substring(0, 150) + '...';
         
         return `
@@ -133,6 +132,5 @@ import Layout from '../../layouts/Layout.astro';
     }
   }
   
-  // Load posts when page loads
   document.addEventListener('DOMContentLoaded', loadPosts);
 </script>

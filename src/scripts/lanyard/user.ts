@@ -1,4 +1,3 @@
-// navbar.ts
 import type { LanyardData, DiscordUser } from './interfaces';
 import { getStatusColor } from './utils';
 
@@ -36,7 +35,6 @@ export const displayUser = (userData: LanyardData | null): void => {
     const navbar = document.querySelector('.dvop');
     if (!navbar) return;
 
-    // Set loading text only if navbarData is null
     if (!userData) {
         navbar.innerHTML = '<p>Loading...</p>';
         return; // Exit if no data is available

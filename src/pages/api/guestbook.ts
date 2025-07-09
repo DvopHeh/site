@@ -32,7 +32,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Correct way to access D1 binding in Astro
     const db = locals?.runtime?.env?.DB;
     if (!db) {
       return new Response(

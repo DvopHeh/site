@@ -1,4 +1,3 @@
-// src/pages/api/lastfm.ts
 import type { APIRoute } from 'astro';
 
 interface Env {
@@ -28,7 +27,6 @@ if (!API_KEY || !USERNAME) {
 
     const data = await response.json();
     
-    // Transform the data to a cleaner format
     const tracks = data.recenttracks.track.map((track: any) => ({
       name: track.name,
       artist: track.artist['#text'],
@@ -43,7 +41,7 @@ if (!API_KEY || !USERNAME) {
       status: 200,
       headers: { 
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=60' // Cache for 1 minute
+        'Cache-Control': 'public, max-age=60'
       }
     });
   } catch (error) {

@@ -4,7 +4,6 @@ interface Env {
   DB: D1Database;
 }
 
-// GET - Fetch all blog posts
 export const GET: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env as Env;
   
@@ -30,7 +29,6 @@ export const GET: APIRoute = async ({ request, locals }) => {
   }
 };
 
-// POST - Create new blog post
 export const POST: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env as Env;
   
@@ -38,7 +36,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const data = await request.json();
     const { title, content, slug, description, published, tags, author, featured_image } = data;
     
-    // Create slug from title if not provided
     const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     
     const { success } = await env.DB.prepare(`

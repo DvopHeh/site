@@ -1,8 +1,6 @@
 ---
-// guestbook.astro
 export const prerender = false;
 
-// Define the type for a guestbook entry
 type GuestbookEntry = {
   id: number;
   name: string;
@@ -12,11 +10,9 @@ type GuestbookEntry = {
 
 let entries: GuestbookEntry[] = [];
 
-// Ensure Astro.locals has runtime.env.DB typed correctly
 type LocalsWithDB = typeof Astro.locals & { runtime?: { env?: { DB?: any } } };
 const locals = Astro.locals as LocalsWithDB;
 
-// Fetch entries from D1 database
 try {
   const db = locals?.runtime?.env?.DB;
   if (!db) {
@@ -104,7 +100,6 @@ document.getElementById('guestbook-form')?.addEventListener('submit', async (e) 
   const errorDiv = document.getElementById('error-message');
   const successDiv = document.getElementById('success-message');
   
-  // Hide previous messages
   if (errorDiv) errorDiv.style.display = 'none';
   if (successDiv) successDiv.style.display = 'none';
   
@@ -117,7 +112,6 @@ document.getElementById('guestbook-form')?.addEventListener('submit', async (e) 
     const data = await response.json();
     
     if (response.ok) {
-      // Success
       if (successDiv) {
         successDiv.style.display = 'block';
         setTimeout(() => {
@@ -125,12 +119,10 @@ document.getElementById('guestbook-form')?.addEventListener('submit', async (e) 
         }, 3000);
       }
       form.reset();
-      // Reload page to show new entry
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } else {
-      // Error
       if (errorDiv) {
         errorDiv.textContent = data.error || 'An error occurred';
         errorDiv.style.display = 'block';

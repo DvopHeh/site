@@ -1,5 +1,4 @@
 :root {
-    /* Color palette */
     --color-bg: #000000;
     --color-bg-alt: #ffffff;
     --color-surface: #000000;
@@ -104,24 +103,22 @@ a{
 .landing-page {
     min-height: 70vh;
     display: grid;
-    /* Define 3 explicit columns */
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1.2rem; /* Space between columns and rows */
     justify-content: center;
-    align-items: start; /* Align items to the top of their grid areas */
+    align-items: stretch; /* Make all columns stretch to same height */
     margin: 2rem auto; /* Center the grid with auto margins */
     max-width: 1600px; /* Adjust max-width as needed for 3 columns */
     padding: 0 0.5rem; /* Add some padding on the sides */
 }
 
-/* New styles for the column wrappers */
 .column-left,
 .column-middle,
 .column-right {
     display: flex; /* Use flexbox to stack sections vertically within each column */
     flex-direction: column;
     gap: 1.2rem; /* Gap between sections within a column */
-    
+    align-items: stretch; /* Make all sections stretch to fill available space */
 }
 
 
@@ -164,13 +161,10 @@ a{
     box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
     padding: 1.2rem;
     transition: box-shadow var(--transition);
-    /* Remove margin-bottom as gap handles spacing within columns */
     margin-bottom: 0;
 }
 
 .lanyard-section {
-    /* Specific styling for the Lanyard section if needed */
-    /* Adjust as necessary for the Lanyard component's size */
     text-align: left; /* Center content within this section */
 }
 
@@ -233,7 +227,6 @@ a{
     font-size: 0.98rem;
     text-align: center;
     opacity: 0.85;
-    /* Make the WIP message span all columns */
     grid-column: 1 / -1; 
 }
 
@@ -250,7 +243,7 @@ a{
     line-height: 1.6;
 }
 
-@media (max-width: 900px) { /* Adjust breakpoint for 2 columns */
+@media (max-width: 900px) {
     .landing-page {
         grid-template-columns: 1fr 1fr; /* Two columns */
     }
@@ -265,7 +258,7 @@ a{
     }
 }
 
-@media (max-width: 600px) { /* Adjust breakpoint for 1 column */
+@media (max-width: 600px) {
     .landing-page {
         grid-template-columns: 1fr; /* Stack columns on smaller screens */
         padding: 1rem 0.5rem 1.5rem 0.5rem;
@@ -273,7 +266,6 @@ a{
         margin-bottom: 1.5rem;
     }
 
-    /* All columns will stack in a single column */
     .column-left,
     .column-middle,
     .column-right {
@@ -293,7 +285,6 @@ a{
     }
 }
 
-/* Navbar Styles */
 #navbar {
     display: flex;
     align-items: center;
@@ -359,7 +350,6 @@ a{
     }
 }
 
-/* General headings and links */
 h1,
 h2,
 h3,
@@ -378,7 +368,6 @@ a:hover {
     color: var(--color-link-hover);
 }
 
-/* Scrollbar styling for dark mode */
 body::-webkit-scrollbar {
     width: 12px;
     background: var(--color-bg-alt);
@@ -389,7 +378,6 @@ body::-webkit-scrollbar-thumb {
     border-radius: 6px;
 }
 
-/* Guestbook Styles */
 .guestbook {
   background: #000000;
   border: 1px solid #000000;
@@ -530,7 +518,6 @@ body::-webkit-scrollbar-thumb {
   word-wrap: break-word;
 }
 
-/* Simple scrollbar styling */
 .guestbook .entries::-webkit-scrollbar {
   width: 8px;
 }
@@ -549,7 +536,6 @@ body::-webkit-scrollbar-thumb {
   background: #bc78ff;
 }
 
-/* Success message styles */
 .guestbook .success {
   color: #00aa00;
   background: #e8f5e8;
@@ -559,7 +545,6 @@ body::-webkit-scrollbar-thumb {
   margin-bottom: 15px;
 }
 
-/* Responsive improvements */
 @media (max-width: 768px) {
   .guestbook {
     margin: 16px;
@@ -576,7 +561,6 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-/* Last.fm */
 
 .recent-tracks {
   max-width: 400px;

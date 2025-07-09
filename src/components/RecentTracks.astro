@@ -1,5 +1,4 @@
 ---
-// src/components/RecentTracks.astro
 interface Track {
   name: string;
   artist: string;
@@ -20,7 +19,6 @@ let tracks: Track[] = [];
 let error = false;
 
 try {
-  // Use relative path for API call
   const apiUrl = import.meta.env.DEV 
     ? 'http://localhost:4321/api/lastfm'
     : `${Astro.url.origin}/api/lastfm`;
@@ -102,10 +100,8 @@ function timeAgo(date: string | null): string {
       const container = document.getElementById('tracks-container');
       if (!container || !data.tracks) return;
       
-      // Clear existing tracks
       container.innerHTML = '';
       
-      // Add updated tracks
       data.tracks.forEach((track: Track) => {
         const trackEl = document.createElement('div');
         trackEl.className = `track ${track.nowPlaying ? 'playing' : ''}`;
@@ -136,17 +132,14 @@ function timeAgo(date: string | null): string {
     }
   }
   
-  // Update every 30 seconds
   updateInterval = setInterval(updateTracks, 30000);
   
-  // Clean up when page unloads
   window.addEventListener('beforeunload', () => {
     if (updateInterval) {
       clearInterval(updateInterval);
     }
   });
   
-  // Also update when page becomes visible again
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
       updateTracks();

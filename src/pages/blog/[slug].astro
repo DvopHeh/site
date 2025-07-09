@@ -118,10 +118,8 @@ const { slug } = Astro.params;
         return;
       }
       
-      // Update view count
       await updateViewCount(post.id);
       
-      // Display post
       displayPost(post);
       
     } catch (error) {
@@ -132,24 +130,20 @@ const { slug } = Astro.params;
   
   async function updateViewCount(postId) {
     try {
-      // This would need a separate API endpoint to update view count
-      // For now, we'll just increment locally
     } catch (error) {
       console.error('Error updating view count:', error);
     }
   }
   
   function displayPost(post) {
-    const date = new Date(post.created_at).toLocaleDateString();
+    const date = new Date(post.created_at.replace(' ', 'T') + 'Z').toLocaleDateString();
     
     document.getElementById('postTitle').textContent = post.title;
     document.getElementById('postDate').textContent = date;
     
-    // Convert content to HTML (simple line breaks)
     const htmlContent = post.content.replace(/\n/g, '<br>');
     document.getElementById('postBody').innerHTML = htmlContent;
     
-    // Show post, hide loading
     document.getElementById('loadingPost').style.display = 'none';
     document.getElementById('blogPost').style.display = 'block';
   }
@@ -159,6 +153,5 @@ const { slug } = Astro.params;
     document.getElementById('postNotFound').style.display = 'block';
   }
   
-  // Load post when page loads
   document.addEventListener('DOMContentLoaded', loadPost);
 </script>

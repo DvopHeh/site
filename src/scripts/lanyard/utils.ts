@@ -1,4 +1,3 @@
-// utils.ts
 export const extractImageUrl = (url: string, application_id?: string): string => {
     if (!url) return '/images/default.png';
 
@@ -13,7 +12,7 @@ export const extractImageUrl = (url: string, application_id?: string): string =>
         return url;
     } catch (error) {
         console.error("Error extracting image URL:", error);
-        return '/images/default.png'; // Return placeholder if an error occurs
+        return '/images/default.png';
     }
 };
 
