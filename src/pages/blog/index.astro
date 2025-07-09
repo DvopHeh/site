@@ -124,12 +124,12 @@ import Layout from '../../layouts/Layout.astro';
           }
         }
         
-        let updatedDate = '';
+        let updatedDateRow = '';
         if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
           try {
             const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
             if (!isNaN(dateObj.getTime())) {
-              updatedDate = ` • Updated: ${dateObj.toLocaleString()}`;
+              updatedDateRow = `<div class="post-date">Updated: ${dateObj.toLocaleString()}</div>`;
             }
           } catch (error) {
             console.error('Error parsing updated date:', post.updated_at, error);
@@ -143,7 +143,8 @@ import Layout from '../../layouts/Layout.astro';
             <h2 class="post-title">
               <a href="/blog/${post.slug}">${post.title}</a>
             </h2>
-            <div class="post-date">Created: ${createdDate}${updatedDate}</div>
+            <div class="post-date">Created: ${createdDate}</div>
+            ${updatedDateRow}
             <p class="post-excerpt">${excerpt}</p>
           </article>
         `;

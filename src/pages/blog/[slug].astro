@@ -25,6 +25,7 @@ const { slug } = Astro.params;
       <header class="post-header">
         <h1 id="postTitle" class="post-title"></h1>
         <div id="postDate" class="post-date"></div>
+        <div id="postUpdatedDate" class="post-date" style="display: none;"></div>
       </header>
       
       <div class="post-content">
@@ -150,20 +151,23 @@ const { slug } = Astro.params;
       }
     }
     
-    let updatedDate = '';
+    document.getElementById('postTitle').textContent = post.title;
+    document.getElementById('postDate').textContent = `Created: ${createdDate}`;
+    
+    const updatedDateElement = document.getElementById('postUpdatedDate');
     if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
       try {
         const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
         if (!isNaN(dateObj.getTime())) {
-          updatedDate = ` • Updated: ${dateObj.toLocaleString()}`;
+          updatedDateElement.textContent = `Updated: ${dateObj.toLocaleString()}`;
+          updatedDateElement.style.display = 'block';
         }
       } catch (error) {
         console.error('Error parsing updated date:', post.updated_at, error);
       }
+    } else {
+      updatedDateElement.style.display = 'none';
     }
-    
-    document.getElementById('postTitle').textContent = post.title;
-    document.getElementById('postDate').textContent = `Created: ${createdDate}${updatedDate}`;
     
     const htmlContent = post.content.replace(/\n/g, '<br>');
     document.getElementById('postBody').innerHTML = htmlContent;
