@@ -1,7 +1,9 @@
 ---
 import Lanyard from './Lanyard.astro';
 import Guestbook from '../components/guestbook.astro';
+import GuestbookForm from '../components/GuestbookForm.astro';
 import RecentTracks from './RecentTracks.astro';
+import GuestbookEntries from './GuestbookEntries.astro';
 ---
 
 <div class="container landing-page">
@@ -33,6 +35,12 @@ import RecentTracks from './RecentTracks.astro';
         <a class="link-button" href="https://steamcommunity.com/id/Dvopmensineztri/" target="_blank"><i class="bi bi-steam"></i></a>
       </p>
     </section>
+    
+    <section class="landing-section-fixed-height">
+      <h2 class="landing-section-title">Sign Guestbook</h2>
+      <GuestbookForm />
+    </section>
+    
   <p class="landing-wip">
     This website is currently (and probably forever) <strong>WIP</strong>
   </p>  
@@ -58,9 +66,9 @@ import RecentTracks from './RecentTracks.astro';
         </li>
       </ul>
     </section>
-    <section class="landing-section">
+    <section class="landing-section-guestbook">
       <h2 class="landing-section-title">Guestbook</h2>
-      <Guestbook />
+      <GuestbookEntries />
     </section>
 
   </div>
@@ -88,7 +96,7 @@ import RecentTracks from './RecentTracks.astro';
       </p>
     </section>
     
-    <section class="landing-section">
+    <section class="landing-section-fixed-height">
       <h2 class="landing-section-title">Accessories and other devices I own</h2>
       <ul class="landing-list">
         <li class="landing-list-item">Main Phone - Google Pixel 8 Pro [Husky] (Running AxionOS + KSUN)</li>

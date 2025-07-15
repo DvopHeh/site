@@ -236,6 +236,27 @@ body::-webkit-scrollbar-thumb {
     margin-bottom: 0;
 }
 
+.landing-section-guestbook {
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
+    padding: 1.2rem;
+    transition: box-shadow var(--transition);
+    margin-bottom: 0;
+    max-height: 560px;
+}
+
+.landing-section-fixed-height {
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
+    padding: 1.2rem;
+    transition: box-shadow var(--transition);
+    margin-bottom: 0;
+    height: 370px;
+    overflow-y: auto;
+}
+
 .landing-section:hover {
     box-shadow: 0 4px 16px 0 rgb(132, 0, 158);
 }

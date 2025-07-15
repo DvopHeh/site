@@ -1,0 +1,79 @@
+---
+export const prerender = false;
+---
+
+<div class="guestbook">
+  <div id="error-message" class="error" style="display: none;"></div>
+  <div id="success-message" class="success" style="display: none;">Entry added successfully!</div>
+  
+  <form id="guestbook-form" class="guestbook-form">
+    <div class="form-group">
+      <input 
+        type="text" 
+        name="name" 
+        placeholder="Your name" 
+        maxlength="20"
+        required 
+      />
+    </div>
+    
+    <div class="form-group">
+      <textarea 
+        name="message" 
+        placeholder="Your message" 
+        maxlength="500"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+    
+    <button type="submit" class="submit-btn">Sign Guestbook</button>
+  </form>
+</div>
+
+<script>
+document.getElementById('guestbook-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const form = e.target as HTMLFormElement;
+  const formData = new FormData(form);
+  const errorDiv = document.getElementById('error-message');
+  const successDiv = document.getElementById('success-message');
+  
+  if (errorDiv) errorDiv.style.display = 'none';
+  if (successDiv) successDiv.style.display = 'none';
+  
+  try {
+    const response = await fetch('/api/guestbook', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      if (successDiv) {
+        successDiv.style.display = 'block';
+        setTimeout(() => {
+          successDiv.style.display = 'none';
+        }, 3000);
+      }
+      form.reset();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } else {
+      if (errorDiv) {
+        errorDiv.textContent = data.error || 'An error occurred';
+        errorDiv.style.display = 'block';
+      }
+    }
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    if (errorDiv) {
+      errorDiv.textContent = 'Network error. Please try again.';
+      errorDiv.style.display = 'block';
+    }
+  }
+});
+</script>

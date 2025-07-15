@@ -24,5 +24,9 @@ pnpm-debug.log*
 .idea/
 
 # wrangler configuration
-.wrangler/*
+.wrangler/
+.wrangler/d1
+wrangler.toml
+db.sql
+
 
