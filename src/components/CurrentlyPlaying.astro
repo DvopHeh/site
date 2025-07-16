@@ -1,0 +1,133 @@
+---
+interface Track {
+  name: string;
+  artist: string;
+  album: string;
+  image: string;
+  url: string;
+  nowPlaying: boolean;
+  playedAt: string | null;
+}
+
+let currentTrack: Track | null = null;
+let error = false;
+
+try {
+  const apiUrl = import.meta.env.DEV 
+    ? 'http://localhost:4321/api/lastfm'
+    : `${Astro.url.origin}/api/lastfm`;
+    
+  const response = await fetch(apiUrl);
+  
+  if (!response.ok) {
+    console.error('API response not OK:', response.status, response.statusText);
+    error = true;
+  } else {
+    const data = await response.json();
+    if (data.tracks && Array.isArray(data.tracks)) {
+      // Find the currently playing track
+      currentTrack = data.tracks.find(track => track.nowPlaying) || null;
+    } else {
+      console.error('Invalid data structure:', data);
+      error = true;
+    }
+  }
+} catch (e) {
+  console.error('Fetch error:', e);
+  error = true;
+}
+---
+
+<div class="currently-playing">
+  {error ? (
+    <p class="error">Unable to load current track</p>
+  ) : currentTrack ? (
+    <div class="current-track" id="current-track">
+      {currentTrack.image && <img src={currentTrack.image} alt="" class="current-track-image" />}
+      <div class="current-track-info">
+        <a href={currentTrack.url} target="_blank" class="current-track-name">{currentTrack.name}</a>
+        <div class="current-track-artist">{currentTrack.artist}</div>
+        <div class="current-track-status">♪ Now playing</div>
+      </div>
+    </div>
+  ) : (
+    <div class="current-track" id="current-track">
+      <div class="current-track-info">
+        <div class="current-track-name">Not currently playing</div>
+        <div class="current-track-artist">No active music session</div>
+        <div class="current-track-status">♪ Offline</div>
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  interface Track {
+    name: string;
+    artist: string;
+    album: string;
+    image: string;
+    url: string;
+    nowPlaying: boolean;
+    playedAt: string | null;
+  }
+
+  interface LastFmResponse {
+    tracks: Track[];
+  }
+
+  let updateInterval: ReturnType<typeof setInterval>;
+  
+  async function updateCurrentTrack(): Promise<void> {
+    try {
+      const response = await fetch('/api/lastfm');
+      if (!response.ok) return;
+      
+      const data: LastFmResponse = await response.json();
+      const container = document.getElementById('current-track');
+      const currentlyPlayingDiv = document.querySelector('.currently-playing');
+      if (!currentlyPlayingDiv || !data.tracks) return;
+      
+      const currentTrack = data.tracks.find(track => track.nowPlaying);
+      
+      if (currentTrack) {
+        currentlyPlayingDiv.innerHTML = `
+          <div class="current-track" id="current-track">
+            ${currentTrack.image ? `<img src="${currentTrack.image}" alt="" class="current-track-image" />` : ''}
+            <div class="current-track-info">
+              <a href="${currentTrack.url}" target="_blank" class="current-track-name">${currentTrack.name}</a>
+              <div class="current-track-artist">${currentTrack.artist}</div>
+              <div class="current-track-status">♪ Now playing</div>
+            </div>
+          </div>
+        `;
+      } else {
+        currentlyPlayingDiv.innerHTML = `
+          <div class="current-track" id="current-track">
+            <div class="current-track-info">
+              <div class="current-track-name">Not currently playing</div>
+              <div class="current-track-artist">No active music session</div>
+              <div class="current-track-status">♪ Offline</div>
+            </div>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Failed to update current track:', error);
+    }
+  }
+  
+  updateInterval = setInterval(updateCurrentTrack, 30000);
+  
+  window.addEventListener('beforeunload', () => {
+    if (updateInterval) {
+      clearInterval(updateInterval);
+    }
+  });
+  
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updateCurrentTrack();
+    }
+  });
+</script>

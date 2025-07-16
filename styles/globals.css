@@ -243,7 +243,7 @@ body::-webkit-scrollbar-thumb {
     padding: 1.2rem;
     transition: box-shadow var(--transition);
     margin-bottom: 0;
-    max-height: 560px;
+    max-height: 600px;
 }
 
 .landing-section-fixed-height {
@@ -267,6 +267,33 @@ body::-webkit-scrollbar-thumb {
     color: var(--color-primary);
     letter-spacing: 0.01em;
     margin: 0 0 0.5em 0;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.section-header .landing-section-title {
+    margin: 0;
+}
+
+.lastfm-button {
+    background: var(--color-primary);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background var(--transition);
+}
+
+.lastfm-button:hover {
+    background: var(--color-link-hover);
+    color: #ffffff;
 }
 
 .landing-section-desc {
@@ -310,12 +337,12 @@ body::-webkit-scrollbar-thumb {
 }
 
 .landing-wip {
-    margin-top: 2.5em;
     color: var(--color-text-muted);
-    font-size: 0.98rem;
+    font-size: 1rem;
     text-align: center;
-    opacity: 0.85;
-    grid-column: 1 / -1; 
+    opacity: 1;
+    grid-column: 1 / -1;
+    margin-top: -0.2rem;
 }
 
 .landing-about-desc {
@@ -533,126 +560,91 @@ body::-webkit-scrollbar-thumb {
     z-index: 2;
 }
 
-/* ===== MUSIC/RECENT TRACKS ===== */
-.recent-tracks {
-    max-width: 400px;
-    padding: 20px;
-    font-family: system-ui, sans-serif;
+/* ===== CURRENTLY PLAYING ===== */
+
+/* Currently Playing Styles */
+.currently-playing {
     background: #000000;
     color: #ffffff;
+    padding: 20px;
+    font-family: system-ui, sans-serif;
 }
 
-.recent-tracks h2 {
-    margin-bottom: 20px;
-    color: #9966ff;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.tracks {
+.current-track {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
-
-.tracks::-webkit-scrollbar {
-    width: 6px;
-}
-
-.tracks::-webkit-scrollbar-track {
-    background: #2a2a2a;
-    border-radius: 3px;
-}
-
-.tracks::-webkit-scrollbar-thumb {
-    background: #663399;
-    border-radius: 3px;
-}
-
-.tracks::-webkit-scrollbar-thumb:hover {
-    background: #7744aa;
-}
-
-.track {
-    display: flex;
-    gap: 12px;
-    padding: 12px;
-    background: #2a2a2a00;
-    border-radius: 8px;
-    border: 1px solid #5800b1;
-    transition: all 0.2s ease;
-}
-
-.track:hover {
-    background: #40004d4b;
-    border-color: #663399;
-}
-
-.track.playing {
+    gap: 16px;
+    padding: 15px;
     background: #2a1a3a;
-    border-color: #9966ff;
-    box-shadow: 0 0 10px rgba(153, 102, 255, 0.3);
+    border-radius: 12px;
+    border: 1px solid #9966ff;
+    box-shadow: 0 0 15px rgba(153, 102, 255, 0.4);
+    align-items: center;
+    min-height: 110px; /* Fixed height to prevent scrolling differences */
+    box-sizing: border-box;
 }
 
-.track img {
-    width: 50px;
-    height: 50px;
-    border-radius: 4px;
+.current-track-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
     object-fit: cover;
     border: 1px solid #444444;
 }
 
-.info {
+.current-track-info {
     flex: 1;
 }
 
-.info a {
+.current-track-name {
     color: #ffffff;
     text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 4px;
 }
 
-.info a:hover {
+.current-track-name:hover {
     color: #9966ff;
     text-decoration: underline;
 }
 
-.artist {
+.current-track-artist {
     color: #cccccc;
-    font-size: 0.85rem;
-    margin-top: 2px;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
 }
 
-.time {
-    color: #888888;
-    font-size: 0.75rem;
-    margin-top: 4px;
-}
-
-.playing .time {
+.current-track-status {
     color: #9966ff;
+    font-size: 0.85rem;
     font-weight: 500;
 }
 
-@media (max-width: 480px) {
-    .recent-tracks {
-        padding: 15px;
+.no-track {
+    text-align: center;
+    padding: 40px 20px;
+    color: #888888;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .music-layout {
+        grid-template-columns: 1fr; /* Stack vertically on mobile */
+        gap: 1.5rem;
     }
     
-    .track {
-        padding: 10px;
+    .current-track {
+        flex-direction: column;
+        text-align: center;
     }
     
-    .track img {
-        width: 40px;
-        height: 40px;
+    .current-track-image {
+        width: 60px;
+        height: 60px;
     }
 }
+
 
 /* ===== GUESTBOOK ===== */
 .guestbook {
@@ -674,9 +666,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entries {
-    max-height: 350px;
-    overflow-y: auto;
     padding-right: 4px;
+    overflow-y: auto;
+    max-height: 478px;
 }
 
 .guestbook .form-group {
@@ -733,8 +725,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 .guestbook .entries {
-    max-height: 400px;
-    overflow-y: auto;
     padding-right: 4px;
 }
 

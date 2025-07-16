@@ -6,15 +6,26 @@ interface Env {
 }
 
 export const GET: APIRoute = async ({ request, locals }) => {
+  // Try multiple ways to get environment variables for different deployment scenarios
   const env = locals.runtime?.env as Env;
-  const API_KEY = env?.LASTFM_API_KEY;
-  const USERNAME = env?.LASTFM_USERNAME;
-if (!API_KEY || !USERNAME) {
-  return new Response(JSON.stringify({ error: 'Missing Last.fm API key or username' }), {
-    status: 500,
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
+  let API_KEY = env?.LASTFM_API_KEY || import.meta.env.LASTFM_API_KEY;
+  let USERNAME = env?.LASTFM_USERNAME || import.meta.env.LASTFM_USERNAME;
+  
+  // Fallback to process.env for local development
+  if (!API_KEY && typeof process !== 'undefined') {
+    API_KEY = process.env.LASTFM_API_KEY;
+  }
+  if (!USERNAME && typeof process !== 'undefined') {
+    USERNAME = process.env.LASTFM_USERNAME;
+  }
+
+  if (!API_KEY || !USERNAME) {
+    console.error('Missing env vars:', { API_KEY: !!API_KEY, USERNAME: !!USERNAME });
+    return new Response(JSON.stringify({ error: 'Missing Last.fm API key or username' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
 
   try {
     const response = await fetch(

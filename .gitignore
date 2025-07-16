@@ -28,5 +28,6 @@ pnpm-debug.log*
 .wrangler/d1
 wrangler.toml
 db.sql
+migrations/
 
 

@@ -2,7 +2,7 @@
 import Lanyard from './Lanyard.astro';
 import Guestbook from '../components/guestbook.astro';
 import GuestbookForm from '../components/GuestbookForm.astro';
-import RecentTracks from './RecentTracks.astro';
+import CurrentlyPlaying from './CurrentlyPlaying.astro';
 import GuestbookEntries from './GuestbookEntries.astro';
 ---
 
@@ -19,10 +19,20 @@ import GuestbookEntries from './GuestbookEntries.astro';
         <a href="https://pre1ude.dev" target="_blank"><img src="https://pre1ude.dev/blankie.png" alt="Laura" height="31" width="88" alt="pre1ude.dev" /></a>
         </p>
     </section>
+    
     <section class="landing-section">
-    <h2 class="landing-section-title">Recently Played</h2>
-      <RecentTracks limit={20} />
+      <div class="section-header">
+        <h2 class="landing-section-title">Currently Playing</h2>
+        <a href="https://www.last.fm/user/Dvopp" target="_blank" class="lastfm-button">
+          Last.fm
+        </a>
+      </div>
+      <CurrentlyPlaying />
     </section>
+    <section class="landing-section-fixed-height">
+      <h2 class="landing-section-title">Sign Guestbook (pls I beg u)</h2>
+      <GuestbookForm />
+    </section> 
     <section class="landing-section">
       <h2 class="landing-section-title">Links & Contact</h2>
       <p class="landing-section-desc">
@@ -36,14 +46,9 @@ import GuestbookEntries from './GuestbookEntries.astro';
       </p>
     </section>
     
-    <section class="landing-section-fixed-height">
-      <h2 class="landing-section-title">Sign Guestbook</h2>
-      <GuestbookForm />
-    </section>
-    
-  <p class="landing-wip">
-    This website is currently (and probably forever) <strong>WIP</strong>
-  </p>  
+    <p class="landing-wip">
+      This Site is and forever will be <strong>WIP</strong>
+    </p>
   </div>
   
   <div class="column-middle">
@@ -66,7 +71,7 @@ import GuestbookEntries from './GuestbookEntries.astro';
         </li>
       </ul>
     </section>
-    <section class="landing-section-guestbook">
+    <section class="landing-section">
       <h2 class="landing-section-title">Guestbook</h2>
       <GuestbookEntries />
     </section>
@@ -96,7 +101,7 @@ import GuestbookEntries from './GuestbookEntries.astro';
       </p>
     </section>
     
-    <section class="landing-section-fixed-height">
+    <section class="landing-section">
       <h2 class="landing-section-title">Accessories and other devices I own</h2>
       <ul class="landing-list">
         <li class="landing-list-item">Main Phone - Google Pixel 8 Pro [Husky] (Running AxionOS + KSUN)</li>
@@ -111,4 +116,5 @@ import GuestbookEntries from './GuestbookEntries.astro';
       </ul>
     </section>
   </div>
+  
 </div>
