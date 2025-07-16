@@ -87,13 +87,43 @@ a:hover {
     color: var(--color-text-muted);
 }
 
+/* Horizontal Rule Styling */
+hr {
+    border: none;
+    height: 2px;
+    background: var(--color-gradient);
+    margin: 1.5rem 0;
+    border-radius: 1px;
+    box-shadow: 0 1px 4px rgba(167, 79, 255, 0.3);
+}
+
 .link-button {
-    text-decoration: none;
+    background: var(--color-surface-alt);
     color: var(--color-text-muted);
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--color-border);
+    
 }
 
 .link-button:hover {
-    color: var(--color-text);
+    color: #ffffff;
+    background: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(64, 0, 128, 0.4);
+}
+
+.link-button i {
+    font-size: 1.2rem;
 }
 
 /* Scrollbar */
@@ -295,6 +325,45 @@ body::-webkit-scrollbar-thumb {
 .lastfm-button:hover {
     background: var(--color-link-hover);
     color: #ffffff;
+}
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.mail-button {
+    background: var(--color-primary);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(64, 0, 128, 0.3);
+}
+
+.mail-button:hover {
+    background: var(--color-link-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(167, 79, 255, 0.4);
+}
+
+.mail-button i {
+    font-size: 1.1rem;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1rem;
 }
 
 .landing-section-desc {
@@ -669,7 +738,7 @@ body::-webkit-scrollbar-thumb {
 .guestbook .entries {
     padding-right: 4px;
     overflow-y: auto;
-    max-height: 478px;
+    max-height: 447px;
 }
 
 .guestbook .form-group {
@@ -715,6 +784,8 @@ body::-webkit-scrollbar-thumb {
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
+    display: block;
+    margin: 0 auto;
 }
 
 .guestbook .submit-btn:hover {
