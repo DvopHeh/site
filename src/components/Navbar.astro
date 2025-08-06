@@ -1,9 +1,20 @@
+---
+import ThemeChange from './ThemeChange.astro';
+---
+
 <nav id="navbar">
     <a id="logo" href="/">
         <span>What an absolutely useless site.</span>
     </a>
-    <ul>
-        <li><a href="/about">About The Page</a></li>
-        <li><a href="/blog">Blog</a></li>
-    </ul>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <ul>
+            <li><a href="/about">About The Page</a></li>
+            <li><a href="/blog">Blog</a></li>
+        </ul>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+            <i class="bi bi-sun-fill" id="theme-icon"></i>
+        </button>
+    </div>
 </nav>
+
+<ThemeChange />
