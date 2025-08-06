@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Maple Mono';
+    src: url('fonts/Maple Mono/MapleMono-Regular.ttf.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    max-height: 0.8rem;
+}
+
 /* ===== CSS VARIABLES ===== */
 :root {
     /* Dark theme colors (default) */
@@ -39,7 +47,7 @@
     --spacing-base: 10px;
     
     /* Typography */
-    --font-main: 'Poppins', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --font-main: 'Maple Mono', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
     
     /* Transitions */
     --transition: 0.3s;
@@ -216,6 +224,7 @@ body {
     margin: 0;
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     background: var(--color-bg);
     color: var(--color-text);
     font-family: var(--font-main);
@@ -557,10 +566,10 @@ body::-webkit-scrollbar-thumb {
 .landing-list-item {
     margin-bottom: 1em;
     color: var(--color-text-muted);
-    font-size: 1.05rem;
+    font-size: 0.982rem;
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.1em;
 }
 
 .landing-link {
@@ -584,7 +593,7 @@ body::-webkit-scrollbar-thumb {
 
 .landing-wip {
     color: var(--color-text-muted);
-    font-size: 1rem;
+    font-size: 0.9rem;
     text-align: center;
     opacity: 1;
     grid-column: 1 / -1;
