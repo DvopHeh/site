@@ -8,8 +8,9 @@ function isLateNight(): boolean {
 function showLateNightMessage() {
   const popup = document.createElement('div');
   popup.style.position = 'fixed';
-  popup.style.top = '20px';
-  popup.style.right = '20px';
+  popup.style.top = '50%';
+  popup.style.left = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
   popup.style.background = 'var(--color-surface-alt)';
   popup.style.border = '2px solid var(--color-border)';
   popup.style.borderRadius = '12px';
@@ -22,7 +23,7 @@ function showLateNightMessage() {
   popup.style.cursor = 'pointer';
   popup.style.maxWidth = '300px';
   popup.style.opacity = '0';
-  popup.style.transform = 'translateY(-10px)';
+  popup.style.transform = 'translate(-50%, -50%) translateY(-10px)';
   popup.style.transition = 'all 0.3s ease';
   
   const messages = [
@@ -47,12 +48,12 @@ function showLateNightMessage() {
   
   setTimeout(() => {
     popup.style.opacity = '1';
-    popup.style.transform = 'translateY(0)';
+    popup.style.transform = 'translate(-50%, -50%)';
   }, 100);
   
   popup.addEventListener('click', () => {
     popup.style.opacity = '0';
-    popup.style.transform = 'translateY(-10px)';
+    popup.style.transform = 'translate(-50%, -50%) translateY(-10px)';
     setTimeout(() => {
       document.body.removeChild(popup);
     }, 300);
@@ -61,7 +62,7 @@ function showLateNightMessage() {
   setTimeout(() => {
     if (document.body.contains(popup)) {
       popup.style.opacity = '0';
-      popup.style.transform = 'translateY(-10px)';
+      popup.style.transform = 'translate(-50%, -50%) translateY(-10px)';
       setTimeout(() => {
         if (document.body.contains(popup)) {
           document.body.removeChild(popup);
