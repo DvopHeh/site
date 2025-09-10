@@ -40,7 +40,7 @@ function showLateNightMessage() {
   popup.innerHTML = `
     <div style="display: flex; align-items: center; gap: 8px;">
       <span>${randomMessage}</span>
-      <span style="font-size: 12px; opacity: 0.7;">×</span>
+      <span style="font-size: 12px; opacity: 1;">×</span>
     </div>
   `;
   

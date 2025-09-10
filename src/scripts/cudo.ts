@@ -30,7 +30,7 @@ function showSudoMessage() {
   
   const randomMsg = messages[Math.floor(Math.random() * messages.length)];
   terminal.innerHTML = `
-    <div style="color: #888;">guest@dvop.dev:~$</div>
+    <div style="color: #888;">guest@dvop.fyi:~$</div>
     <div style="color: #ff6666; margin-top: 5px;">${randomMsg}</div>
     <div style="color: #888; margin-top: 10px; font-size: 12px;">Click to dismiss</div>
   `;
