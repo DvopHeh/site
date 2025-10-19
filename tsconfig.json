@@ -12,9 +12,14 @@
       "ES2015",
       "DOM"
     ],
+    "module": "NodeNext", 
+    "moduleResolution": "NodeNext",
+    "target": "ES2022", 
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "esModuleInterop": true,             
     "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
   }
 }

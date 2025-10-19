@@ -12,6 +12,14 @@ export default defineConfig({
   },
 
   vite: {
+    resolve: {
+            // Use react-dom/server.edge for compatibility with Cloudflare's runtime
+            alias: import.meta.env.PROD
+                ? { 
+                    'react-dom/server': 'react-dom/server.edge',
+                  }
+                : {},
+        },
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
   }

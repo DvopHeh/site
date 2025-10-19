@@ -1,8 +1,8 @@
 // src/components/SystemCardWrapper.tsx
 
 import React, { useState } from 'react';
-import SystemCard from './SystemCard';
-import { SystemDetails } from '../data/systemSpecs';
+import SystemCard from './SystemCard.tsx';
+import { SystemDetails } from '../data/systemSpecs.ts';
 
 // Define the props for this new wrapper
 interface SystemCardWrapperProps {

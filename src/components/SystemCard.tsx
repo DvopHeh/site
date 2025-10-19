@@ -2,7 +2,7 @@
 import React from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 // Import all relevant interfaces from systemSpecs.ts
-import { SystemDetails, MonitorDetail } from "../data/systemSpecs";
+import { SystemDetails, MonitorDetail } from "../data/systemSpecs.ts";
 
 interface SystemCardProps extends React.JSX.IntrinsicAttributes {
   system: SystemDetails;
