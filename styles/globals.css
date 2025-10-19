@@ -24,6 +24,7 @@
     --color-link: #a259ff;
     --color-link-hover: #814cb6;
     --color-shadow: 2px 4px 32px #8a30ff44;
+    --color-btn-bg-hover: rgba(45, 26, 63, 0.678);
     
     /* Gradients */
     --color-gradient: linear-gradient(83.21deg, var(--color-primary) 0%, var(--color-primary-alt) 100%);
@@ -70,6 +71,7 @@
     --color-link: #e879f9;
     --color-link-hover: #845ef7;
     --color-shadow: 2px 4px 32px rgba(108, 99, 255, 0.2);
+    --color-btn-bg-hover: #e879f949;
     
     /* Light theme gradients */
     --color-gradient: linear-gradient(83.21deg, var(--color-primary) 0%, var(--color-primary-alt) 100%);
@@ -507,6 +509,7 @@ body::-webkit-scrollbar-thumb {
     padding: 1.2rem;
     transition: box-shadow var(--transition);
     margin-bottom: 0;
+
 }
 
 .landing-section-guestbook {
@@ -1388,3 +1391,240 @@ body::-webkit-scrollbar-thumb {
 .debug-actions button:active {
     transform: translateY(1px);
 }
+
+/* ========================================= */
+/* BASE CARD STYLES (.system-card)          */
+/* ========================================= */
+.system-card {
+    /* my-6 */
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    /* bg-gray-800/50 */
+    background-color: var(--color-surface);
+    /* rounded-lg */
+    border-radius: 0.5rem;
+    /* shadow-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    /* overflow-hidden */
+    overflow: hidden;
+}
+
+/* ========================================= */
+/* EXPAND/COLLAPSE BUTTON STYLES (.system-card__header-btn) */
+/* ========================================= */
+.system-card__header-btn {
+    /* w-full */
+    width: 100%;
+    /* flex justify-between items-center */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* p-5 */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    /* text-left */
+    text-align: left;
+    /* cursor-pointer */
+    cursor: pointer;
+    /* focus:outline-none */
+    outline: none;
+    /* rounded-lg */
+    border-radius: 0.5rem;
+    /* transition-colors */
+    background-color: var(--color-surface);
+    border: none;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.system-card__header-btn:hover {
+    /* hover:bg-gray-800/60 */
+    background-color: var(--color-btn-bg-hover);
+}
+
+.system-card__title {
+    /* text-2xl */
+    font-size: 1.5rem;
+    line-height: 2rem;
+    /* font-bold */
+    font-weight: 700;
+    /* text-white */
+    color: var(--color-primary);
+}
+
+.system-card__toggle-icon {
+    /* text-gray-400 */
+    color: var(--color-text-muted);
+    /* transition-transform duration-300 ease-in-out */
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    /* transform */
+    transform: rotate(0deg);
+}
+
+.system-card__header-btn:hover .system-card__toggle-icon {
+    /* hover:scale-110 (simulated via transform scale) */
+    transform: scale(1.1);
+}
+
+/* ========================================= */
+/* DESCRIPTION STYLES (.system-card__description) */
+/* ========================================= */
+.system-card__description {
+    /* px-5 pb-3 */
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 0.75rem;
+    /* text-gray-300 */
+    color: var(--color-text-muted);
+    /* text-sm */
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+/* ========================================= */
+/* CONTENT CONTAINER STYLES (.system-card__content) */
+/* ========================================= */
+.system-card__content {
+    /* transition-max-height duration-500 ease-in-out */
+    transition-property: max-height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 500ms;
+    /* overflow-hidden */
+    overflow: hidden;
+}
+
+/* State for the expanded content */
+.system-card__content--collapsed {
+    /* max-h-0 */
+    max-height: 0;
+}
+
+/* The max-h-[2500px] is an arbitrary large value in Tailwind. 
+   We will use a large number for the expanded state. */
+.system-card__content--expanded {
+    max-height: 500px; /* An arbitrary large value */
+    overflow: auto;
+}
+
+
+.system-card__inner-content {
+    /* px-5 pb-5 pt-3 */
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-top: 0.75rem;
+    /* border-t border-gray-700 */
+    border-top: 1px solid var(--color-border);
+}
+
+/* ========================================= */
+/* SECTION HEADER STYLES (.system-card__section-header) */
+/* ========================================= */
+.system-card__section-header {
+    /* text-xl */
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    /* font-semibold */
+    font-weight: 600;
+    /* text-gray-200 */
+    color: var(--color-primary);
+    /* mb-3 */
+    margin-bottom: 0.75rem;
+    /* border-b border-gray-700 */
+    border-bottom: 1px solid var(--color-border);
+    /* pb-2 */
+    padding-bottom: 0.5rem;
+}
+
+/* Add margin-top for subsequent sections */
+.system-card__section-header.peripheral-section {
+    /* mt-6 */
+    margin-top: 1.5rem;
+}
+
+/* ========================================= */
+/* ITEM LIST STYLES (.item-list)             */
+/* ========================================= */
+.item-list {
+    /* space-y-3 */
+    margin-top: 0.75rem; /* Added for vertical spacing consistency */
+    margin-bottom: 0.75rem; /* Added for vertical spacing consistency */
+}
+
+.item-list__item {
+    /* flex flex-col md:flex-row md:items-baseline md:space-x-2 */
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.5rem 0;
+}
+
+@media (min-width: 768px) { /* md breakpoint */
+    .item-list__item {
+        flex-direction: row;
+        align-items: baseline;
+    }
+    .item-list__item > * + * {
+        margin-left: 0.5rem; /* md:space-x-2 */
+    }
+}
+
+.item-list__label {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    width: 8rem;
+    flex-shrink: 0;
+
+}
+
+.item-list__value {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+/* ========================================= */
+/* MONITOR LIST STYLES (Nested within item-list__value) */
+/* ========================================= */
+.monitor-list {
+    /* list-disc ml-4 */
+    list-style-type: disc;
+    margin-left: 1rem;
+    /* Remove default list margin from parent */
+    padding-left: 0;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.monitor-list__note,
+.item-list__note {
+    /* ml-2 */
+    margin-left: 0.5rem;
+    /* text-gray-400 */
+    color: #9ca3af;
+    /* text-xs */
+    font-size: 0.75rem;
+    line-height: 1rem;
+    /* italic */
+    font-style: italic;
+}
+
+.monitor-list__link,
+.item-list__link {
+    /* ml-2 */
+    margin-left: 0.5rem;
+    /* text-blue-400 */
+    color: var(--color-link);
+    /* underline */
+    text-decoration: underline;
+}
+
+.monitor-list__link:hover,
+.item-list__link:hover {
+    /* hover:text-blue-300 */
+    color: var(--color-link-hover);
+}
+

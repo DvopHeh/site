@@ -1,7 +1,20 @@
 {
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "**/*.astro"],
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist",
+    "**/*.astro"
+  ],
   "compilerOptions": {
-    "lib": ["ES2015", "DOM"]
+    "lib": [
+      "ES2015",
+      "DOM"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "esModuleInterop": true,             
+    "allowSyntheticDefaultImports": true,
   }
 }
