@@ -793,8 +793,8 @@ const adminDisplay = isAuthenticated ? "block" : "none";
   }
 </style>
 
-<script>
-  import MarkdownIt from "markdown-it";
+<script type="module">
+  import MarkdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js";
 
   const md = new MarkdownIt({
     html: true,
