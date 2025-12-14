@@ -6,3 +6,12 @@ binding = "DB"
 database_name = "guestbook-db"
 database_id = "47bc8f67-d59e-46c5-91c4-de42fb295d0b"
 migrations_dir = "./migrations"
+
+[[d1_databases]]
+binding = "DB-blog"
+database_name = "blog-database"
+database_id = "ef10419c-9ddc-49a1-83a8-5f03ca67944b"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "blog-images"

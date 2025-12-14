@@ -1,97 +1,280 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout>
   <div class="blog-container">
-    <h1>Blog</h1>
-    
-    <div id="postsContainer" class="posts-list">
+    <div class="blog-header">
+      <h1>Blog</h1>
+      <a href="/blog/admin" class="admin-link">✏️ Admin</a>
+    </div>
+
+    <div id="postsContainer" class="posts-grid">
       <div class="loading">Loading posts...</div>
     </div>
-    
+
     <div id="noPosts" class="no-posts" style="display: none;">
       <p>No posts yet.</p>
     </div>
   </div>
 </Layout>
 
+<style>
+  .blog-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .blog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+
+  .blog-header h1 {
+    margin: 0;
+    color: var(--text-primary, #fff);
+    font-size: 2.5rem;
+  }
+
+  .admin-link {
+    color: var(--accent, #00ffff);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .admin-link:hover {
+    background: rgba(0, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .post-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 30px rgba(0, 255, 255, 0.2);
+    border-color: var(--accent, #00ffff);
+  }
+
+  .post-card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 255, 255, 0.1),
+      rgba(255, 0, 255, 0.1)
+    );
+  }
+
+  .post-card-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary, #fff);
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .post-card:hover .post-title {
+    color: var(--accent, #00ffff);
+  }
+
+  .post-dates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-date {
+    color: var(--text-secondary, #888);
+    font-size: 0.85rem;
+  }
+
+  .post-excerpt {
+    color: var(--text-secondary, #aaa);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+  }
+
+  .read-more {
+    margin-top: 1rem;
+    color: var(--accent, #00ffff);
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .read-more::after {
+    content: "→";
+    transition: transform 0.2s;
+  }
+
+  .post-card:hover .read-more::after {
+    transform: translateX(4px);
+  }
+
+  .loading,
+  .no-posts {
+    text-align: center;
+    color: var(--text-secondary, #888);
+    padding: 4rem 2rem;
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 768px) {
+    .blog-container {
+      padding: 1rem;
+    }
+
+    .blog-header h1 {
+      font-size: 2rem;
+    }
+
+    .post-card-image {
+      height: 150px;
+    }
+  }
+</style>
 
 <script>
   async function loadPosts() {
     try {
-      const response = await fetch('/api/blog');
-      
+      const response = await fetch("/api/blog");
+
       if (!response.ok) {
-        throw new Error('Failed to fetch posts');
+        throw new Error("Failed to fetch posts");
       }
-      
+
       const posts = await response.json();
-      const postsContainer = document.getElementById('postsContainer');
-      const noPosts = document.getElementById('noPosts');
-      
+      const postsContainer = document.getElementById("postsContainer");
+      const noPosts = document.getElementById("noPosts");
+
+      if (!postsContainer || !noPosts) return;
+
       if (posts.length === 0) {
-        postsContainer.style.display = 'none';
-        noPosts.style.display = 'block';
+        postsContainer.style.display = "none";
+        noPosts.style.display = "block";
         return;
       }
-      
-      const publishedPosts = posts.filter(post => post.published);
-      
+
+      const publishedPosts = posts.filter((post: any) => post.published);
+
       if (publishedPosts.length === 0) {
-        postsContainer.style.display = 'none';
-        noPosts.style.display = 'block';
+        postsContainer.style.display = "none";
+        noPosts.style.display = "block";
         return;
       }
-      
-      postsContainer.innerHTML = publishedPosts.map(post => {
-        let createdDate = 'Unknown date';
-        if (post.created_at && post.created_at !== 'CURRENT_TIMESTAMP') {
-          try {
-            const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
-            if (!isNaN(dateObj.getTime())) {
-              createdDate = dateObj.toLocaleString();
-            } else {
-              console.error('Invalid date parsed:', post.created_at);
+
+      postsContainer.innerHTML = publishedPosts
+        .map((post: any) => {
+          let createdDate = "Unknown date";
+          if (post.created_at && post.created_at !== "CURRENT_TIMESTAMP") {
+            try {
+              const dateObj = new Date(post.created_at.replace(" ", "T") + "Z");
+              if (!isNaN(dateObj.getTime())) {
+                createdDate = dateObj.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+              }
+            } catch (error) {
+              console.error("Error parsing date:", post.created_at, error);
             }
-          } catch (error) {
-            console.error('Error parsing date:', post.created_at, error);
           }
-        }
-        
-        let updatedDateRow = '';
-        if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
-          try {
-            const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
-            if (!isNaN(dateObj.getTime())) {
-              updatedDateRow = `<div class="post-date">Updated: ${dateObj.toLocaleString()}</div>`;
+
+          let updatedDateRow = "";
+          if (
+            post.updated_at &&
+            post.updated_at !== "CURRENT_TIMESTAMP" &&
+            post.updated_at !== post.created_at
+          ) {
+            try {
+              const dateObj = new Date(post.updated_at.replace(" ", "T") + "Z");
+              if (!isNaN(dateObj.getTime())) {
+                const updatedDate = dateObj.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                });
+                updatedDateRow = `<div class="post-date">Updated ${updatedDate}</div>`;
+              }
+            } catch (error) {
+              console.error(
+                "Error parsing updated date:",
+                post.updated_at,
+                error
+              );
             }
-          } catch (error) {
-            console.error('Error parsing updated date:', post.updated_at, error);
           }
-        }
-        
-        const excerpt = post.description || post.content.substring(0, 150) + '...';
-        
-        return `
-          <article class="post-item">
-            <h2 class="post-title">
-              <a href="/blog/${post.slug}">${post.title}</a>
-            </h2>
-            <div class="post-date">Created: ${createdDate}</div>
-            ${updatedDateRow}
-            <p class="post-excerpt">${excerpt}</p>
-          </article>
+
+          const excerpt =
+            post.description || post.content.substring(0, 150) + "...";
+          const imageUrl = post.featured_image || "";
+
+          return `
+          <a href="/blog/${post.slug}" class="post-card">
+            ${imageUrl ? `<img src="${imageUrl}" alt="${post.title}" class="post-card-image" />` : '<div class="post-card-image"></div>'}
+            <div class="post-card-content">
+              <h2 class="post-title">${post.title}</h2>
+              <div class="post-dates">
+                <div class="post-date">Published ${createdDate}</div>
+                ${updatedDateRow}
+              </div>
+              <p class="post-excerpt">${excerpt}</p>
+              <span class="read-more">Read more</span>
+            </div>
+          </a>
         `;
-      }).join('');
-      
+        })
+        .join("");
     } catch (error) {
-      console.error('Error loading posts:', error);
-      document.getElementById('postsContainer').innerHTML = `
-        <div class="loading">Error loading posts. Please try again later.</div>
-      `;
+      console.error("Error loading posts:", error);
+      const postsContainer = document.getElementById("postsContainer");
+      if (postsContainer) {
+        postsContainer.innerHTML = `
+          <div class="loading">Error loading posts. Please try again later.</div>
+        `;
+      }
     }
   }
-  
-  document.addEventListener('DOMContentLoaded', loadPosts);
+
+  document.addEventListener("DOMContentLoaded", loadPosts);
 </script>

@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
   return [];
@@ -13,21 +13,32 @@ const { slug } = Astro.params;
     <div id="loadingPost" class="loading">
       <p>Loading...</p>
     </div>
-    
+
     <div id="postNotFound" class="not-found" style="display: none;">
       <h1>Post Not Found</h1>
       <a href="/blog">← Back to Blog</a>
     </div>
-    
+
     <article id="blogPost" class="blog-post" style="display: none;">
       <a href="/blog" class="back-link">← Back to Blog</a>
-      
+
+      <div
+        id="featuredImageContainer"
+        class="featured-image-container"
+        style="display: none;"
+      >
+        <img id="featuredImage" alt="" />
+      </div>
+
       <header class="post-header">
         <h1 id="postTitle" class="post-title"></h1>
-        <div id="postDate" class="post-date"></div>
-        <div id="postUpdatedDate" class="post-date" style="display: none;"></div>
+        <div class="post-meta">
+          <div id="postDate" class="post-date"></div>
+          <div id="postUpdatedDate" class="post-date" style="display: none;">
+          </div>
+        </div>
       </header>
-      
+
       <div class="post-content">
         <div id="postBody" class="post-body"></div>
       </div>
@@ -35,85 +46,340 @@ const { slug } = Astro.params;
   </div>
 </Layout>
 
+<style>
+  .blog-post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .loading,
+  .not-found {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-secondary, #aaa);
+  }
+
+  .not-found h1 {
+    color: var(--text-primary, #fff);
+    margin-bottom: 1rem;
+  }
+
+  .not-found a {
+    color: var(--accent, #00ffff);
+    text-decoration: none;
+  }
+
+  .not-found a:hover {
+    text-decoration: underline;
+  }
+
+  .blog-post {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .back-link {
+    display: inline-block;
+    color: var(--accent, #00ffff);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: opacity 0.2s;
+  }
+
+  .back-link:hover {
+    opacity: 0.7;
+  }
+
+  .featured-image-container {
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .featured-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .post-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .post-title {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary, #fff);
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .post-date {
+    color: var(--text-secondary, #888);
+    font-size: 0.9rem;
+  }
+
+  .post-content {
+    color: var(--text-primary, #fff);
+  }
+
+  .post-body {
+    line-height: 1.8;
+  }
+
+  /* Markdown styles */
+  .post-body h1,
+  .post-body h2,
+  .post-body h3,
+  .post-body h4,
+  .post-body h5,
+  .post-body h6 {
+    color: var(--text-primary, #fff);
+    margin: 2rem 0 1rem 0;
+    line-height: 1.3;
+  }
+
+  .post-body h1 {
+    font-size: 2rem;
+  }
+  .post-body h2 {
+    font-size: 1.75rem;
+  }
+  .post-body h3 {
+    font-size: 1.5rem;
+  }
+  .post-body h4 {
+    font-size: 1.25rem;
+  }
+
+  .post-body p {
+    margin: 1rem 0;
+  }
+
+  .post-body a {
+    color: var(--accent, #00ffff);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .post-body a:hover {
+    border-bottom-color: var(--accent, #00ffff);
+  }
+
+  .post-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .post-body ul,
+  .post-body ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+  }
+
+  .post-body li {
+    margin: 0.5rem 0;
+  }
+
+  .post-body blockquote {
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid var(--accent, #00ffff);
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .post-body blockquote p {
+    margin: 0.5rem 0;
+  }
+
+  .post-body pre {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .post-body code {
+    font-family: "Courier New", "Monaco", monospace;
+    font-size: 0.9em;
+  }
+
+  .post-body pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .post-body :not(pre) > code {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    color: var(--accent, #00ffff);
+  }
+
+  .post-body hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+  }
+
+  .post-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+  }
+
+  .post-body th,
+  .post-body td {
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .post-body th {
+    background: rgba(0, 255, 255, 0.1);
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .blog-post-container {
+      padding: 1rem;
+    }
+
+    .post-title {
+      font-size: 2rem;
+    }
+  }
+</style>
 
 <script define:vars={{ slug }}>
+  import MarkdownIt from "markdown-it";
+
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true,
+    typographer: true,
+  });
+
   async function loadPost() {
     try {
-      const response = await fetch('/api/blog');
-      
+      const response = await fetch("/api/blog");
+
       if (!response.ok) {
-        throw new Error('Failed to fetch posts');
+        throw new Error("Failed to fetch posts");
       }
-      
+
       const posts = await response.json();
-      const post = posts.find(p => p.slug === slug);
-      
+      const post = posts.find((p) => p.slug === slug);
+
       if (!post) {
         showNotFound();
         return;
       }
-      
-      await updateViewCount(post.id);
-      
+
       displayPost(post);
-      
     } catch (error) {
-      console.error('Error loading post:', error);
+      console.error("Error loading post:", error);
       showNotFound();
     }
   }
-  
-  async function updateViewCount(postId) {
-    try {
-    } catch (error) {
-      console.error('Error updating view count:', error);
-    }
-  }
-  
+
   function displayPost(post) {
-    let createdDate = 'Unknown date';
-    if (post.created_at && post.created_at !== 'CURRENT_TIMESTAMP') {
+    // Set title
+    document.getElementById("postTitle").textContent = post.title;
+
+    // Set dates
+    let createdDate = "Unknown date";
+    if (post.created_at && post.created_at !== "CURRENT_TIMESTAMP") {
       try {
-        const dateObj = new Date(post.created_at.replace(' ', 'T') + 'Z');
+        const dateObj = new Date(post.created_at.replace(" ", "T") + "Z");
         if (!isNaN(dateObj.getTime())) {
-          createdDate = dateObj.toLocaleString();
-        } else {
-          console.error('Invalid date parsed:', post.created_at);
+          createdDate = dateObj.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
         }
       } catch (error) {
-        console.error('Error parsing date:', post.created_at, error);
+        console.error("Error parsing date:", post.created_at, error);
       }
     }
-    
-    document.getElementById('postTitle').textContent = post.title;
-    document.getElementById('postDate').textContent = `Created: ${createdDate}`;
-    
-    const updatedDateElement = document.getElementById('postUpdatedDate');
-    if (post.updated_at && post.updated_at !== 'CURRENT_TIMESTAMP' && post.updated_at !== post.created_at) {
+
+    document.getElementById("postDate").textContent =
+      `Published ${createdDate}`;
+
+    // Set updated date if different
+    const updatedDateElement = document.getElementById("postUpdatedDate");
+    if (
+      post.updated_at &&
+      post.updated_at !== "CURRENT_TIMESTAMP" &&
+      post.updated_at !== post.created_at
+    ) {
       try {
-        const dateObj = new Date(post.updated_at.replace(' ', 'T') + 'Z');
+        const dateObj = new Date(post.updated_at.replace(" ", "T") + "Z");
         if (!isNaN(dateObj.getTime())) {
-          updatedDateElement.textContent = `Updated: ${dateObj.toLocaleString()}`;
-          updatedDateElement.style.display = 'block';
+          const updatedDate = dateObj.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+          updatedDateElement.textContent = `Updated ${updatedDate}`;
+          updatedDateElement.style.display = "block";
         }
       } catch (error) {
-        console.error('Error parsing updated date:', post.updated_at, error);
+        console.error("Error parsing updated date:", post.updated_at, error);
       }
-    } else {
-      updatedDateElement.style.display = 'none';
     }
-    
-    const htmlContent = post.content.replace(/\n/g, '<br>');
-    document.getElementById('postBody').innerHTML = htmlContent;
-    
-    document.getElementById('loadingPost').style.display = 'none';
-    document.getElementById('blogPost').style.display = 'block';
+
+    // Display featured image if available
+    const featuredImageContainer = document.getElementById(
+      "featuredImageContainer"
+    );
+    const featuredImage = document.getElementById("featuredImage");
+    if (post.featured_image) {
+      featuredImage.src = post.featured_image;
+      featuredImage.alt = post.title;
+      featuredImageContainer.style.display = "block";
+    }
+
+    // Render markdown content
+    const htmlContent = md.render(post.content);
+    document.getElementById("postBody").innerHTML = htmlContent;
+
+    // Show post
+    document.getElementById("loadingPost").style.display = "none";
+    document.getElementById("blogPost").style.display = "block";
   }
-  
+
   function showNotFound() {
-    document.getElementById('loadingPost').style.display = 'none';
-    document.getElementById('postNotFound').style.display = 'block';
+    document.getElementById("loadingPost").style.display = "none";
+    document.getElementById("postNotFound").style.display = "block";
   }
-  
-  document.addEventListener('DOMContentLoaded', loadPost);
+
+  document.addEventListener("DOMContentLoaded", loadPost);
 </script>
