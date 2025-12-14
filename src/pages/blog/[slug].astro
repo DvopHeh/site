@@ -280,7 +280,7 @@ const { slug } = Astro.params;
 </style>
 
 <script type="module" define:vars={{ slug }}>
-  import MarkdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js";
+  import MarkdownIt from "https://esm.sh/markdown-it@14";
 
   const md = new MarkdownIt({
     html: true,
