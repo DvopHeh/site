@@ -26,7 +26,6 @@ pnpm-debug.log*
 # wrangler configuration
 .wrangler/
 .wrangler/d1
-wrangler.toml
 db.sql
 migrations/
 

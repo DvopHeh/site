@@ -61,7 +61,6 @@ export const allSystemSpecs: SystemDetails[] = [
         value: 'Patriot Burst SATA 2,5" 120GB',
         link: "https://www.patriotmemory.com/products/burst-elite-sata-iii-2-5-ssd"
       },
-      { label: "Storage (HDD)", value: 'TOSHIBA DT01ACA100 1TB 3,5"' },
       { label: "CPU Cooler", value: "Stock AMD Wraith Stealth" },
       { label: "Power Supply", value: "Corsair RM750e", link: "https://www.corsair.com/us/en/p/psu/cp-9020277-na/rm750e-2023-80-plus-gold-fully-modular-low-noise-atx-power-supply-750-watt-cp-9020277-na" },
       { label: "Case", value: "Gamemax Draco xD", link: "https://gamemaxpc.com/alpha/931.html"}
@@ -93,50 +92,43 @@ export const allSystemSpecs: SystemDetails[] = [
         link: "https://fifinemicrophone.com/products/fifine-t732-studio-usb-microphone-kit?_pos=1&_sid=472a709f2&_ss=r"
       },
       { label: "Mousepad", value: "CZC.gaming Barricade XXL RGB" },
-      { label: "Controller", value: "Xbox 360 Wired White (not working)" },
     ],
     softwareAndOS: [
       {
         label: "System",
-        value: "Dual Boot: Arch Linux / Windows 10 IoT Enterprise LTSC",
+        value: "Arch Linux",
       },
       {
         label: "Primary OS",
-        value: "Arch Linux + Hypergay (Omarchy)",
+        value: "Bedrock Linux (on top of Arch) + Hypergay",
         notes:
           "I use arch btw.",
-      },
-      {
-        label: "Windows Use",
-        value: "Gaming & Specific Software",
-        notes: "Windows is used mainly for kernel anti-cheat games.",
       },
     ],
   },
   {
     name: "Server PC",
     description:
-      "Super mega epic server computer build 4000! This machine handles all my server needs, including Streaming legally obtained Jellyfin stuff and file storage (kinda)",
+      "Super mega epic server computer (based on aliexpress parts) build 4000! This machine handles all my server needs, including Streaming legally obtained Jellyfin stuff and file storage (kinda)",
     specs: [
-      { label: "CPU", value: "Intel Core i5-3450" },
-      {
-        label: "GPU",
-        value: "Sapphire Toxic R9 280X 3gb GDDR5 OC",
-      },
-      { label: "RAM", value: "Green. 4x4gb DDR3 1600MT/s" },
-      { label: "Motherboard", value: "ASUS P8B75-V" },
+      { label: "CPU", value: "Intel Xeon E5-2680 v4" },
+      { label: "CPU Cooler", value: "Endorfy fera 5 dual fan" },
+      { label: "GPU", value: "Sparkle Intel Arc A310 ECO 4GB" },
+      { label: "RAM", value: "Qiyida 2x8gb DDR4 3200MT/s" },
+      { label: "Motherboard", value: "Qiyida X99 H9S" },
       { label: "Storage (HDD)", value: 'WD BLUE 250GB 3.5"' },
+      { label: "Storage (HDD)", value: 'Toshiba DT01ACA100 1TB 3.5"' },
       {
         label: "Power Supply",
-        value: "BOMB 650W",
+        value: "BOMB 700W",
         notes: "It runs and didn't explode yet.",
       },
-      { label: "Case", value: "Yes. (No.)" },
+      { label: "Case", value: "Cooler Master Qube 500 Flatpack" },
     ],
     softwareAndOS: [
       {
         label: "System",
-        value: "Arch Linux",
+        value: "Ubuntu Server",
       },
     ],
   },
@@ -145,7 +137,7 @@ export const allSystemSpecs: SystemDetails[] = [
     description:
       "From my Phones to other funny shits",
     accessories: [
-      { label: "Main Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running GrapheneOS + KSU", link: "https://store.google.com/product/pixel_8_pro" },
+      { label: "Main Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running Crdroid + Sultan Kernel + KSU", link: "https://store.google.com/product/pixel_8_pro" },
       {
         label: "Backup + Testing Phone",
         value: "Sony Xperia XA2 H3113 [Pioneer]",
