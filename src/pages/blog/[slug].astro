@@ -279,7 +279,7 @@ const { slug } = Astro.params;
   }
 </style>
 
-<script define:vars={{ slug }}>
+<script type="module" define:vars={{ slug }}>
   import MarkdownIt from "markdown-it";
 
   const md = new MarkdownIt({
@@ -290,20 +290,25 @@ const { slug } = Astro.params;
 
   async function loadPost() {
     try {
+      console.log("Loading post with slug:", slug);
       const response = await fetch("/api/blog");
 
       if (!response.ok) {
+        console.error("API response not OK:", response.status);
         throw new Error("Failed to fetch posts");
       }
 
       const posts = await response.json();
+      console.log("Fetched posts:", posts.length);
       const post = posts.find((p) => p.slug === slug);
 
       if (!post) {
+        console.error("Post not found with slug:", slug);
         showNotFound();
         return;
       }
 
+      console.log("Found post:", post.title);
       displayPost(post);
     } catch (error) {
       console.error("Error loading post:", error);
