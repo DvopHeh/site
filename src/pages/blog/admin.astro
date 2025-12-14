@@ -867,7 +867,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
       (document.getElementById("published")).checked =
         post.published;
 
-      document.getElementById("formTitle")!.textContent = "Edit Post";
+      document.getElementById("formTitle").textContent = "Edit Post";
 
       // Update preview
       const preview = document.getElementById("preview");
@@ -1006,7 +1006,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
     editingPostId = null;
     (document.getElementById("postForm")).reset();
     (document.getElementById("postId")).value = "";
-    document.getElementById("formTitle")!.textContent = "Create New Post";
+    document.getElementById("formTitle").textContent = "Create New Post";
     const preview = document.getElementById("preview");
     if (preview) {
       preview.innerHTML = "";
