@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 interface Env {
-  IMAGES: R2Bucket;
+  'images-blog': R2Bucket;
 }
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -63,7 +63,7 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     const env = locals.runtime.env as Env;
     const arrayBuffer = await file.arrayBuffer();
     
-    await env.IMAGES.put(filename, arrayBuffer, {
+    await env['images-blog'].put(filename, arrayBuffer, {
       httpMetadata: {
         contentType: file.type,
       },

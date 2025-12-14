@@ -1,14 +1,14 @@
 import type { APIRoute } from 'astro';
 
 interface Env {
-  'DB-blog': D1Database;
+  blog: D1Database;
 }
 
 export const GET: APIRoute = async ({ request, locals }) => {
   const env = locals.runtime.env as Env;
   
   try {
-    const { results } = await env['DB-blog'].prepare(`
+    const { results } = await env.blog.prepare(`
       SELECT * FROM blog 
       ORDER BY created_at DESC
     `).all();
@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     
     const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     
-    const { success } = await env['DB-blog'].prepare(`
+    const { success } = await env.blog.prepare(`
       INSERT INTO blog (title, content, slug, description, published, tags, author, featured_image, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
     `).bind(title, content, finalSlug, description, published || false, tags || '[]', author || 'dvop', featured_image || null).run();
@@ -79,7 +79,7 @@ export const PUT: APIRoute = async ({ request, locals }) => {
       });
     }
     
-    const { success } = await env['DB-blog'].prepare(`
+    const { success } = await env.blog.prepare(`
       UPDATE blog 
       SET title = ?, content = ?, slug = ?, description = ?, published = ?, tags = ?, author = ?, featured_image = ?, updated_at = datetime('now')
       WHERE id = ?
@@ -121,7 +121,7 @@ export const DELETE: APIRoute = async ({ request, locals }) => {
       });
     }
     
-    const { success } = await env['DB-blog'].prepare(`
+    const { success } = await env.blog.prepare(`
       DELETE FROM blog WHERE id = ?
     `).bind(id).run();
     

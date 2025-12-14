@@ -1,12 +1,15 @@
 import type { APIRoute } from 'astro';
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
   try {
     const data = await request.json();
     const { password } = data;
     
     // Get password from environment variable
-    const correctPassword = import.meta.env.BLOG_ADMIN_PASSWORD || 'admin123';
+    // In production (Cloudflare), use runtime env; in dev, use import.meta.env
+    const correctPassword = (locals.runtime?.env as any)?.BLOG_ADMIN_PASSWORD 
+      || import.meta.env.BLOG_ADMIN_PASSWORD 
+      || 'admin123';
     
     if (password === correctPassword) {
       // Set a session cookie (expires in 24 hours)
