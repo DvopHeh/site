@@ -138,9 +138,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
       ?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const passwordInput = document.getElementById(
-          "password"
-        );
+        const passwordInput = document.getElementById("password");
         const errorDiv = document.getElementById("loginError");
 
         try {
@@ -793,10 +791,13 @@ const adminDisplay = isAuthenticated ? "block" : "none";
   }
 </style>
 
-<script type="module">
-  import MarkdownIt from "https://esm.sh/markdown-it@14";
+<!-- Load markdown-it from CDN (UMD version for global access) -->
+<script
+  src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"
+></script>
 
-  const md = new MarkdownIt({
+<script>
+  const md = window.markdownit({
     html: true,
     linkify: true,
     typographer: true,
@@ -852,20 +853,15 @@ const adminDisplay = isAuthenticated ? "block" : "none";
       if (!post) return;
 
       editingPostId = id;
-      (document.getElementById("postId")).value =
-        id.toString();
-      (document.getElementById("title")).value = post.title;
-      (document.getElementById("slug")).value = post.slug;
-      (document.getElementById("description")).value =
-        post.description || "";
-      (document.getElementById("featuredImage")).value =
+      document.getElementById("postId").value = id.toString();
+      document.getElementById("title").value = post.title;
+      document.getElementById("slug").value = post.slug;
+      document.getElementById("description").value = post.description || "";
+      document.getElementById("featuredImage").value =
         post.featured_image || "";
-      (document.getElementById("tags")).value =
-        post.tags || "";
-      (document.getElementById("content")).value =
-        post.content;
-      (document.getElementById("published")).checked =
-        post.published;
+      document.getElementById("tags").value = post.tags || "";
+      document.getElementById("content").value = post.content;
+      document.getElementById("published").checked = post.published;
 
       document.getElementById("formTitle").textContent = "Edit Post";
 
@@ -913,19 +909,13 @@ const adminDisplay = isAuthenticated ? "block" : "none";
   document.getElementById("postForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const title = (document.getElementById("title")).value;
-    const slug = (document.getElementById("slug")).value;
-    const description = (
-      document.getElementById("description")
-    ).value;
-    const featuredImage = (
-      document.getElementById("featuredImage")
-    ).value;
-    const tags = (document.getElementById("tags")).value;
-    const content = (document.getElementById("content"))
-      .value;
-    const published = (document.getElementById("published"))
-      .checked;
+    const title = document.getElementById("title").value;
+    const slug = document.getElementById("slug").value;
+    const description = document.getElementById("description").value;
+    const featuredImage = document.getElementById("featuredImage").value;
+    const tags = document.getElementById("tags").value;
+    const content = document.getElementById("content").value;
+    const published = document.getElementById("published").checked;
 
     const data = {
       title,
@@ -978,7 +968,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 
   // Auto-generate slug from title
   document.getElementById("title")?.addEventListener("input", (e) => {
-    const title = (e.target).value;
+    const title = e.target.value;
     const slugInput = document.getElementById("slug");
 
     if (!editingPostId || !slugInput.value) {
@@ -992,7 +982,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 
   // Live markdown preview
   document.getElementById("content")?.addEventListener("input", (e) => {
-    const content = (e.target).value;
+    const content = e.target.value;
     const preview = document.getElementById("preview");
     if (preview) {
       preview.innerHTML = md.render(content);
@@ -1004,8 +994,8 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 
   function clearForm() {
     editingPostId = null;
-    (document.getElementById("postForm")).reset();
-    (document.getElementById("postId")).value = "";
+    document.getElementById("postForm").reset();
+    document.getElementById("postId").value = "";
     document.getElementById("formTitle").textContent = "Create New Post";
     const preview = document.getElementById("preview");
     if (preview) {
@@ -1028,18 +1018,14 @@ const adminDisplay = isAuthenticated ? "block" : "none";
   }
 
   // Image Upload Functionality
-  const imageUploadInput = document.getElementById(
-    "imageUpload"
-  );
+  const imageUploadInput = document.getElementById("imageUpload");
   const selectImageBtn = document.getElementById("selectImageBtn");
   const dropZone = document.getElementById("dropZone");
   const uploadProgress = document.getElementById("uploadProgress");
   const progressBarFill = document.getElementById("progressBarFill");
   const progressText = document.getElementById("progressText");
   const uploadedImage = document.getElementById("uploadedImage");
-  const uploadedImagePreview = document.getElementById(
-    "uploadedImagePreview"
-  );
+  const uploadedImagePreview = document.getElementById("uploadedImagePreview");
   const imageUrlInput = document.getElementById("imageUrl");
   const copyUrlBtn = document.getElementById("copyUrlBtn");
   const insertMdBtn = document.getElementById("insertMdBtn");
@@ -1071,7 +1057,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 
   // File input change
   imageUploadInput?.addEventListener("change", (e) => {
-    const files = (e.target).files;
+    const files = e.target.files;
     if (files && files.length > 0) {
       handleImageUpload(files[0]);
     }
@@ -1157,9 +1143,7 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 
   // Insert markdown
   insertMdBtn?.addEventListener("click", () => {
-    const contentTextarea = document.getElementById(
-      "content"
-    );
+    const contentTextarea = document.getElementById("content");
     if (contentTextarea && imageUrlInput) {
       const imageUrl = imageUrlInput.value;
       const markdown = `\n![Image](${imageUrl})\n`;
