@@ -794,13 +794,26 @@ const adminDisplay = isAuthenticated ? "block" : "none";
 <!-- Load markdown-it from CDN (UMD version for global access) -->
 <script
   src="https://cdn.jsdelivr.net/npm/markdown-it@14/dist/markdown-it.min.js"
-></script>
+  defer></script>
 
 <script>
-  const md = markdownit({
-    html: true,
-    linkify: true,
-    typographer: true,
+  let md;
+
+  // Wait for markdown-it to load
+  document.addEventListener("DOMContentLoaded", () => {
+    // Check if markdownit is loaded, if not wait a bit
+    const initMarkdown = () => {
+      if (typeof markdownit !== "undefined") {
+        md = markdownit({
+          html: true,
+          linkify: true,
+          typographer: true,
+        });
+      } else {
+        setTimeout(initMarkdown, 100);
+      }
+    };
+    initMarkdown();
   });
 
   let editingPostId = null;
