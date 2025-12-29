@@ -19,7 +19,7 @@ import Layout from "../../layouts/Layout.astro";
   </div>
 </Layout>
 
-<style>
+<style is:global>
   .blog-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -70,24 +70,27 @@ import Layout from "../../layouts/Layout.astro";
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(168, 85, 247, 0.3);
     backdrop-filter: blur(10px);
     cursor: pointer;
     text-decoration: none;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
   }
 
   .post-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.2);
+    box-shadow:
+      0 4px 16px 0 rgb(132, 0, 158),
+      0 0 20px rgba(168, 85, 247, 0.4);
     border-color: var(--accent, #a855f7);
   }
 
   .post-card-image {
     width: 100%;
     aspect-ratio: 16 / 9;
-    object-fit: contain;
+    object-fit: cover;
     background: linear-gradient(
       135deg,
       rgba(168, 85, 247, 0.1),
@@ -170,6 +173,32 @@ import Layout from "../../layouts/Layout.astro";
     .post-card-image {
       height: 150px;
     }
+  }
+
+  /* Light theme overrides */
+  [data-theme="light"] .post-title {
+    color: #1f2937;
+  }
+
+  [data-theme="light"] .post-card:hover .post-title {
+    color: #8b5cf6;
+  }
+
+  [data-theme="light"] .post-excerpt {
+    color: #1f2937;
+  }
+
+  [data-theme="light"] .post-date {
+    color: #6b7280;
+  }
+
+  [data-theme="light"] .post-card {
+    background: #ffffff;
+    border-color: rgba(232, 121, 249, 0.3);
+  }
+
+  [data-theme="light"] .post-card:hover {
+    border-color: #e879f9;
   }
 </style>
 

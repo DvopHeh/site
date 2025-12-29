@@ -28,5 +28,7 @@ pnpm-debug.log*
 .wrangler/d1
 db.sql
 migrations/
+blog-database.sql
+guestbook-db.sql
 
 

@@ -46,7 +46,7 @@ const { slug } = Astro.params;
   </div>
 </Layout>
 
-<style>
+<style is:global>
   .blog-post-container {
     max-width: 800px;
     margin: 0 auto;
@@ -76,6 +76,16 @@ const { slug } = Astro.params;
 
   .blog-post {
     animation: fadeIn 0.3s ease-in;
+    background: var(--color-surface-alt);
+    border: 2px solid rgba(168, 85, 247, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px 0 rgb(115, 0, 119);
+    transition: box-shadow 0.3s;
+  }
+
+  .blog-post:hover {
+    box-shadow: 0 4px 16px 0 rgb(132, 0, 158);
   }
 
   @keyframes fadeIn {
