@@ -132,7 +132,7 @@ export const allSystemSpecs: SystemDetails[] = [
     description:
       "From my Phones to other funny shits",
     accessories: [
-      { label: "Main Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running Crdroid + Sultan Kernel + KSU", link: "https://store.google.com/product/pixel_8_pro" },
+      { label: "Main Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running Lunaris AOSP + Sultan Kernel + KowSU", link: "https://store.google.com/product/pixel_8_pro" },
       {
         label: "Backup + Testing Phone",
         value: "Sony Xperia XA2 H3113 [Pioneer]",
