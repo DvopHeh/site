@@ -6,7 +6,7 @@ import Layout from "../../layouts/Layout.astro";
   <div class="blog-container">
     <div class="blog-header">
       <h1>Blog</h1>
-      <a href="/blog/admin" class="admin-link">✏️ Admin</a>
+      <a href="/blog/admin" class="admin-link" data-konami>✏️ Admin</a>
     </div>
 
     <div id="postsContainer" class="posts-grid">
@@ -273,7 +273,7 @@ import Layout from "../../layouts/Layout.astro";
               console.error(
                 "Error parsing updated date:",
                 post.updated_at,
-                error
+                error,
               );
             }
           }
@@ -310,4 +310,8 @@ import Layout from "../../layouts/Layout.astro";
   }
 
   document.addEventListener("DOMContentLoaded", loadPosts);
+</script>
+
+<script>
+  import "../../scripts/konami.ts";
 </script>

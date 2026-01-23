@@ -56,11 +56,6 @@ export const allSystemSpecs: SystemDetails[] = [
         value: "Apacer AS2280Q4X 2TB",
         link: "https://www.apacer.com/en/product/personal-product/detail/personal_ssd/as2280q4x"
       },
-      {
-        label: "Storage (SATA) (Windows 10)",
-        value: 'Patriot Burst SATA 2,5" 120GB',
-        link: "https://www.patriotmemory.com/products/burst-elite-sata-iii-2-5-ssd"
-      },
       { label: "CPU Cooler", value: "Stock AMD Wraith Stealth" },
       { label: "Power Supply", value: "Corsair RM750e", link: "https://www.corsair.com/us/en/p/psu/cp-9020277-na/rm750e-2023-80-plus-gold-fully-modular-low-noise-atx-power-supply-750-watt-cp-9020277-na" },
       { label: "Case", value: "Gamemax Draco xD", link: "https://gamemaxpc.com/alpha/931.html"}
@@ -91,7 +86,6 @@ export const allSystemSpecs: SystemDetails[] = [
       { label: "Microphone", value: "Fifine T732",
         link: "https://fifinemicrophone.com/products/fifine-t732-studio-usb-microphone-kit?_pos=1&_sid=472a709f2&_ss=r"
       },
-      { label: "Mousepad", value: "CZC.gaming Barricade XXL RGB" },
     ],
     softwareAndOS: [
       {
@@ -114,10 +108,11 @@ export const allSystemSpecs: SystemDetails[] = [
       { label: "CPU", value: "Intel Xeon E5-2680 v4" },
       { label: "CPU Cooler", value: "Endorfy fera 5 dual fan" },
       { label: "GPU", value: "Sparkle Intel Arc A310 ECO 4GB" },
-      { label: "RAM", value: "Qiyida 2x8gb DDR4 3200MT/s" },
+      { label: "RAM", value: "Qiyida 4x8gb DDR4 3200MT/s" },
       { label: "Motherboard", value: "Qiyida X99 H9S" },
-      { label: "Storage (HDD)", value: 'WD BLUE 250GB 3.5"' },
+      { label: "Storage (HDD)", value: 'WDC WUH721414ALE6L4 14TB 3.5"' },
       { label: "Storage (HDD)", value: 'Toshiba DT01ACA100 1TB 3.5"' },
+      { label: "Storage (SSD)", value: 'Patriot Burst 120GB 2.5"' },
       {
         label: "Power Supply",
         value: "BOMB 700W",
@@ -128,7 +123,7 @@ export const allSystemSpecs: SystemDetails[] = [
     softwareAndOS: [
       {
         label: "System",
-        value: "Ubuntu Server",
+        value: "Arch Linux",
       },
     ],
   },
