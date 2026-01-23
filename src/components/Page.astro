@@ -1,11 +1,11 @@
 ---
-import Lanyard from './Lanyard.astro';
-import Guestbook from '../components/guestbook.astro';
-import GuestbookForm from '../components/GuestbookForm.astro';
-import CurrentlyPlaying from './CurrentlyPlaying.astro';
-import GuestbookEntries from './GuestbookEntries.astro';
-import DebugMenu from './DebugMenu.astro';
-import SystemCardWrapper from './SystemCardWrapper';
+import Lanyard from "./Lanyard.astro";
+import Guestbook from "../components/guestbook.astro";
+import GuestbookForm from "../components/GuestbookForm.astro";
+import CurrentlyPlaying from "./CurrentlyPlaying.astro";
+import GuestbookEntries from "./GuestbookEntries.astro";
+import DebugMenu from "./DebugMenu.astro";
+import SystemCardWrapper from "./SystemCardWrapper";
 import { allSystemSpecs } from "../data/systemSpecs";
 ---
 
@@ -14,19 +14,60 @@ import { allSystemSpecs } from "../data/systemSpecs";
     <section class="landing-section">
       <h2 class="landing-section-title">My friends</h2>
       <p class="landing-section-desc">
-        <img src="/images/frank.png" alt="my button" width="88" height="31" loading="lazy" />
-        <a href="https://vorlie.pl/" target="_blank"><img src="https://vorlie.pl/images/vorlie.png" alt="vorlie button" width="88" height="31" loading="lazy" /></a>
-        <a href="https://maggiepi.fyi" target="_blank"><img src="https://maggiepi.fyi/88x31s/maggie8831.gif" alt="Maggie button" width="88" height="31" loading="lazy" /></a>
-        <a href="https://aveline.fish/" target="_blank"><img src="/images/velbutton.gif" alt="Vel Button" width="88" height="31" loading="lazy" /></a>
-        <a href="https://byeoon.dev" target="_blank"><img src="https://byeoon.dev/img/button.png" alt="B(ottom)yeoon" width="88" height="31" loading="lazy" /></a>
-        <a href="https://pre1ude.dev" target="_blank"><img src="https://pre1ude.dev/blankie.png" alt="Laura" height="31" width="88" alt="pre1ude.dev" /></a>
-        </p>
+        <img
+          src="/images/frank.png"
+          alt="my button"
+          width="88"
+          height="31"
+          loading="lazy"
+        />
+        <a href="https://maggiepi.fyi" target="_blank"
+          ><img
+            src="https://maggiepi.fyi/88x31s/maggie8831.gif"
+            alt="Maggie button"
+            width="88"
+            height="31"
+            loading="lazy"
+          /></a
+        >
+        <a href="https://aveline.fish/" target="_blank"
+          ><img
+            src="/images/velbutton.gif"
+            alt="Vel Button"
+            width="88"
+            height="31"
+            loading="lazy"
+          /></a
+        >
+        <a href="https://byeoon.dev" target="_blank"
+          ><img
+            src="https://byeoon.dev/img/button.png"
+            alt="B(ottom)yeoon"
+            width="88"
+            height="31"
+            loading="lazy"
+          /></a
+        >
+        <a href="https://pre1ude.dev" target="_blank"
+          ><img
+            src="https://pre1ude.dev/blankie.png"
+            alt="Laura"
+            height="31"
+            width="88"
+            alt="pre1ude.dev"
+          /></a
+        >
+      </p>
     </section>
-    
+
     <section class="landing-section">
       <div class="section-header">
         <h2 class="landing-section-title">Currently Playing</h2>
-        <a href="https://www.last.fm/user/Dvopp" target="_blank" class="lastfm-button">
+        <a
+          href="https://www.last.fm/user/Dvopp"
+          target="_blank"
+          class="lastfm-button"
+        >
           Last.fm
         </a>
       </div>
@@ -35,7 +76,7 @@ import { allSystemSpecs } from "../data/systemSpecs";
     <section class="landing-section">
       <h2 class="landing-section-title">Sign Guestbook (pls I beg u)</h2>
       <GuestbookForm />
-    </section> 
+    </section>
     <section class="landing-section">
       <h2 class="landing-section-title">Links & Contact</h2>
       <div class="contact-buttons">
@@ -44,65 +85,86 @@ import { allSystemSpecs } from "../data/systemSpecs";
           Email me
         </a>
       </div>
-      <hr>
+      <hr />
       <div class="social-buttons">
-        <a class="link-button" href="https://discord.com/users/410475909125242901" target="_blank">
+        <a
+          class="link-button"
+          href="https://discord.com/users/410475909125242901"
+          target="_blank"
+        >
           <i class="bi bi-discord"></i>
         </a>
-        <a class="link-button" href="https://github.com/dvopheh" target="_blank">
+        <a
+          class="link-button"
+          href="https://github.com/dvopheh"
+          target="_blank"
+        >
           <i class="bi bi-github"></i>
         </a>
-        <a class="link-button" href="https://steamcommunity.com/id/Dvopmensineztri/" target="_blank">
+        <a
+          class="link-button"
+          href="https://steamcommunity.com/id/Dvopmensineztri/"
+          target="_blank"
+        >
           <i class="bi bi-steam"></i>
-        <a class="link-button" href="https://twitch.tv/dvop_/" target="_blank">
-          <i class="bi bi-twitch"></i>
+          <a
+            class="link-button"
+            href="https://twitch.tv/dvop_/"
+            target="_blank"
+          >
+            <i class="bi bi-twitch"></i>
+          </a>
         </a>
+        <hr />
+        <p class="landing-wip">
+          This Site is and forever will be <strong>WIP</strong>
+        </p>
       </div>
-      <hr>     
-      <p class="landing-wip">
-        This Site is and forever will be <strong>WIP</strong>
-      </p>
-    </section>
-  
-  </div>
-  
-  <div class="column-middle">
-    <section class="landing-section lanyard-section">
-      <Lanyard />
-    </section>
-    <section class="landing-section">
-      <h2 class="landing-section-title">More Useless Info about me!</h2>
-      <p class="landing-section-desc">
-      Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch btw.) and Win 10 on my main rig since league and other kernel level anticheats (fuck those.)
-      </p>
     </section>
 
-    <section class="landing-section">
-      <h2 class="landing-section-title">Who am I?</h2>
-      <ul class="landing-list">
-        <li class="landing-list-item">
-        <li class="landing-section-desc">
-        Idk, a very boring and unimportant person, seriously man, why would you wanna know me? I have diabetes... idk what to tell you, but In case you do know me, congrats. Proud of you.
-        </li>
-      </ul>
-    </section>
-    <section class="landing-section">
-      <h2 class="landing-section-title">Guestbook</h2>
-      <GuestbookEntries />
-    </section>
-  </div>
+    <div class="column-middle">
+      <section class="landing-section lanyard-section">
+        <Lanyard />
+      </section>
+      <section class="landing-section">
+        <h2 class="landing-section-title">More Useless Info about me!</h2>
+        <p class="landing-section-desc">
+          Well, uh I got friends? (atleast 3), currently running Arch (I Use
+          Arch btw.) and Win 10 on my main rig since league and other kernel
+          level anticheats (fuck those.)
+        </p>
+      </section>
 
-  <div class="column-right">
-  <section class="landing-section">
-    <SystemCardWrapper allSystemSpecs={allSystemSpecs} client:load />
-  </section>
-    
+      <section class="landing-section">
+        <h2 class="landing-section-title">Who am I?</h2>
+        <ul class="landing-list">
+          <li class="landing-list-item">
+            <li class="landing-section-desc">
+              Idk, a very boring and unimportant person, seriously man, why
+              would you wanna know me? I have diabetes... idk what to tell you,
+              but In case you do know me, congrats. Proud of you.
+            </li>
+          </li>
+        </ul>
+        <section class="landing-section">
+          <h2 class="landing-section-title">Guestbook</h2>
+          <GuestbookEntries />
+        </section>
+      </section>
+
+      <div class="column-right">
+        <section class="landing-section">
+          <SystemCardWrapper allSystemSpecs={allSystemSpecs} client:load />
+        </section>
+      </div>
+      <DebugMenu />
+
+      <script>
+        import "../scripts/balls.ts";
+        import "../scripts/cudo.ts";
+        import "../scripts/explosion.ts";
+        import "../scripts/fortnite.ts";
+      </script>
+    </div>
+  </div>
 </div>
-<DebugMenu />
-
-<script>
-  import '../scripts/balls.ts';
-  import '../scripts/cudo.ts';
-  import '../scripts/explosion.ts';
-  import '../scripts/fortnite.ts';
-</script>
