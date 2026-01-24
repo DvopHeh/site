@@ -1,9 +1,7 @@
 <div class="about-container">
   <h1 class="landing-title">About Page</h1>
   <p class="landing-about-desc">
-    This Page used to be based on Vorlie's design, but slowly became this
-    thing... uhhh, I dunno what to say tbh but Vorlie kinda helped me when I got
-    lost with some stuff so big cudos to him.
+    Yeah!!!!!!! Epic super mega cool site!!! now written in SvelteKit Guys!!!
   </p>
 </div>
 
