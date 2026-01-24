@@ -1,0 +1,179 @@
+<script lang="ts">
+  import Lanyard from "$lib/components/Lanyard.svelte";
+  import CurrentlyPlaying from "$lib/components/CurrentlyPlaying.svelte";
+  import GuestbookForm from "$lib/components/GuestbookForm.svelte";
+  import GuestbookEntries from "$lib/components/GuestbookEntries.svelte";
+  import SystemCard from "$lib/components/SystemCard.svelte";
+  import DebugMenu from "$lib/components/DebugMenu.svelte";
+  import { allSystemSpecs } from "$lib/data/systemSpecs";
+
+  // Accordion state - null means all closed, number is the index of the open card
+  let openSystemIndex: number | null = $state(null);
+</script>
+
+<div class="container landing-page">
+  <div class="column-left">
+    <section class="landing-section">
+      <h2 class="landing-section-title">My friends</h2>
+      <div class="friend-buttons">
+        <img
+          src="/images/frank.png"
+          alt="my button"
+          width="88"
+          height="31"
+          loading="lazy"
+        />
+        <a href="https://vorlie.pl/" target="_blank">
+          <img
+            src="https://vorlie.pl/images/vorlie.png"
+            alt="vorlie button"
+            width="88"
+            height="31"
+            loading="lazy"
+          />
+        </a>
+        <a href="https://maggiepi.fyi" target="_blank">
+          <img
+            src="https://maggiepi.fyi/88x31s/maggie8831.gif"
+            alt="Maggie button"
+            width="88"
+            height="31"
+            loading="lazy"
+          />
+        </a>
+        <a href="https://aveline.fish/" target="_blank">
+          <img
+            src="/images/velbutton.gif"
+            alt="Vel Button"
+            width="88"
+            height="31"
+            loading="lazy"
+          />
+        </a>
+        <a href="https://byeoon.dev" target="_blank">
+          <img
+            src="https://byeoon.dev/img/button.png"
+            alt="B(ottom)yeoon"
+            width="88"
+            height="31"
+            loading="lazy"
+          />
+        </a>
+        <a href="https://pre1ude.dev" target="_blank">
+          <img
+            src="https://pre1ude.dev/blankie.png"
+            alt="pre1ude.dev"
+            height="31"
+            width="88"
+          />
+        </a>
+      </div>
+    </section>
+
+    <section class="landing-section">
+      <div class="section-header">
+        <h2 class="landing-section-title">Currently Playing</h2>
+        <a
+          href="https://www.last.fm/user/Dvopp"
+          target="_blank"
+          class="lastfm-button">Last.fm</a
+        >
+      </div>
+      <CurrentlyPlaying />
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">Sign Guestbook (pls I beg u)</h2>
+      <GuestbookForm />
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">Links & Contact</h2>
+      <div class="contact-buttons">
+        <a href="mailto:2259fd108@mozmail.com" class="mail-button">
+          <i class="bi bi-envelope"></i>
+          Email me
+        </a>
+      </div>
+      <hr />
+      <div class="social-buttons">
+        <a
+          class="link-button"
+          href="https://discord.com/users/410475909125242901"
+          target="_blank"
+        >
+          <i class="bi bi-discord"></i>
+        </a>
+        <a
+          class="link-button"
+          href="https://github.com/dvopheh"
+          target="_blank"
+        >
+          <i class="bi bi-github"></i>
+        </a>
+        <a
+          class="link-button"
+          href="https://steamcommunity.com/id/Dvopmensineztri/"
+          target="_blank"
+        >
+          <i class="bi bi-steam"></i>
+        </a>
+        <a class="link-button" href="https://twitch.tv/dvop_/" target="_blank">
+          <i class="bi bi-twitch"></i>
+        </a>
+      </div>
+      <hr />
+      <p class="landing-wip">
+        This Site is and forever will be <strong>WIP</strong>
+      </p>
+    </section>
+  </div>
+
+  <div class="column-middle">
+    <section class="landing-section lanyard-section">
+      <Lanyard />
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">More Useless Info about me!</h2>
+      <p class="landing-section-desc">
+        Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch
+        btw.) and Win 10 on my main rig since league and other kernel level
+        anticheats (fuck those.)
+      </p>
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">Who am I?</h2>
+      <ul class="landing-list">
+        <li class="landing-list-item">
+          <span class="landing-section-desc">
+            Idk, a very boring and unimportant person, seriously man, why would
+            you wanna know me? I have diabetes... idk what to tell you, but In
+            case you do know me, congrats. Proud of you.
+          </span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="landing-section">
+      <h2 class="landing-section-title">Guestbook</h2>
+      <GuestbookEntries />
+    </section>
+  </div>
+
+  <div class="column-right">
+    <section class="landing-section">
+      {#each allSystemSpecs as system, index}
+        <SystemCard
+          {system}
+          isOpen={openSystemIndex === index}
+          onToggle={() =>
+            (openSystemIndex = openSystemIndex === index ? null : index)}
+        />
+      {/each}
+    </section>
+  </div>
+</div>
+
+<DebugMenu />

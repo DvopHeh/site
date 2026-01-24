@@ -1,1 +1,0 @@
-A site, I made with Astro, idk what to tell u, it just works.

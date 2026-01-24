@@ -1,34 +1,36 @@
-# build output
-dist/
+node_modules
 
-# generated types
-.astro/
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+/dist
 
-# dependencies
-node_modules/
-
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# environment variables
-.env
-.env.production
-.env.test
-# macOS-specific files
+# OS
 .DS_Store
+Thumbs.db
 
-# jetbrains setting folder
+# IDE
 .idea/
+*.swp
+*.swo
 
-# wrangler configuration
-.wrangler/
-.wrangler/d1
-db.sql
-migrations/
-blog-database.sql
-guestbook-db.sql
+# Logs
+*.log
+npm-debug.log*
 
+# Env
+.env
+.env.*
+.dev.vars
+!.env.example
+!.env.test
 
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+*.sql
