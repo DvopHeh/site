@@ -4,7 +4,7 @@ interface Env {
 	blog: D1Database;
 }
 
-export const GET: RequestHandler = async ({ platform }) => {
+export const GET: RequestHandler = async ({ platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
 	
 	try {
@@ -32,9 +32,13 @@ export const GET: RequestHandler = async ({ platform }) => {
 	}
 };
 
-export const POST: RequestHandler = async ({ request, platform }) => {
+export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
 	
+    if (cookies.get("blog_admin_credential") !== (platform?.env?.BLOG_ADMIN_PASSWORD ?? "admin")) {
+        return new Response(null, { status: 401 })
+    }
+
 	try {
 		if (!env?.blog) {
 			return new Response(JSON.stringify({ error: 'Database not available' }), {
@@ -69,9 +73,13 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 	}
 };
 
-export const PUT: RequestHandler = async ({ request, platform }) => {
+export const PUT: RequestHandler = async ({ request, platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
 	
+    if (cookies.get("blog_admin_credential") !== (platform?.env?.BLOG_ADMIN_PASSWORD ?? "admin")) {
+        return new Response(null, { status: 401 })
+    }
+
 	try {
 		if (!env?.blog) {
 			return new Response(JSON.stringify({ error: 'Database not available' }), {
@@ -112,9 +120,13 @@ export const PUT: RequestHandler = async ({ request, platform }) => {
 	}
 };
 
-export const DELETE: RequestHandler = async ({ request, platform }) => {
+export const DELETE: RequestHandler = async ({ request, platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
 	
+    if (cookies.get("blog_admin_credential") !== (platform?.env?.BLOG_ADMIN_PASSWORD ?? "admin")) {
+        return new Response(null, { status: 401 })
+    }
+
 	try {
 		if (!env?.blog) {
 			return new Response(JSON.stringify({ error: 'Database not available' }), {

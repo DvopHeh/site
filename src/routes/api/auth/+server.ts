@@ -6,10 +6,10 @@ export const POST: RequestHandler = async ({ request, cookies, platform }) => {
 		
 		// Get admin password from environment
 		const env = platform?.env as { BLOG_ADMIN_PASSWORD?: string } | undefined;
-		const adminPassword = env?.BLOG_ADMIN_PASSWORD || 'admin'; // fallback for dev
+		const adminPassword = (platform?.env?.BLOG_ADMIN_PASSWORD ?? "admin"); // fallback for dev
 		
 		if (password === adminPassword) {
-			cookies.set('blog_admin_auth', 'authenticated', {
+			cookies.set('blog_admin_credential', adminPassword, {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict',
@@ -35,7 +35,7 @@ export const POST: RequestHandler = async ({ request, cookies, platform }) => {
 };
 
 export const DELETE: RequestHandler = async ({ cookies }) => {
-	cookies.delete('blog_admin_auth', { path: '/' });
+	cookies.delete('blog_admin_credential', { path: '/' });
 	return new Response(JSON.stringify({ success: true }), {
 		status: 200,
 		headers: { 'Content-Type': 'application/json' }
