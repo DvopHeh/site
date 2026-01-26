@@ -67,6 +67,12 @@
             width="88"
           />
         </a>
+        <iframe
+          sandbox="allow-top-navigation-by-user-activation"
+          style="height: 31px; width: 88px; overflow: hidden; border: none"
+          src="https://salamithecat.com/button"
+          title="peeblyweeb"
+        ></iframe>
       </div>
     </section>
 
