@@ -75,7 +75,7 @@ declare global {
 				blog?: D1Database;
 				'images-blog'?: R2Bucket;
 				BLOG_ADMIN_PASSWORD?: string;
-				LASTFM_API_KEY?: string;
+
 			};
 		}
 	}

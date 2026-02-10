@@ -428,7 +428,7 @@ body::-webkit-scrollbar-thumb {
 .landing-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1.1fr 1.6fr 1.1fr;
   grid-template-rows: 1fr;
   gap: 1.2rem;
   justify-content: center;
@@ -519,21 +519,7 @@ body::-webkit-scrollbar-thumb {
   margin: 0;
 }
 
-.lastfm-button {
-  background: var(--color-primary);
-  color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: background var(--transition);
-}
 
-.lastfm-button:hover {
-  background: var(--color-link-hover);
-  color: #ffffff;
-}
 
 .contact-buttons {
   display: flex;
@@ -804,46 +790,96 @@ body::-webkit-scrollbar-thumb {
 
 .current-track {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.6rem;
   padding: 0.75rem;
   background: var(--color-surface-alt);
   border-radius: 8px;
   transition: all var(--transition);
+  height: 120px;
+  overflow: hidden;
+}
+
+.current-track-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: row-reverse;
+  justify-content: space-between;
 }
 
 .current-track-image {
-  width: 60px;
-  height: 60px;
+  width: 112px;
+  height: 112px;
   border-radius: 6px;
   object-fit: cover;
+  margin-top: -20px;
 }
 
 .current-track-info {
   flex: 1;
   min-width: 0;
+  text-align: left;
 }
 
 .current-track-name {
   font-weight: 600;
   color: var(--color-text);
-  white-space: nowrap;
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: left;
+  width: 100%;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
 }
 
 .current-track-artist {
   font-size: 0.9rem;
   color: var(--color-text-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.current-track-album {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.current-track-name::after {
+  display: none;
 }
 
 .current-track-status {
   font-size: 0.8rem;
   color: var(--color-primary);
   margin-top: 0.25rem;
+}
+
+.current-track-progress {
+  margin-top: 0.1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--color-surface);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: width 0.3s linear;
+}
+
+.progress-time {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.2rem;
 }
 
 /* ===== GUESTBOOK ===== */

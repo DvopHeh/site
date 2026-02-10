@@ -2,7 +2,8 @@
   import { onMount } from "svelte";
 
   let avatarBorder = $state("var(--color-status-offline)");
-  let avatarUrl = $state("/images/default.jpg");
+  const DEFAULT_AVATAR = "/images/default.jpg";
+  let avatarUrl = $state(DEFAULT_AVATAR);
   let decorationUrl = $state("/images/decor.png");
   let bannerUrl = $state<string | null>("/images/banner.jpg");
   let displayName = $state("Damned Lurker✨");
@@ -74,8 +75,14 @@
 
       // Update avatar
       if (user.avatar) {
-        const ext = user.avatar.startsWith("a_") ? "gif" : "png";
-        avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${ext}?size=128`;
+        if (typeof user.avatar === "string" && user.avatar.startsWith("http")) {
+          avatarUrl = user.avatar;
+        } else {
+          const ext = user.avatar.startsWith("a_") ? "gif" : "png";
+          avatarUrl = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.${ext}?size=128`;
+        }
+      } else {
+        avatarUrl = DEFAULT_AVATAR;
       }
 
       // Update banner
@@ -112,6 +119,7 @@
       src={avatarUrl}
       alt="User Avatar"
       style="border-color: {avatarBorder};"
+      on:error={() => (avatarUrl = DEFAULT_AVATAR)}
     />
     <img id="avatar-deco" src={decorationUrl} alt="" />
     <div class="userinfo">

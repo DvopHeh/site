@@ -556,21 +556,7 @@ body::-webkit-scrollbar-thumb {
     margin: 0;
 }
 
-.lastfm-button {
-    background: var(--color-primary);
-    color: #ffffff;
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: background var(--transition);
-}
 
-.lastfm-button:hover {
-    background: var(--color-link-hover);
-    color: #ffffff;
-}
 
 .contact-buttons {
     display: flex;

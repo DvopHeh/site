@@ -77,14 +77,7 @@
     </section>
 
     <section class="landing-section">
-      <div class="section-header">
-        <h2 class="landing-section-title">Currently Playing</h2>
-        <a
-          href="https://www.last.fm/user/Dvopp"
-          target="_blank"
-          class="lastfm-button">Last.fm</a
-        >
-      </div>
+      <h2 class="landing-section-title">Currently Playing</h2>
       <CurrentlyPlaying />
     </section>
 
@@ -144,8 +137,8 @@
       <h2 class="landing-section-title">More Useless Info about me!</h2>
       <p class="landing-section-desc">
         Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch
-        btw.) and Win 10 on my main rig since league and other kernel level
-        anticheats (fuck those.)
+        btw.) And idk, I'm a pro minecraft gamer. watching absolutely useless
+        documentaries about dumb stuff.
       </p>
     </section>
 
