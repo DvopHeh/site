@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import MarqueeText from "./MarqueeText.svelte";
 
   interface Track {
     playing: boolean;
@@ -88,9 +89,15 @@
           <img src={currentTrack.albumArt} alt="" class="current-track-image" />
         {/if}
         <div class="current-track-info">
-          <div class="current-track-name">{currentTrack.title}</div>
-          <div class="current-track-artist">{currentTrack.artist ?? "?"}</div>
-          <div class="current-track-album">{currentTrack.album ?? "?"}</div>
+          <MarqueeText text={currentTrack.title} class="current-track-name" />
+          <MarqueeText
+            text={currentTrack.artist ?? "?"}
+            class="current-track-artist"
+          />
+          <MarqueeText
+            text={currentTrack.album ?? "?"}
+            class="current-track-album"
+          />
           <div class="current-track-status">
             {formatTime(displayPosition)} / {formatTime(currentTrack.duration)}
           </div>
@@ -98,10 +105,7 @@
       </div>
       <div class="current-track-progress">
         <div class="progress-bar">
-          <div
-            class="progress-fill"
-            style="width: {progressPercent()}%"
-          ></div>
+          <div class="progress-fill" style="width: {progressPercent()}%"></div>
         </div>
       </div>
     </div>
@@ -109,9 +113,15 @@
     <div class="current-track">
       <div class="current-track-main">
         <div class="current-track-info">
-          <div class="current-track-name">Not currently playing</div>
-          <div class="current-track-artist">No active music session</div>
-          <div class="current-track-status">♪ Offline</div>
+          <div class="current-track-name" style="font-size: 1.15rem;">
+            Not currently playing
+          </div>
+          <div class="current-track-artist" style="font-size: 1.05rem;">
+            No active music session
+          </div>
+          <div class="current-track-status" style="font-size: 0.95rem;">
+            ♪ Offline
+          </div>
         </div>
       </div>
     </div>

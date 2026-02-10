@@ -44,7 +44,7 @@
 
   // ============================================
   // SUDO EASTER EGG
-  // Type "sudo" anywhere to show terminal message
+  // Type "sudo" anywhere OR long-press the logo on mobile
   // ============================================
   let typedText = "";
   let sudoResetTimer: ReturnType<typeof setTimeout>;
@@ -63,7 +63,7 @@
     terminal.innerHTML = `
       <div style="color: #888;">guest@dvop.fyi:~$</div>
       <div style="color: #ff6666; margin-top: 5px;">${sudoMessages[Math.floor(Math.random() * sudoMessages.length)]}</div>
-      <div style="color: #888; margin-top: 10px; font-size: 12px;">Click to dismiss</div>
+      <div style="color: #888; margin-top: 10px; font-size: 12px;">Tap to dismiss</div>
     `;
     document.body.appendChild(terminal);
 
@@ -95,6 +95,23 @@
     }
     if (typedText.length > 20) {
       typedText = typedText.slice(-10);
+    }
+  }
+
+  // Long-press on logo for mobile sudo
+  let longPressTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function handleLogoTouchStart() {
+    longPressTimer = setTimeout(() => {
+      showSudoMessage();
+      longPressTimer = null;
+    }, 1000);
+  }
+
+  function handleLogoTouchEnd() {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
     }
   }
 
@@ -145,7 +162,9 @@
 
   // ============================================
   // KONAMI CODE EASTER EGG
-  // ↑↑↓↓←→←→ activates Game Boy mode (30% chance: boo jumpscare)
+  // Keyboard: ↑↑↓↓←→←→
+  // Mobile: swipe ↑↑↓↓←→←→
+  // Activates Game Boy mode (30% chance: boo jumpscare)
   // ============================================
   const konamiCode = [
     "ArrowUp",
@@ -159,6 +178,13 @@
   ];
   let keysPressed: string[] = [];
   let isRetroMode = false;
+
+  // Swipe detection state
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let swipeSequence: string[] = [];
+  let swipeResetTimer: ReturnType<typeof setTimeout> | null = null;
+  const SWIPE_THRESHOLD = 30;
 
   function activateRetroMode() {
     if (isRetroMode) return;
@@ -198,6 +224,15 @@
     setTimeout(() => img.remove(), 2000);
   }
 
+  function triggerKonamiResult() {
+    if (Math.random() <= 0.3) {
+      showBooJumpscare();
+    } else {
+      activateRetroMode();
+    }
+  }
+
+  // Keyboard handler
   function handleKeydownForKonami(e: KeyboardEvent) {
     keysPressed.push(e.key);
     if (keysPressed.length > konamiCode.length) {
@@ -213,12 +248,66 @@
     }
 
     if (matches && keysPressed.length === konamiCode.length) {
-      if (Math.random() <= 0.3) {
-        showBooJumpscare();
-      } else {
-        activateRetroMode();
-      }
+      triggerKonamiResult();
       keysPressed = [];
+    }
+  }
+
+  // Swipe handler for mobile
+  function handleTouchStart(e: TouchEvent) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }
+
+  function handleTouchEnd(e: TouchEvent) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+
+    // Determine swipe direction
+    let direction: string | null = null;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Horizontal swipe
+      if (Math.abs(dx) > SWIPE_THRESHOLD) {
+        direction = dx > 0 ? "ArrowRight" : "ArrowLeft";
+      }
+    } else {
+      // Vertical swipe
+      if (Math.abs(dy) > SWIPE_THRESHOLD) {
+        direction = dy > 0 ? "ArrowDown" : "ArrowUp";
+      }
+    }
+
+    if (!direction) return;
+
+    swipeSequence.push(direction);
+
+    // Reset sequence after 3 seconds of inactivity
+    if (swipeResetTimer) clearTimeout(swipeResetTimer);
+    swipeResetTimer = setTimeout(() => {
+      swipeSequence = [];
+    }, 3000);
+
+    // Trim to max length
+    if (swipeSequence.length > konamiCode.length) {
+      swipeSequence.shift();
+    }
+
+    // Check for match
+    if (swipeSequence.length === konamiCode.length) {
+      let matches = true;
+      for (let i = 0; i < konamiCode.length; i++) {
+        if (swipeSequence[i] !== konamiCode[i]) {
+          matches = false;
+          break;
+        }
+      }
+
+      if (matches) {
+        triggerKonamiResult();
+        swipeSequence = [];
+      }
     }
   }
 
@@ -236,8 +325,24 @@
     // Setup sudo keyboard listener
     document.addEventListener("keydown", handleKeydownForSudo);
 
-    // Setup Konami code listener
+    // Setup sudo long-press on logo (mobile)
+    const logoElement = document.querySelector("#logo");
+    if (logoElement) {
+      logoElement.addEventListener("touchstart", handleLogoTouchStart, {
+        passive: true,
+      });
+      logoElement.addEventListener("touchend", handleLogoTouchEnd);
+      logoElement.addEventListener("touchcancel", handleLogoTouchEnd);
+    }
+
+    // Setup Konami code listener (keyboard)
     document.addEventListener("keydown", handleKeydownForKonami);
+
+    // Setup Konami code listener (swipe/touch)
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    document.addEventListener("touchend", handleTouchEnd);
 
     // Show late night message if applicable
     if (isLateNight()) {
@@ -248,6 +353,13 @@
       wipElement?.removeEventListener("click", handleWipClick);
       document.removeEventListener("keydown", handleKeydownForSudo);
       document.removeEventListener("keydown", handleKeydownForKonami);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
+      if (logoElement) {
+        logoElement.removeEventListener("touchstart", handleLogoTouchStart);
+        logoElement.removeEventListener("touchend", handleLogoTouchEnd);
+        logoElement.removeEventListener("touchcancel", handleLogoTouchEnd);
+      }
     };
   });
 </script>
@@ -264,7 +376,7 @@
     border: 1px solid #333333;
     border-radius: 4px;
     font-size: 14px;
-    min-width: 400px;
+    max-width: min(400px, 90vw);
     z-index: 9999;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -288,7 +400,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     z-index: 9999;
     cursor: pointer;
-    max-width: 300px;
+    max-width: min(300px, 85vw);
     opacity: 0;
     transition: all 0.3s ease;
   }
@@ -306,6 +418,8 @@
     font-size: 18px;
     z-index: 10000;
     box-shadow: 0 0 20px #9bbc0f;
+    max-width: 90vw;
+    text-align: center;
   }
 
   :global(.easter-egg-boo) {

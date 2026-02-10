@@ -4,8 +4,11 @@
   import GuestbookForm from "$lib/components/GuestbookForm.svelte";
   import GuestbookEntries from "$lib/components/GuestbookEntries.svelte";
   import SystemCard from "$lib/components/SystemCard.svelte";
+  import SystemStatus from "$lib/components/SystemStatus.svelte";
   import DebugMenu from "$lib/components/DebugMenu.svelte";
   import { allSystemSpecs } from "$lib/data/systemSpecs";
+
+  let { data } = $props();
 
   // Accordion state - null means all closed, number is the index of the open card
   let openSystemIndex: number | null = $state(null);
@@ -130,7 +133,7 @@
 
   <div class="column-middle">
     <section class="landing-section lanyard-section">
-      <Lanyard />
+      <Lanyard profile={data.profile} />
     </section>
 
     <section class="landing-section">
@@ -162,7 +165,7 @@
   </div>
 
   <div class="column-right">
-    <section class="landing-section">
+    <section class="landing-section system-specs-section">
       {#each allSystemSpecs as system, index}
         <SystemCard
           {system}
@@ -171,6 +174,14 @@
             (openSystemIndex = openSystemIndex === index ? null : index)}
         />
       {/each}
+    </section>
+
+    <section
+      class="landing-section system-status-section"
+      class:hidden={openSystemIndex !== null}
+    >
+      <h2 class="landing-section-title">System Status</h2>
+      <SystemStatus />
     </section>
   </div>
 </div>
