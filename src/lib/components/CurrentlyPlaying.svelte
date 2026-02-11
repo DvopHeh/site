@@ -32,6 +32,18 @@
     return Math.min((displayPosition / currentTrack.duration) * 100, 100);
   }
 
+  function getSourceLabel(source: string | null | undefined): string | null {
+    if (!source) return null;
+    const normalized = source.toLowerCase();
+    if (normalized === "linux") return "PC";
+    if (normalized === "android") return "Phone";
+    return null;
+  }
+
+  function getTrackSource(track: Track | null): string | null {
+    return track?.source ?? null;
+  }
+
   async function fetchCurrentTrack() {
     try {
       const response = await fetch("https://api-np.dvop.fyi/api/now-playing");
@@ -77,6 +89,8 @@
       document.removeEventListener("visibilitychange", handleVisibility);
     };
   });
+
+  let sourceLabel = $derived(getSourceLabel(getTrackSource(currentTrack)));
 </script>
 
 <div class="currently-playing">
@@ -98,8 +112,13 @@
             text={currentTrack.album ?? "?"}
             class="current-track-album"
           />
-          <div class="current-track-status">
-            {formatTime(displayPosition)} / {formatTime(currentTrack.duration)}
+          <div class="current-track-status-row">
+            <div class="current-track-status">
+              {formatTime(displayPosition)} / {formatTime(currentTrack.duration)}
+            </div>
+            {#if sourceLabel}
+              <span class="current-track-source-badge">Played from: {sourceLabel}</span>
+            {/if}
           </div>
         </div>
       </div>

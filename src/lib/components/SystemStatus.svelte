@@ -430,33 +430,4 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .disk-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .disk-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .disk-details-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-  }
-
-  .disk-mount {
-    font-family: inherit;
-    font-weight: 500;
-  }
-
-  .disk-usage {
-    font-variant-numeric: tabular-nums;
-    opacity: 0.8;
-  }
 </style>

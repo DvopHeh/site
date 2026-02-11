@@ -35,7 +35,7 @@
       id="avatar"
       src={avatarUrl}
       alt="User Avatar"
-      on:error={() => (avatarFailed = true)}
+      onerror={() => (avatarFailed = true)}
     />
     <img id="avatar-deco" src={decorationUrl} alt="" />
     <div class="userinfo">

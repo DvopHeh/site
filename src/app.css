@@ -427,12 +427,13 @@ body::-webkit-scrollbar-thumb {
 /* ===== LANDING PAGE ===== */
 .landing-page {
   min-height: 100vh;
+  height: auto;
   display: grid;
   grid-template-columns: 1.1fr 1.6fr 1.1fr;
   grid-template-rows: 1fr;
   gap: 1.2rem;
   justify-content: center;
-  align-items: start;
+  align-items: stretch;
   margin: 2rem auto;
   max-width: 1600px;
   padding: 0 0.5rem;
@@ -446,6 +447,9 @@ body::-webkit-scrollbar-thumb {
   gap: 1.2rem;
   align-items: stretch;
   min-width: 0;
+  height: 100%;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .landing-title {
@@ -474,6 +478,7 @@ body::-webkit-scrollbar-thumb {
   padding: 1.2rem;
   transition: box-shadow var(--transition);
   margin-bottom: 0;
+  overflow-wrap: anywhere;
 }
 
 .landing-section-guestbook {
@@ -568,9 +573,20 @@ body::-webkit-scrollbar-thumb {
   align-items: center;
 }
 
-.friend-buttons img {
+.friend-buttons img,
+.friend-buttons iframe {
   display: inline-block;
   vertical-align: middle;
+  box-shadow: 0 4px 12px rgba(138, 73, 217, 0.4);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.friend-buttons a:hover img,
+.friend-buttons iframe:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(138, 73, 217, 0.55);
 }
 
 .landing-section-desc {
@@ -617,6 +633,8 @@ body::-webkit-scrollbar-thumb {
 
 @media (max-width: 900px) {
   .landing-page {
+    min-height: auto;
+    height: auto;
     grid-template-columns: 1fr 1fr;
   }
   .column-left {
@@ -632,6 +650,8 @@ body::-webkit-scrollbar-thumb {
 
 @media (max-width: 600px) {
   .landing-page {
+    min-height: auto;
+    height: auto;
     grid-template-columns: 1fr;
     padding: 1rem 0.5rem 1.5rem 0.5rem;
     margin-top: 1.5rem;
@@ -642,6 +662,8 @@ body::-webkit-scrollbar-thumb {
   .column-middle,
   .column-right {
     grid-column: 1 / -1;
+    overflow: visible;
+    padding-right: 0;
   }
 
   .landing-section {
@@ -801,8 +823,9 @@ body::-webkit-scrollbar-thumb {
   background: var(--color-surface-alt);
   border-radius: 8px;
   transition: all var(--transition);
-  height: 120px;
-  overflow: hidden;
+  min-height: 120px;
+  height: auto;
+  overflow: visible;
 }
 
 .current-track-main {
@@ -819,7 +842,15 @@ body::-webkit-scrollbar-thumb {
   height: 112px;
   border-radius: 6px;
   object-fit: cover;
-  margin-top: -20px;
+  margin-top: 0;
+  box-shadow: 0 6px 14px rgba(138, 73, 217, 0.38);
+  transition: transform 0.2s ease;
+  transform-origin: center;
+}
+
+.current-track-image:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 18px rgba(138, 73, 217, 0.5);
 }
 
 .current-track-info {
@@ -856,8 +887,27 @@ body::-webkit-scrollbar-thumb {
   margin-top: 0.25rem;
 }
 
+.current-track-status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.current-track-source-badge {
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 50%, transparent);
+  border-radius: 999px;
+  padding: 0.2rem 0.45rem;
+  white-space: nowrap;
+}
+
 .current-track-progress {
-  margin-top: 0.1rem;
+  margin-top: 0.25rem;
 }
 
 .progress-bar {
@@ -1147,6 +1197,31 @@ body::-webkit-scrollbar-thumb {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+
+.preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  max-width: 62%;
+}
+
+.preset-buttons button {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1.1;
+  transition: all var(--transition);
+}
+
+.preset-buttons button:hover {
+  background: var(--color-link-hover);
+  color: #ffffff;
 }
 
 .debug-actions {

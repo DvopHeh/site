@@ -166,7 +166,7 @@
 			<form class="login-form" onsubmit={login}>
 				<div class="form-group">
 					<label for="password">Password</label>
-					<input type="password" id="password" bind:value={password} required autofocus />
+					<input type="password" id="password" bind:value={password} required />
 				</div>
 				
 				<button type="submit" class="btn-primary">Login</button>
@@ -222,7 +222,7 @@
 							<textarea id="content" bind:value={content} rows="15" required placeholder="Write in Markdown..."></textarea>
 						</div>
 						<div class="preview-pane">
-							<label>Live Preview</label>
+							<p>Live Preview</p>
 							<div class="markdown-preview">
 								{@html preview}
 							</div>
