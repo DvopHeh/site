@@ -1540,7 +1540,9 @@ body::-webkit-scrollbar-thumb {
 }
 
 .post-body img {
-  max-width: 100%;
+  max-width: min(100%, 720px);
+  max-height: 420px;
+  width: auto;
   height: auto;
   display: block;
   margin: 1.5rem auto;

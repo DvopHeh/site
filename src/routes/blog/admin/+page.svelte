@@ -29,6 +29,11 @@
 	let content = $state('');
 	let featuredImage = $state('');
 	let published = $state(false);
+	let uploadFile: File | null = $state(null);
+	let uploadInProgress = $state(false);
+	let uploadedImageUrl = $state('');
+	let uploadedMarkdownImage = $state('');
+	let uploadError = $state('');
 	let notification = $state({ show: false, message: '', type: 'success' });
 
 	$effect(() => {
@@ -85,6 +90,50 @@
 		content = '';
 		featuredImage = '';
 		published = false;
+		uploadFile = null;
+		uploadedImageUrl = '';
+		uploadedMarkdownImage = '';
+		uploadError = '';
+	}
+
+	function onUploadFileChange(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+		uploadFile = input.files?.[0] ?? null;
+		uploadError = '';
+	}
+
+	async function uploadImage() {
+		if (!uploadFile) return;
+
+		uploadInProgress = true;
+		uploadError = '';
+
+		try {
+			const formData = new FormData();
+			formData.append('file', uploadFile);
+
+			const response = await fetch('/api/upload', {
+				method: 'POST',
+				body: formData
+			});
+			const data = await response.json();
+
+			if (!response.ok || !data.url) {
+				uploadError = data.error || 'Upload failed';
+				return;
+			}
+
+			uploadedImageUrl = data.url;
+			uploadedMarkdownImage = data.markdownImage || `![](${data.url})`;
+			featuredImage = data.url;
+			content = content ? `${content}\n\n${uploadedMarkdownImage}` : uploadedMarkdownImage;
+			notification = { show: true, message: 'Image uploaded. URL and Markdown image tag ready.', type: 'success' };
+			setTimeout(() => (notification.show = false), 3000);
+		} catch {
+			uploadError = 'Upload failed';
+		} finally {
+			uploadInProgress = false;
+		}
 	}
 
 	function editPost(post: Post) {
@@ -216,6 +265,29 @@
 						<input type="url" id="featuredImage" bind:value={featuredImage} placeholder="https://..." />
 					</div>
 
+					<div class="form-group">
+						<label for="imageUpload">Upload Image</label>
+						<div class="upload-controls">
+							<input id="imageUpload" type="file" accept="image/*" onchange={onUploadFileChange} />
+							<button type="button" class="btn-secondary" onclick={uploadImage} disabled={!uploadFile || uploadInProgress}>
+								{uploadInProgress ? 'Uploading...' : 'Upload'}
+							</button>
+						</div>
+						{#if uploadedImageUrl}
+							<small>
+								Featured Image URL:
+								<a href={uploadedImageUrl} target="_blank" rel="noreferrer">{uploadedImageUrl}</a>
+							</small>
+							<small>
+								Markdown image:
+								<code>{uploadedMarkdownImage}</code>
+							</small>
+						{/if}
+						{#if uploadError}
+							<small class="error-text">{uploadError}</small>
+						{/if}
+					</div>
+
 					<div class="editor-preview-container">
 						<div class="editor-pane">
 							<label for="content">Content (Markdown) *</label>
@@ -345,6 +417,20 @@
 		font-size: 0.875rem;
 	}
 
+	.upload-controls {
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+	}
+
+	.upload-controls input[type="file"] {
+		flex: 1;
+	}
+
+	.error-text {
+		color: #ff4444;
+	}
+
 	.error-message {
 		padding: 0.75rem;
 		background: rgba(255, 0, 0, 0.2);
@@ -465,6 +551,17 @@
 		min-height: 400px;
 		overflow-y: auto;
 		color: var(--color-text);
+	}
+
+	.markdown-preview :global(img) {
+		max-width: min(100%, 720px);
+		max-height: 420px;
+		width: auto;
+		height: auto;
+		display: block;
+		margin: 1rem auto;
+		object-fit: contain;
+		border-radius: 8px;
 	}
 
 	.form-actions {
