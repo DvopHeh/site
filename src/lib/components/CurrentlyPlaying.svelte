@@ -13,12 +13,22 @@
     estimatedPosition: number | null;
     source: string | null;
     player: string | null;
+    volume: number | null;
   }
 
   let currentTrack: Track | null = $state(null);
   let error = $state(false);
   let displayPosition = $state(0);
+  let isFetching = false;
+  let fetchTimeout: ReturnType<typeof setTimeout> | null = null;
   let positionTimer: ReturnType<typeof setInterval> | null = null;
+  let syncedPosition = 0;
+  let syncedAtMs = 0;
+  let lastTrackId = "";
+
+  const FETCH_INTERVAL_IDLE_MS = 2000;
+  const FETCH_INTERVAL_PLAYING_MS = 500;
+  const POSITION_TICK_MS = 500;
 
   function formatTime(seconds: number | null | undefined): string {
     if (seconds == null || seconds < 0) return "?:??";
@@ -44,47 +54,122 @@
     return track?.source ?? null;
   }
 
+  function getTrackId(track: Track): string {
+    return [
+      track.source ?? "",
+      track.player ?? "",
+      track.title ?? "",
+      track.artist ?? "",
+      track.album ?? "",
+    ].join("|");
+  }
+
+  function getServerPosition(track: Track): number | null {
+    if (track.playing && track.estimatedPosition != null) return track.estimatedPosition;
+    if (track.position != null) return track.position;
+    return null;
+  }
+
+  function getPredictedPosition(nowMs = Date.now()): number {
+    if (!currentTrack?.playing) return syncedPosition;
+    return syncedPosition + (nowMs - syncedAtMs) / 1000;
+  }
+
+  function syncPositionFromServer(track: Track) {
+    const serverPos = getServerPosition(track);
+    if (serverPos == null) return;
+
+    const now = Date.now();
+    const nextTrackId = getTrackId(track);
+    const trackChanged = nextTrackId !== lastTrackId;
+    lastTrackId = nextTrackId;
+
+    if (trackChanged || !track.playing) {
+      syncedPosition = serverPos;
+      syncedAtMs = now;
+      displayPosition = serverPos;
+      return;
+    }
+
+    const localPredicted = getPredictedPosition(now);
+    const drift = serverPos - localPredicted;
+    if (Math.abs(drift) > 1.2) {
+      syncedPosition = serverPos;
+      syncedAtMs = now;
+      displayPosition = serverPos;
+    }
+  }
+
   async function fetchCurrentTrack() {
+    if (isFetching) return;
+    isFetching = true;
     try {
-      const response = await fetch("https://api-np.dvop.fyi/api/now-playing");
+      const response = await fetch("/api/now-playing", { cache: "no-store" });
       if (!response.ok) {
         error = true;
         return;
       }
       const data: Track = await response.json();
       currentTrack = data;
-
-      if (data.playing && data.estimatedPosition != null) {
-        displayPosition = data.estimatedPosition;
-      } else if (data.position != null) {
-        displayPosition = data.position;
-      }
+      syncPositionFromServer(data);
     } catch (e) {
       console.error("Fetch error:", e);
       error = true;
+    } finally {
+      isFetching = false;
     }
   }
 
+  function getNextFetchDelay(): number {
+    return currentTrack?.playing ? FETCH_INTERVAL_PLAYING_MS : FETCH_INTERVAL_IDLE_MS;
+  }
+
+  async function pollLoop() {
+    if (document.hidden) return;
+    await fetchCurrentTrack();
+    fetchTimeout = setTimeout(() => {
+      void pollLoop();
+    }, getNextFetchDelay());
+  }
+
+  function startPolling() {
+    if (fetchTimeout) return;
+    void pollLoop();
+  }
+
+  function stopPolling() {
+    if (!fetchTimeout) return;
+    clearTimeout(fetchTimeout);
+    fetchTimeout = null;
+  }
+
   onMount(() => {
-    fetchCurrentTrack();
-    const fetchInterval = setInterval(fetchCurrentTrack, 1000);
+    startPolling();
 
     // Smooth local position counter between fetches
     positionTimer = setInterval(() => {
       if (currentTrack?.playing) {
-        displayPosition += 0.1;
+        const next = getPredictedPosition();
+        if (currentTrack.duration && currentTrack.duration > 0) {
+          displayPosition = Math.min(next, currentTrack.duration);
+        } else {
+          displayPosition = next;
+        }
       }
-    }, 100);
+    }, POSITION_TICK_MS);
 
     const handleVisibility = () => {
       if (!document.hidden) {
-        fetchCurrentTrack();
+        startPolling();
+        void fetchCurrentTrack();
+      } else {
+        stopPolling();
       }
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
-      clearInterval(fetchInterval);
+      stopPolling();
       if (positionTimer) clearInterval(positionTimer);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
@@ -100,7 +185,13 @@
     <div class="current-track">
       <div class="current-track-main">
         {#if currentTrack.albumArt?.startsWith("http")}
-          <img src={currentTrack.albumArt} alt="" class="current-track-image" />
+          <img
+            src={currentTrack.albumArt}
+            alt=""
+            class="current-track-image"
+            loading="lazy"
+            decoding="async"
+          />
         {/if}
         <div class="current-track-info">
           <MarqueeText text={currentTrack.title} class="current-track-name" />
@@ -116,6 +207,9 @@
             <div class="current-track-status">
               {formatTime(displayPosition)} / {formatTime(currentTrack.duration)}
             </div>
+            {#if currentTrack.volume != null}
+              <div class="current-track-status">Vol {currentTrack.volume}%</div>
+            {/if}
             {#if sourceLabel}
               <span class="current-track-source-badge">Played from: {sourceLabel}</span>
             {/if}

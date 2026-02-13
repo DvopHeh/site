@@ -9,7 +9,10 @@
   <FriendsSection />
 
   <section class="landing-section">
-    <h2 class="landing-section-title">Currently Playing</h2>
+    <div class="section-header">
+      <h2 class="landing-section-title">Currently Playing</h2>
+      <a href="/played" class="link-button">View Played</a>
+    </div>
     <CurrentlyPlaying />
   </section>
 

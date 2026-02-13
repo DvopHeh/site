@@ -130,6 +130,12 @@
 		linkHover: '--color-link-hover'
 	};
 
+	function getCurrentTheme(): ThemeName {
+		const raw = document.documentElement.getAttribute('data-theme');
+		if (raw === 'light' || raw === 'gameboy') return raw;
+		return 'dark';
+	}
+
 	function updateColor(variable: string, value: string) {
 		const cssVar = colorToCssVar[variable];
 		if (!cssVar) return;
@@ -158,7 +164,8 @@
 	}
 
 	function saveColors() {
-		localStorage.setItem('debug-colors', JSON.stringify(colors));
+		const theme = getCurrentTheme();
+		localStorage.setItem(`debug-colors:${theme}`, JSON.stringify(colors));
 	}
 
 	function close() {
@@ -172,13 +179,24 @@
 		});
 	}
 
+	function clearInlineThemeOverrides() {
+		Object.values(colorToCssVar).forEach((cssVar) => {
+			document.documentElement.style.removeProperty(cssVar);
+		});
+		document.documentElement.style.removeProperty('--color-bg-alt');
+		document.documentElement.style.removeProperty('--color-bg-base');
+	}
+
 	onMount(() => {
 		try {
-			const stored = localStorage.getItem('debug-colors');
+			const theme = getCurrentTheme();
+			const stored = localStorage.getItem(`debug-colors:${theme}`);
 			if (stored) {
 				const parsed = JSON.parse(stored) as Partial<typeof defaultColors>;
 				const merged = { ...defaultColors, ...parsed };
 				applyColorsFromState(merged);
+			} else {
+				clearInlineThemeOverrides();
 			}
 		} catch (error) {
 			console.error('Failed to load debug colors:', error);

@@ -32,11 +32,11 @@
     </button>
   </div>
 
-  {#if isOpen}
-    {#if system.description}
-      <p class="system-card-description">{system.description}</p>
-    {/if}
+  {#if system.description}
+    <p class="system-card-description">{system.description}</p>
+  {/if}
 
+  {#if isOpen}
     <div class="system-card-specs">
       {#if system.specs}
         {#each system.specs as spec}
