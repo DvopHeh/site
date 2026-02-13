@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import MarqueeText from "./MarqueeText.svelte";
 
   interface Track {
@@ -41,6 +42,10 @@
     if (!currentTrack?.duration || currentTrack.duration <= 0) return 0;
     return Math.min((displayPosition / currentTrack.duration) * 100, 100);
   }
+
+  const dispatch = createEventDispatcher<{
+    volumechange: { volume: number | null };
+  }>();
 
   function getSourceLabel(source: string | null | undefined): string | null {
     if (!source) return null;
@@ -112,6 +117,7 @@
       const data: Track = await response.json();
       currentTrack = data;
       syncPositionFromServer(data);
+      dispatch("volumechange", { volume: data.volume ?? null });
     } catch (e) {
       console.error("Fetch error:", e);
       error = true;
@@ -207,9 +213,6 @@
             <div class="current-track-status">
               {formatTime(displayPosition)} / {formatTime(currentTrack.duration)}
             </div>
-            {#if currentTrack.volume != null}
-              <div class="current-track-status">Vol {currentTrack.volume}%</div>
-            {/if}
             {#if sourceLabel}
               <span class="current-track-source-badge">Played from: {sourceLabel}</span>
             {/if}
