@@ -14,3 +14,7 @@ database_id = "ef10419c-9ddc-49a1-83a8-5f03ca67944b"
 [[r2_buckets]]
 binding = "images-blog"
 bucket_name = "blog-images"
+
+[[r2_buckets]]
+binding = "GUESTBOOK_LOGS"
+bucket_name = "guestbook-logs"

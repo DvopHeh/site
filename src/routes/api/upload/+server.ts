@@ -1,8 +1,8 @@
 import type { RequestHandler } from './$types';
+import { isAdminAuthenticated, type AdminAuthEnv } from '$lib/server/adminAuth';
 
-interface Env {
+interface Env extends AdminAuthEnv {
 	'images-blog': R2Bucket;
-	BLOG_ADMIN_PASSWORD?: string;
 }
 
 const json = (data: unknown, status = 200) =>
@@ -17,7 +17,7 @@ const MAX_FILE_SIZE = 5 * 1024 * 1024;
 export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
 
-	if (cookies.get('blog_admin_credential') !== (env?.BLOG_ADMIN_PASSWORD ?? 'admin')) {
+	if (!(await isAdminAuthenticated(cookies, env))) {
 		return json({ error: 'Unauthorized' }, 401);
 	}
 

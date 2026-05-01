@@ -6,6 +6,7 @@
 	let showError = $state(false);
 	let showSuccess = $state(false);
 	let isSubmitting = $state(false);
+	let fingerprint = $state('');
 
 	const NAME_MAX = 20;
 	const MESSAGE_MAX = 500;
@@ -26,6 +27,20 @@
 			trimmedMessage.length <= MESSAGE_MAX
 	);
 
+	if (typeof window !== 'undefined') {
+		const storageKey = 'guestbook_device_id';
+		const existingId = window.localStorage.getItem(storageKey);
+		if (existingId) {
+			fingerprint = existingId;
+		} else {
+			const generatedId = (window.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`)
+				.replace(/[^a-zA-Z0-9_-]/g, '')
+				.slice(0, 64);
+			window.localStorage.setItem(storageKey, generatedId);
+			fingerprint = generatedId;
+		}
+	}
+
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
@@ -42,6 +57,9 @@
 		const formData = new FormData();
 		formData.append('name', trimmedName);
 		formData.append('message', trimmedMessage);
+		if (fingerprint) {
+			formData.append('fingerprint', fingerprint);
+		}
 
 		try {
 			const response = await fetch('/api/guestbook', {

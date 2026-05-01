@@ -17,6 +17,7 @@
 	}
 
 	let isAuthenticated = $state(false);
+	let checkingSession = $state(true);
 	let password = $state('');
 	let loginError = $state('');
 	let posts: Post[] = $state([]);
@@ -47,21 +48,24 @@
 
 	async function login(e: Event) {
 		e.preventDefault();
+		loginError = '';
 		try {
 			const response = await fetch('/api/auth', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ password })
 			});
-			const data = await response.json();
-			if (data.success) {
+
+			const data = (await response.json()) as { success?: boolean };
+			if (response.ok && data.success) {
 				isAuthenticated = true;
-				loadPosts();
+				password = '';
+				await loadPosts();
 			} else {
 				loginError = 'Invalid password';
 				password = '';
 			}
-		} catch (e) {
+		} catch {
 			loginError = 'Login failed. Please try again.';
 		}
 	}
@@ -69,6 +73,7 @@
 	async function logout() {
 		await fetch('/api/auth', { method: 'DELETE' });
 		isAuthenticated = false;
+		posts = [];
 	}
 
 	async function loadPosts() {
@@ -76,6 +81,8 @@
 			const response = await fetch('/api/blog');
 			if (response.ok) {
 				posts = await response.json();
+			} else if (response.status === 401) {
+				isAuthenticated = false;
 			}
 		} catch (e) {
 			console.error('Error loading posts:', e);
@@ -195,9 +202,22 @@
 	}
 
 	onMount(() => {
-		// Check if cookies indicate authentication (simplified check)
-		// Full auth is handled by the cookie set by the API
-		loadPosts();
+		void (async () => {
+			try {
+				const response = await fetch('/api/auth');
+				if (response.ok) {
+					const data = (await response.json()) as { authenticated?: boolean };
+					isAuthenticated = Boolean(data.authenticated);
+					if (isAuthenticated) {
+						await loadPosts();
+					}
+				}
+			} catch (error) {
+				console.error('Failed to validate admin session:', error);
+			} finally {
+				checkingSession = false;
+			}
+		})();
 	});
 </script>
 
@@ -205,7 +225,14 @@
 	<title>Blog Admin</title>
 </svelte:head>
 
-{#if !isAuthenticated}
+{#if checkingSession}
+	<div class="login-screen">
+		<div class="login-container">
+			<h1>Blog Admin</h1>
+			<p>Checking session...</p>
+		</div>
+	</div>
+{:else if !isAuthenticated}
 	<!-- Login Screen -->
 	<div class="login-screen">
 		<div class="login-container">

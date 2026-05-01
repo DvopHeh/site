@@ -1,43 +1,54 @@
 import type { RequestHandler } from './$types';
+import {
+	ADMIN_SESSION_COOKIE,
+	createAdminSessionToken,
+	getAdminCookieOptions,
+	getAdminPassword,
+	isAdminAuthenticated,
+	type AdminAuthEnv
+} from '$lib/server/adminAuth';
+
+const JSON_HEADERS = { 'Content-Type': 'application/json' } as const;
+
+const json = (data: unknown, status = 200) =>
+	new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
+
+export const GET: RequestHandler = async ({ cookies, platform }) => {
+	const env = platform?.env as AdminAuthEnv | undefined;
+	const authenticated = await isAdminAuthenticated(cookies, env);
+	return json({ authenticated });
+};
 
 export const POST: RequestHandler = async ({ request, cookies, platform }) => {
 	try {
-		const { password } = await request.json();
-		
-		// Get admin password from environment
-		const env = platform?.env as { BLOG_ADMIN_PASSWORD?: string } | undefined;
-		const adminPassword = (platform?.env?.BLOG_ADMIN_PASSWORD ?? "admin"); // fallback for dev
-		
-		if (password === adminPassword) {
-			cookies.set('blog_admin_credential', adminPassword, {
-				path: '/',
-				httpOnly: true,
-				sameSite: 'strict',
-				maxAge: 60 * 60 * 24 // 24 hours
-			});
-			
-			return new Response(JSON.stringify({ success: true }), {
-				status: 200,
-				headers: { 'Content-Type': 'application/json' }
-			});
+		const env = platform?.env as AdminAuthEnv | undefined;
+		const { password } = (await request.json()) as { password?: string };
+
+		if (typeof password !== 'string') {
+			return json({ success: false }, 400);
 		}
-		
-		return new Response(JSON.stringify({ success: false }), {
-			status: 401,
-			headers: { 'Content-Type': 'application/json' }
-		});
+
+		const adminPassword = getAdminPassword(env);
+		if (password !== adminPassword) {
+			return json({ success: false }, 401);
+		}
+
+		const token = await createAdminSessionToken(env);
+		cookies.set(ADMIN_SESSION_COOKIE, token, getAdminCookieOptions(request));
+
+		return json({ success: true });
 	} catch (error) {
-		return new Response(JSON.stringify({ error: 'Authentication failed' }), {
-			status: 500,
-			headers: { 'Content-Type': 'application/json' }
-		});
+		console.error('Authentication failed:', error);
+		return json({ error: 'Authentication failed' }, 500);
 	}
 };
 
-export const DELETE: RequestHandler = async ({ cookies }) => {
-	cookies.delete('blog_admin_credential', { path: '/' });
-	return new Response(JSON.stringify({ success: true }), {
-		status: 200,
-		headers: { 'Content-Type': 'application/json' }
+export const DELETE: RequestHandler = async ({ cookies, request }) => {
+	cookies.delete(ADMIN_SESSION_COOKIE, {
+		path: '/',
+		httpOnly: true,
+		sameSite: 'strict',
+		secure: getAdminCookieOptions(request).secure
 	});
+	return json({ success: true });
 };

@@ -74,7 +74,9 @@ declare global {
 				DB?: D1Database;
 				blog?: D1Database;
 				'images-blog'?: R2Bucket;
+				GUESTBOOK_LOGS?: R2Bucket;
 				BLOG_ADMIN_PASSWORD?: string;
+				BLOG_ADMIN_SESSION_SECRET?: string;
 				LASTFM_API_KEY?: string;
 
 			};
