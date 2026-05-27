@@ -1,4 +1,5 @@
 import type { RequestHandler } from './$types';
+import { env } from '$env/dynamic/public';
 
 type HealthState = 'ok' | 'degraded' | 'down' | 'skipped';
 
@@ -15,7 +16,9 @@ const JSON_HEADERS = { 'Content-Type': 'application/json' } as const;
 const CHECK_TIMEOUT_MS = 4500;
 const STATUS_HISTORY_WINDOW_MS = 1000 * 60 * 60 * 24;
 const STATUS_HISTORY_MAX_POINTS = 240;
-const LANYARD_DISCORD_ID = '410475909125242901';
+
+const DISCORD_ID = '410475909125242901';
+const API_BASE = env.PUBLIC_DISPULL_API_BASE_URL || 'https://dispull.dvop.fyi';
 
 interface StatusSnapshot {
 	timestamp: string;
@@ -155,9 +158,9 @@ export const GET: RequestHandler = async (event) => {
 		runHttpCheck('guestbook', 'Guestbook API', (signal) => fetch('/api/guestbook', { signal }), [200]),
 		runHttpCheck('blog', 'Blog API', (signal) => fetch('/api/blog', { signal }), [200]),
 		runHttpCheck(
-			'lanyard',
-			'Lanyard (dispull)',
-			(signal) => fetch(`https://dispull.dvop.fyi/api/profile/${LANYARD_DISCORD_ID}`, { signal }),
+			'dispull',
+			'Dispull profile',
+			(signal) => fetch(`${API_BASE}/api/profile/${DISCORD_ID}`, { signal }),
 			[200]
 		),
 		runHttpCheck('pc-stats', 'Main PC stats', (signal) => fetch('https://pc-stats.dvop.fyi', { signal }), [200]),
