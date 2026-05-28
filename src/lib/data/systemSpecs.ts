@@ -90,13 +90,13 @@ export const allSystemSpecs: SystemDetails[] = [
     softwareAndOS: [
       {
         label: "System",
-        value: "Arch Linux",
+        value: "Gentoo",
       },
       {
         label: "Primary OS",
-        value: "Bedrock Linux (on top of Arch) + Hypergay",
+        value: "Gentoo, Hyprland & Noctalia Shell",
         notes:
-          "I use arch btw.",
+          "oh yeah I use gentoo btw.",
       },
     ],
   },
@@ -123,7 +123,7 @@ export const allSystemSpecs: SystemDetails[] = [
     softwareAndOS: [
       {
         label: "System",
-        value: "Arch Linux",
+        value: "Promox VE",
       },
     ],
   },
