@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Lanyard from "$lib/components/Lanyard.svelte";
   import GuestbookEntries from "$lib/components/GuestbookEntries.svelte";
+  import Lanyard from "$lib/components/Lanyard.svelte";
 
   let { profile } = $props<{ profile: unknown }>();
 </script>
@@ -13,8 +13,7 @@
   <section class="landing-section">
     <h2 class="landing-section-title">More Useless Info about me!</h2>
     <p class="landing-section-desc">
-      Well, uh I got friends? (atleast 3), currently running Arch (I Use Arch
-      btw.) And idk, I'm a pro minecraft gamer. watching absolutely useless
+      Well, uh I got friends? (atleast 3), currently running Gentoo And idk, I'm a pro minecraft gamer. watching absolutely useless
       documentaries about dumb stuff.
     </p>
   </section>
