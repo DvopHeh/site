@@ -1,7 +1,7 @@
 <section class="landing-section">
   <h2 class="landing-section-title">Links & Contact</h2>
   <div class="contact-buttons">
-    <a href="mailto:2259fd108@mozmail.com" class="mail-button">
+    <a href="mailto:contactme@dvop.fyi" class="mail-button">
       <i class="bi bi-envelope"></i>
       Email me
     </a>
