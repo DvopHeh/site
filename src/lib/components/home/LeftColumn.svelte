@@ -4,6 +4,8 @@
   import FriendsSection from "$lib/components/home/FriendsSection.svelte";
   import ContactSection from "$lib/components/home/ContactSection.svelte";
 
+  // currently-playing bubbles the volume up so we can show a little icon next
+  // to the "Currently Playing" heading
   let headerVolume: number | null = null;
 
   function onVolumeChange(event: CustomEvent<{ volume: number | null }>) {

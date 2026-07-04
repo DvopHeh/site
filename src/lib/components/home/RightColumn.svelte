@@ -1,6 +1,7 @@
 <script lang="ts">
+  // right side of the homepage — my pc/server spec cards. track which one's
+  // open so opening a new card closes the last
   import SystemCard from "$lib/components/SystemCard.svelte";
-  import SystemStatus from "$lib/components/SystemStatus.svelte";
   import { allSystemSpecs } from "$lib/data/systemSpecs";
 
   let openSystemIndex: number | null = $state(null);
@@ -15,10 +16,5 @@
         onToggle={() => (openSystemIndex = openSystemIndex === index ? null : index)}
       />
     {/each}
-  </section>
-
-  <section class="landing-section system-status-section" class:hidden={openSystemIndex !== null}>
-    <h2 class="landing-section-title">System Status</h2>
-    <SystemStatus />
   </section>
 </div>

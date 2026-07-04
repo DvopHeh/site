@@ -1,3 +1,5 @@
+// login/logout for the blog admin. POST a password, get a signed cookie back.
+// GET just tells you if you're currently logged in, DELETE logs you out
 import type { RequestHandler } from './$types';
 import {
 	ADMIN_SESSION_COOKIE,

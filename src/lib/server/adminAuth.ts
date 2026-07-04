@@ -1,3 +1,6 @@
+// tiny homemade auth for the blog admin page. basically a signed cookie
+// (hmac) so nobody can just forge one. not fort knox but good enough for a
+// personal site lol
 import type { Cookies } from '@sveltejs/kit';
 
 export interface AdminAuthEnv {
@@ -6,7 +9,7 @@ export interface AdminAuthEnv {
 }
 
 export const ADMIN_SESSION_COOKIE = 'blog_admin_session';
-const SESSION_TTL_SECONDS = 60 * 60 * 12;
+const SESSION_TTL_SECONDS = 60 * 60 * 12; // stay logged in for 12h
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
@@ -25,6 +28,8 @@ const decodeBase64Url = (input: string) => {
 	return bytes;
 };
 
+// compare byte by byte without bailing early, so you can't time your way
+// into guessing the signature
 const timingSafeEqual = (a: Uint8Array, b: Uint8Array) => {
 	if (a.length !== b.length) return false;
 	let result = 0;
@@ -34,6 +39,8 @@ const timingSafeEqual = (a: Uint8Array, b: Uint8Array) => {
 	return result === 0;
 };
 
+// use the dedicated secret if it's set, otherwise fall back to the password.
+// the 'admin-change-me' default is there so local dev doesn't explode
 const getSessionSecret = (env: AdminAuthEnv | undefined) =>
 	env?.BLOG_ADMIN_SESSION_SECRET || env?.BLOG_ADMIN_PASSWORD || 'admin-change-me';
 
@@ -80,6 +87,7 @@ export const isAdminAuthenticated = async (cookies: Cookies, env: AdminAuthEnv |
 
 export const getAdminCookieOptions = (request: Request) => {
 	const hostname = new URL(request.url).hostname;
+	// secure cookies everywhere except localhost, otherwise dev login breaks
 	const secure = hostname !== 'localhost' && hostname !== '127.0.0.1';
 
 	return {

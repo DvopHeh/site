@@ -1,4 +1,6 @@
 <script lang="ts">
+  // one collapsible "here's my pc" card. specs live in systemSpecs.ts, the
+  // parent decides which card is open so only one expands at a time
   import type { SystemDetails, MonitorDetail } from "$lib/data/systemSpecs";
 
   let {
@@ -17,6 +19,8 @@
     }
   }
 
+  // monitors can be a plain string or a list of them — this lets the template
+  // know which one it's dealing with
   function isMonitorArray(
     value: string | MonitorDetail[],
   ): value is MonitorDetail[] {

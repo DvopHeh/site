@@ -3,8 +3,14 @@
   import "../app.css";
   import Navbar from "$lib/components/Navbar.svelte";
   import EasterEggs from "$lib/components/EasterEggs.svelte";
+  import Terminal from "$lib/components/Terminal.svelte";
+  import Starfall from "$lib/components/Starfall.svelte";
+  import { starfallEnabled, starfallForced } from "$lib/stores";
 
-  // Theme initialization
+  // only render the canvas after mount so we don't fight SSR / hydration
+  let mounted = $state(false);
+
+  // pick the theme on load: whatever you saved last, else match your OS setting
   onMount(() => {
     const savedTheme = localStorage.getItem("theme");
     const systemIsDark = window.matchMedia(
@@ -12,6 +18,7 @@
     ).matches;
     const currentTheme = savedTheme || (systemIsDark ? "dark" : "light");
     document.documentElement.setAttribute("data-theme", currentTheme);
+    mounted = true;
   });
 </script>
 
@@ -32,3 +39,7 @@
 <Navbar />
 <EasterEggs />
 <slot />
+<Terminal />
+{#if mounted && ($starfallEnabled || $starfallForced)}
+  <Starfall />
+{/if}

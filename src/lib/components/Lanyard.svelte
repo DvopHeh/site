@@ -1,4 +1,6 @@
 <script lang="ts">
+  // discord profile card (avatar, banner, deco, name). everything falls back to
+  // a default if the profile fetch came back empty
   const DEFAULT_AVATAR = "/images/default.jpg";
 
   interface Profile {

@@ -1,3 +1,5 @@
+// up up down down left right left right — the classic. also works with swipes
+// on mobile. used to unlock the blog admin button
 const DEFAULT_KONAMI_CODE = [
   "ArrowUp",
   "ArrowUp",
@@ -30,6 +32,7 @@ export function setupKonamiListeners(options: KonamiOptions): () => void {
   let swipeSequence: string[] = [];
   let swipeResetTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // walk through the sequence one key at a time, reset the moment you fumble it
   const handleKeydown = (e: KeyboardEvent) => {
     if (e.code === code[keyIndex]) {
       keyIndex++;
@@ -48,10 +51,12 @@ export function setupKonamiListeners(options: KonamiOptions): () => void {
     touchStartY = e.touches[0].clientY;
   };
 
+  // turn a swipe into a direction so phones can do the code too
   const handleTouchEnd = (e: TouchEvent) => {
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
 
+    // bigger axis wins, and it has to be a real swipe not a tiny wobble
     let direction: string | null = null;
     if (Math.abs(dx) > Math.abs(dy)) {
       if (Math.abs(dx) > swipeThreshold) {

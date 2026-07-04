@@ -1,3 +1,5 @@
+// keeps a log of recently played tracks so the /played page has something to
+// show. writes to D1 if it's around, otherwise just holds them in memory
 export interface PlayedTrack {
 	title: string | null;
 	artist: string | null;
@@ -12,6 +14,7 @@ const MAX_HISTORY_ITEMS = 50;
 const playedHistory: PlayedTrack[] = [];
 let playedTableEnsured = false;
 
+// cheap id for a track so we can tell if it's the same song as last time
 function trackSignature(track: Omit<PlayedTrack, 'playedAt'>): string {
 	return `${track.artist ?? ''}::${track.title ?? ''}::${track.album ?? ''}`.toLowerCase();
 }
@@ -50,6 +53,7 @@ export async function recordPlayedTrack(track: Omit<PlayedTrack, 'playedAt'>, db
 		try {
 			await ensurePlayedTable(db);
 
+			// if the newest row is already this song, don't log it again
 			const latest = await db
 				.prepare('SELECT signature FROM played_history ORDER BY played_at DESC, id DESC LIMIT 1')
 				.first<{ signature: string }>();
@@ -65,6 +69,7 @@ export async function recordPlayedTrack(track: Omit<PlayedTrack, 'playedAt'>, db
 				.bind(signature, track.title, track.artist, track.album, track.albumArt, track.source, track.player)
 				.run();
 
+			// don't let the table grow forever, keep the newest 500 and bin the rest
 			await db
 				.prepare(`
 					DELETE FROM played_history

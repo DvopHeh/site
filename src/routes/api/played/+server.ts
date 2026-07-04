@@ -1,3 +1,4 @@
+// spits out the last N songs i played for the /played page. capped at 30
 import type { RequestHandler } from './$types';
 import { getRecentPlayedTracks } from '$lib/server/playedHistory';
 

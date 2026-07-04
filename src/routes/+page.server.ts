@@ -1,3 +1,5 @@
+// grabs my discord profile (via dispull) for the lanyard card on the homepage.
+// if it's down we just hand back some hardcoded defaults so the page still works
 import { env } from '$env/dynamic/public';
 
 const DISCORD_ID = '410475909125242901';

@@ -1,4 +1,6 @@
 <script lang="ts">
+  // middle of the homepage — discord card up top, then the about blurbs and
+  // the guestbook
   import GuestbookEntries from "$lib/components/GuestbookEntries.svelte";
   import Lanyard from "$lib/components/Lanyard.svelte";
 

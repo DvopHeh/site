@@ -1,3 +1,5 @@
+// pokes every api + binding and reports which ones are alive. the terminal's
+// `ping` command eats this. also keeps a little rolling history in D1
 import type { RequestHandler } from './$types';
 import { env } from '$env/dynamic/public';
 
@@ -163,8 +165,6 @@ export const GET: RequestHandler = async (event) => {
 			(signal) => fetch(`${API_BASE}/api/profile/${DISCORD_ID}`, { signal }),
 			[200]
 		),
-		runHttpCheck('pc-stats', 'Main PC stats', (signal) => fetch('https://pc-stats.dvop.fyi', { signal }), [200]),
-		runHttpCheck('server-stats', 'Server stats', (signal) => fetch('https://server-stats.dvop.fyi', { signal }), [200]),
 		runHttpCheck(
 			'auth',
 			'Auth API',

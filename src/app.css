@@ -1831,14 +1831,6 @@ body::-webkit-scrollbar-thumb {
   /* background is already set by .landing-section */
 }
 
-.system-status-section {
-  position: relative;
-  bottom: auto;
-  z-index: 10;
-  margin-top: 0;
-  /* background is already set by .landing-section */
-}
-
 .hidden {
   display: none !important;
 }

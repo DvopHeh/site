@@ -1,3 +1,5 @@
+// blog crud. anyone can read published posts, but making/editing/deleting
+// needs the admin cookie. drafts are only visible once you're logged in
 import type { RequestHandler } from './$types';
 import { isAdminAuthenticated, type AdminAuthEnv } from '$lib/server/adminAuth';
 
@@ -10,6 +12,7 @@ const JSON_HEADERS = { 'Content-Type': 'application/json' } as const;
 const json = (data: unknown, status = 200) =>
 	new Response(JSON.stringify(data), { status, headers: JSON_HEADERS });
 
+// turn a title into a clean url slug (lowercase, dashes, no junk)
 const normalizeSlug = (value: string) =>
 	value
 		.toLowerCase()
@@ -48,6 +51,7 @@ export const GET: RequestHandler = async ({ platform, cookies }) => {
 			return json({ error: 'Database not available' }, 500);
 		}
 
+		// logged in? you get drafts too. otherwise only published stuff
 		const isAdmin = await isAdminAuthenticated(cookies, env);
 		const query = isAdmin
 			? `SELECT * FROM blog ORDER BY created_at DESC`

@@ -1,4 +1,5 @@
 <script lang="ts">
+	// top nav. handles the light/dark toggle and the "Site Stuff" dropdown
 	let themeIcon = $state('bi-sun-fill');
 	let isSiteStuffOpen = $state(false);
 	let closeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -29,6 +30,8 @@
 		isSiteStuffOpen = true;
 	}
 
+	// small delay before closing so you don't lose the menu when your cursor
+	// clips the gap between the button and the dropdown
 	function closeSiteStuff() {
 		if (closeTimer) {
 			clearTimeout(closeTimer);
@@ -66,8 +69,7 @@
 					{#if isSiteStuffOpen}
 						<div class="nav-dropdown-menu">
 						<a href="/about">About</a>
-						<a href="/status">API Status</a>
-					</div>
+											</div>
 					{/if}
 				</div>
 			</li>

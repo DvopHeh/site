@@ -1,3 +1,4 @@
+// shape of a blog post row, shared between the blog pages
 export interface Post {
   id: number;
   title: string;

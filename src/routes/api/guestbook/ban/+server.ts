@@ -1,3 +1,5 @@
+// admin-only endpoint for banning people from the guestbook, either by ip or by
+// browser fingerprint. list/add/remove bans
 import type { RequestHandler } from './$types';
 import { isAdminAuthenticated, type AdminAuthEnv } from '$lib/server/adminAuth';
 import {
@@ -66,6 +68,7 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 		}
 
 		const reasonText = typeof reason === 'string' ? reason.trim().slice(0, 200) : null;
+		// INSERT OR IGNORE so re-banning the same value doesn't error out
 		const result = await db
 			.prepare('INSERT OR IGNORE INTO guestbook_bans (type, value, reason) VALUES (?, ?, ?)')
 			.bind(type, normalizedValue, reasonText)

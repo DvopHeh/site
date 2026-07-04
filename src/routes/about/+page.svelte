@@ -1,3 +1,4 @@
+<!-- /about — just a few cards about what this site is and why it exists -->
 <section class="about-wrap">
   <div class="about-hero">
     <p class="about-kicker">ABOUT</p>

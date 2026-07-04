@@ -1,10 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  // ============================================
-  // WIP BALLS EASTER EGG
-  // Triple-click "This Site is WIP" to show funny message
-  // ============================================
+  // all the little hidden bits live in here. this first one: triple-click the
+  // "This Site is WIP" line and it swaps to a random dumb message
   const funnyMessages = [
     "Fortnite Balls, I'm gay I like boys",
     "Works on my machine ¯\\_(ツ)_/¯",
@@ -42,10 +40,7 @@
     }
   }
 
-  // ============================================
-  // SUDO EASTER EGG
-  // Type "sudo" anywhere OR long-press the logo on mobile
-  // ============================================
+  // type "sudo" anywhere (or long-press the logo on mobile) for a fake denial
   let typedText = "";
   let sudoResetTimer: ReturnType<typeof setTimeout>;
 
@@ -115,10 +110,7 @@
     }
   }
 
-  // ============================================
-  // LATE NIGHT EASTER EGG
-  // Show "go to sleep" message between 1-7 AM
-  // ============================================
+  // between 1 and 7am it nags you to go to sleep
   const lateNightMessages = [
     "🌙 Go to sleep! It's past your bedtime",
     "😴 Why are you still awake? Get some rest!",
@@ -160,12 +152,8 @@
     setTimeout(dismiss, 8000);
   }
 
-  // ============================================
-  // KONAMI CODE EASTER EGG
-  // Keyboard: ↑↑↓↓←→←→
-  // Mobile: swipe ↑↑↓↓←→←→
-  // Activates Game Boy mode (30% chance: boo jumpscare)
-  // ============================================
+  // ↑↑↓↓←→←→ (or swipe it on mobile) flips on game boy mode. small chance you
+  // get a boo jumpscare instead lol
   const konamiCode = [
     "ArrowUp",
     "ArrowUp",
@@ -311,9 +299,7 @@
     }
   }
 
-  // ============================================
-  // MOUNT ALL EASTER EGGS
-  // ============================================
+  // wire everything up on mount and tear it back down on unmount
   onMount(() => {
     // Setup WIP click listener
     const wipElement = document.querySelector(".landing-wip");

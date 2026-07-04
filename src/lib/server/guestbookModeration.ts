@@ -1,3 +1,5 @@
+// shared guestbook helpers — makes the tables if they're missing, cleans up
+// ip/fingerprint values, and checks whether someone's banned
 export type BanType = 'ip' | 'fingerprint';
 
 export interface GuestbookBan {

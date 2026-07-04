@@ -1,3 +1,7 @@
+// what song i'm playing rn. grabs it from my own now-playing api, and if that
+// doesn't hand over album art it goes digging for one across last.fm,
+// musicbrainz + cover art archive, and deezer. whatever it finds gets cached
+// so we're not spamming those apis every 500ms
 import type { RequestHandler } from './$types';
 import { env as privateEnv } from '$env/dynamic/private';
 import { recordPlayedTrack } from '$lib/server/playedHistory';
@@ -21,9 +25,9 @@ const CAA_API_BASE = 'https://coverartarchive.org/release';
 const LASTFM_API_BASE = 'https://ws.audioscrobbler.com/2.0/';
 const DEEZER_SEARCH_API = 'https://api.deezer.com/search';
 const USER_AGENT = 'dvop-site/1.0 (guestbook/blog site)';
-const COVER_TTL_MS = 1000 * 60 * 60 * 6;
-const NEGATIVE_TTL_MS = 1000 * 60;
-const NOW_PLAYING_CACHE_MS = 200;
+const COVER_TTL_MS = 1000 * 60 * 60 * 6; // remember a found cover for 6h
+const NEGATIVE_TTL_MS = 1000 * 60; // if we found nothing, retry after a min
+const NOW_PLAYING_CACHE_MS = 200; // tiny cache so rapid polls don't pile up
 
 const coverCache = new Map<string, { url: string | null; expiresAt: number }>();
 let nowPlayingCache: { track: Track; expiresAt: number } | null = null;
@@ -36,6 +40,7 @@ interface EnvBindings {
 const isValidHttpUrl = (value: string | null | undefined) =>
 	typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'));
 
+// key we cache covers under — artist + album (or title if no album)
 function cacheKey(track: Track): string | null {
 	if (!track.artist) return null;
 	const albumOrTitle = track.album ?? track.title;
@@ -59,6 +64,8 @@ async function fetchNowPlayingCached(): Promise<Track | null> {
 	return { ...track };
 }
 
+// ask musicbrainz for releases matching this album, then try each one's
+// cover art until something sticks
 async function findReleaseMbid(artist: string, album: string): Promise<string | null> {
 	const query = `artist:"${artist}" AND release:"${album}"`;
 	const searchUrl = `${MB_API_BASE}/release?query=${encodeURIComponent(query)}&fmt=json&limit=8`;
@@ -102,6 +109,7 @@ async function findCoverArtUrl(releaseMbid: string): Promise<string | null> {
 	return front.image ?? front.thumbnails?.large ?? front.thumbnails?.small ?? null;
 }
 
+// flatten text so fuzzy matching works — drop accents, punctuation, casing
 function normalizeText(value: string | null | undefined): string {
 	return (value ?? '')
 		.normalize('NFKD')
@@ -112,6 +120,8 @@ function normalizeText(value: string | null | undefined): string {
 		.replace(/\s+/g, ' ');
 }
 
+// 0-100 how much two strings look alike. exact match = 100, one contains the
+// other = 70, otherwise score by how many words overlap
 function scoreFieldMatch(actual: string, expected: string): number {
 	if (!actual || !expected) return 0;
 	if (actual === expected) return 100;
@@ -161,6 +171,7 @@ async function findDeezerCover(track: Track): Promise<string | null> {
 	const wantedAlbum = normalizeText(track.album);
 	const wantedTitle = normalizeText(track.title);
 
+	// throw a few searches at deezer (tight → loose) and pool the results
 	const strongCandidates = await search(`artist:"${track.artist}" track:"${track.title}"`);
 	const albumCandidates = track.album ? await search(`artist:"${track.artist}" album:"${track.album}"`) : [];
 	const looseCandidates = await search(`${track.artist} ${track.title}`);
@@ -174,6 +185,7 @@ async function findDeezerCover(track: Track): Promise<string | null> {
 		const album = normalizeText(item.album?.title);
 		const title = normalizeText(item.title);
 
+		// artist has to be at least in the right ballpark or skip it
 		const artistScore = scoreFieldMatch(artist, wantedArtist);
 		if (artistScore < 40) continue;
 		const titleScore = scoreFieldMatch(title, wantedTitle);
@@ -211,6 +223,7 @@ function getLastFmApiKey(platform: App.Platform | undefined): string | null {
 	return platformEnv?.LASTFM_API_KEY ?? privateEnv.LASTFM_API_KEY ?? null;
 }
 
+// last.fm hands back a few sizes, grab the biggest one that actually has a url
 function getBestLastFmImage(images: Array<{ '#text'?: string; size?: string }> | undefined): string | null {
 	if (!images || images.length === 0) return null;
 	const preferredOrder = ['mega', 'extralarge', 'large', 'medium', 'small'];
@@ -290,6 +303,8 @@ async function resolveFallbackCover(track: Track, apiKey: string | null): Promis
 		return cached.url;
 	}
 
+	// try the sources in order of how much i trust them: last.fm, then
+	// musicbrainz, then deezer as a last resort
 	let coverUrl: string | null = null;
 	try {
 		if (!coverUrl) {
@@ -304,6 +319,8 @@ async function resolveFallbackCover(track: Track, apiKey: string | null): Promis
 	} catch {
 		coverUrl = null;
 	}
+
+	// cache it either way — even "found nothing" so we don't retry instantly
 
 	coverCache.set(key, {
 		url: coverUrl,
@@ -325,6 +342,7 @@ export const GET: RequestHandler = async ({ platform }) => {
 			);
 		}
 
+		// only go hunting for art if the source didn't give us a usable one
 		if (track.playing && !isValidHttpUrl(track.albumArt)) {
 			const fallback = await resolveFallbackCover(track, lastFmApiKey);
 			if (fallback) {
@@ -332,6 +350,7 @@ export const GET: RequestHandler = async ({ platform }) => {
 			}
 		}
 
+		// log it for the /played page (dupes get ignored in there)
 		if (track.playing) {
 			await recordPlayedTrack({
 				title: track.title,

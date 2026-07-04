@@ -1,3 +1,4 @@
+<!-- email + socials + the WIP line you can triple-click for a dumb message -->
 <section class="landing-section">
   <h2 class="landing-section-title">Links & Contact</h2>
   <div class="contact-buttons">

@@ -1,3 +1,4 @@
+// preload the played history server-side so the page isn't empty on first paint
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {

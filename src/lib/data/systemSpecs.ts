@@ -1,5 +1,5 @@
-// src/lib/data/systemSpecs.ts
-
+// all my hardware/software specs live here as plain data. the spec cards on the
+// homepage just render whatever's in this file, so updating a part = edit here
 export interface Component {
   label: string;
   value: string | MonitorDetail[];

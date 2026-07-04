@@ -1,4 +1,6 @@
 <script lang="ts">
+  // scrolling text, but only if it actually overflows its box. if it fits it
+  // just sits there normally instead of pointlessly sliding around
   import { onMount, tick } from "svelte";
 
   let { text, class: className = "" }: { text: string; class?: string } =
@@ -7,6 +9,7 @@
   let containerEl: HTMLDivElement | undefined = $state();
   let overflows = $state(false);
 
+  // measure a hidden copy of the text vs the container to decide if it overflows
   async function checkOverflow() {
     await tick();
     if (containerEl) {

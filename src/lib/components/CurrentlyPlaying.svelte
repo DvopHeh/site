@@ -1,4 +1,6 @@
 <script lang="ts">
+  // the "currently playing" widget. polls my now-playing api and ticks the
+  // progress bar locally between fetches so it moves smoothly instead of jumping
   import { onMount } from "svelte";
   import { createEventDispatcher } from "svelte";
   import MarqueeText from "./MarqueeText.svelte";
@@ -27,9 +29,9 @@
   let syncedAtMs = 0;
   let lastTrackId = "";
 
-  const FETCH_INTERVAL_IDLE_MS = 2000;
-  const FETCH_INTERVAL_PLAYING_MS = 500;
-  const POSITION_TICK_MS = 500;
+  const FETCH_INTERVAL_IDLE_MS = 2000; // poll slow when nothing's playing
+  const FETCH_INTERVAL_PLAYING_MS = 500; // poll faster mid-song
+  const POSITION_TICK_MS = 500; // how often the local progress bar nudges forward
 
   function formatTime(seconds: number | null | undefined): string {
     if (seconds == null || seconds < 0) return "?:??";
@@ -59,6 +61,7 @@
     return track?.source ?? null;
   }
 
+  // string that's unique per song, so we can tell when the track changed
   function getTrackId(track: Track): string {
     return [
       track.source ?? "",
@@ -75,6 +78,7 @@
     return null;
   }
 
+  // where we *think* the song is right now = last known spot + time elapsed
   function getPredictedPosition(nowMs = Date.now()): number {
     if (!currentTrack?.playing) return syncedPosition;
     return syncedPosition + (nowMs - syncedAtMs) / 1000;
@@ -96,6 +100,8 @@
       return;
     }
 
+    // only hard-snap to the server if our guess drifted more than ~1s off,
+    // otherwise you'd see the bar stutter every poll
     const localPredicted = getPredictedPosition(now);
     const drift = serverPos - localPredicted;
     if (Math.abs(drift) > 1.2) {
@@ -130,6 +136,7 @@
     return currentTrack?.playing ? FETCH_INTERVAL_PLAYING_MS : FETCH_INTERVAL_IDLE_MS;
   }
 
+  // fetch, then schedule the next one. faster while a song's playing
   async function pollLoop() {
     if (document.hidden) return;
     await fetchCurrentTrack();
@@ -164,6 +171,7 @@
       }
     }, POSITION_TICK_MS);
 
+    // stop hammering the api when the tab's in the background
     const handleVisibility = () => {
       if (!document.hidden) {
         startPolling();

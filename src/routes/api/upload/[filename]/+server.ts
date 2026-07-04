@@ -1,3 +1,5 @@
+// serves blog images back out of R2 by filename. sets the right mime type and
+// caches hard since the names are random and never change
 import type { RequestHandler } from './$types';
 
 interface Env {

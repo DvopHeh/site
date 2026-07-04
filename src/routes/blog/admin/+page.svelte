@@ -1,4 +1,6 @@
 <script lang="ts">
+	// the blog admin panel — login, write/edit/delete posts, upload images, and a
+	// live markdown preview. hidden behind the konami code on the blog page
 	import { onMount } from 'svelte';
 	import MarkdownIt from 'markdown-it';
 
@@ -38,7 +40,8 @@
 	let notification = $state({ show: false, message: '', type: 'success' });
 
 	$effect(() => {
-		// Auto-generate slug from title
+		// build the slug from the title as you type, but leave it alone when
+		// editing an existing post so old urls don't break
 		if (title && !editingId) {
 			slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 		}

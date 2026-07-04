@@ -1,4 +1,5 @@
 <script lang="ts">
+  // blog page header. the admin link only shows once you've done the konami code
   let { showAdmin = false } = $props<{ showAdmin?: boolean }>();
 </script>
 

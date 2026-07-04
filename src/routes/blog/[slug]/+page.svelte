@@ -1,4 +1,5 @@
 <script lang="ts">
+	// single blog post page. grabs the post by slug and renders its markdown
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import MarkdownIt from 'markdown-it';

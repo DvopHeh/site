@@ -1,4 +1,5 @@
 <script lang="ts">
+  // blog index. lists published posts. the konami code flips on the admin link
   import { onMount } from "svelte";
   import BlogHeader from "$lib/components/blog/BlogHeader.svelte";
   import BlogPosts from "$lib/components/blog/BlogPosts.svelte";

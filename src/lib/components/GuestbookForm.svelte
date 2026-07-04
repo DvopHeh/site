@@ -1,4 +1,6 @@
 <script lang="ts">
+	// the little "sign my guestbook" form. validates as you type, POSTs to the
+	// api, and pings the entries list to refresh when it goes through
 	let name = $state('');
 	let message = $state('');
 	let errorMessage = $state('');
@@ -27,6 +29,9 @@
 			trimmedMessage.length <= MESSAGE_MAX
 	);
 
+	// give each browser a stable random id (kept in localStorage) so the backend
+	// can rate-limit / ban spammers without needing accounts. not real
+	// fingerprinting, just a per-device token
 	if (typeof window !== 'undefined') {
 		const storageKey = 'guestbook_device_id';
 		const existingId = window.localStorage.getItem(storageKey);
@@ -78,6 +83,7 @@
 				showSuccess = true;
 				name = '';
 				message = '';
+				// tell the entries list to pull in the new post without a reload
 				window.dispatchEvent(new CustomEvent('guestbook:refresh', { detail: { entry: data.entry ?? null } }));
 				setTimeout(() => (showSuccess = false), 1800);
 			} else {

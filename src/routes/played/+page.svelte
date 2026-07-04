@@ -1,4 +1,6 @@
 <script lang="ts">
+	// /played — my recent listening history. server hands over an initial batch,
+	// then this refreshes every few seconds
 	import { onMount } from 'svelte';
 
 	interface PlayedTrack {
@@ -24,6 +26,7 @@
 
 	const REFRESH_INTERVAL_MS = 5000;
 
+	// seed from the server-rendered data, but only once
 	$effect(() => {
 		if (played == null) {
 			played = data.initialPlayed;

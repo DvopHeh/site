@@ -1,3 +1,5 @@
+// image upload for the blog editor. admin only. tosses the file into R2 with a
+// random name and hands back a url + ready-to-paste markdown
 import type { RequestHandler } from './$types';
 import { isAdminAuthenticated, type AdminAuthEnv } from '$lib/server/adminAuth';
 
@@ -12,7 +14,7 @@ const json = (data: unknown, status = 200) =>
 	});
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5mb, don't need people dumping huge files
 
 export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 	const env = platform?.env as Env | undefined;
@@ -41,6 +43,8 @@ export const POST: RequestHandler = async ({ request, platform, cookies }) => {
 			return json({ error: 'File too large (max 5MB)' }, 400);
 		}
 
+		// keep the extension if it looks sane, otherwise bin. random name so
+		// uploads never clobber each other
 		const extension = file.name.includes('.') ? file.name.split('.').pop()?.toLowerCase() : undefined;
 		const ext = extension && /^[a-z0-9]+$/.test(extension) ? extension : 'bin';
 		const filename = `${Date.now()}-${crypto.randomUUID()}.${ext}`;

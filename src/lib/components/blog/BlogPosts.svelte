@@ -1,4 +1,5 @@
 <script lang="ts">
+  // the grid of blog post cards on /blog
   import type { Post } from "$lib/types/blog";
 
   let { posts, loading } = $props<{ posts: Post[]; loading: boolean }>();
@@ -9,6 +10,7 @@
     }
 
     try {
+      // same utc gotcha as the guestbook — tack on a Z so it's not read as local
       const dateObj = new Date(dateString.replace(" ", "T") + "Z");
       if (Number.isNaN(dateObj.getTime())) {
         return "Unknown date";

@@ -12,9 +12,15 @@
 	let loading = $state(true);
 	let errorMessage = $state('');
 
+	function parseUtc(dateString: string): Date {
+		// the db timestamps have no Z so js thinks they're local time and the
+		// times come out wrong. slap a Z on it so it's actually utc
+		return new Date(dateString.replace(' ', 'T') + 'Z');
+	}
+
 	function formatDate(dateString: string): string {
 		try {
-			const date = new Date(dateString);
+			const date = parseUtc(dateString);
 			return date.toLocaleDateString('en-US', {
 				year: 'numeric',
 				month: 'short',
@@ -28,7 +34,7 @@
 	}
 
 	function formatRelativeDate(dateString: string): string {
-		const timestamp = new Date(dateString).getTime();
+		const timestamp = parseUtc(dateString).getTime();
 		if (Number.isNaN(timestamp)) return '';
 
 		const diffSeconds = Math.floor((Date.now() - timestamp) / 1000);
@@ -62,6 +68,7 @@
 	onMount(() => {
 		void loadEntries();
 
+		// the form fires this after a successful post so the list updates live
 		const handleRefresh = () => {
 			void loadEntries();
 		};

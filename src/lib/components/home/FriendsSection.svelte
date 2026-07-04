@@ -1,3 +1,4 @@
+<!-- the 88x31 button wall. old web webring energy. add friends' buttons here -->
 <section class="landing-section">
   <h2 class="landing-section-title">My friends</h2>
   <div class="friend-buttons">
