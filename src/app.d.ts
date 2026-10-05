@@ -77,7 +77,6 @@ declare global {
 				GUESTBOOK_LOGS?: R2Bucket;
 				BLOG_ADMIN_PASSWORD?: string;
 				BLOG_ADMIN_SESSION_SECRET?: string;
-				LASTFM_API_KEY?: string;
 
 			};
 		}

@@ -36,6 +36,7 @@
         loading="lazy"
       />
     </a>
+    <a href="https://wayke.dev/" target="_blank" rel="noopener noreferrer"><img src="https://wayke.dev/assets/button.webp" width="88" height="31" alt="wayke" /></a>
     <a href="https://byeoon.dev" target="_blank" rel="noopener noreferrer">
       <img
         src="https://byeoon.dev/img/button.png"

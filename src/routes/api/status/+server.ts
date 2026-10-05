@@ -156,7 +156,6 @@ export const GET: RequestHandler = async (event) => {
 	const env = platform?.env;
 
 	const checks: HealthCheckResult[] = await Promise.all([
-		runHttpCheck('now-playing', 'Now Playing API', (signal) => fetch('/api/now-playing', { signal }), [200]),
 		runHttpCheck('guestbook', 'Guestbook API', (signal) => fetch('/api/guestbook', { signal }), [200]),
 		runHttpCheck('blog', 'Blog API', (signal) => fetch('/api/blog', { signal }), [200]),
 		runHttpCheck(

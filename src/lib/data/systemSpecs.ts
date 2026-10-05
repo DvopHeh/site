@@ -81,7 +81,7 @@ export const allSystemSpecs: SystemDetails[] = [
         ],
       },
       { label: "Keyboard", value: "Dark Project KD83A", link: "https://old.darkproject.eu/keyboards/dark-project-kd83a-blue/" },
-      { label: "Mouse", value: "Logitech G305", link: "https://www.logitech.com/en-us/products/mice/g305-lightspeed-wireless-gaming-mouse.html" },
+      { label: "Mouse", value: "Logitech PRO X Superlight 2 SE", link: "https://www.logitechg.com/en-us/shop/p/pro-x-superlight-2-se.910-007646" },
       { label: "Headset", value: "CZC.gaming Seraphim", link: "https://www.czc.cz/czc-gaming-seraphim/362415/produkt" },
       { label: "Microphone", value: "Fifine T732",
         link: "https://fifinemicrophone.com/products/fifine-t732-studio-usb-microphone-kit?_pos=1&_sid=472a709f2&_ss=r"
@@ -132,7 +132,8 @@ export const allSystemSpecs: SystemDetails[] = [
     description:
       "From my Phones to other funny shits",
     accessories: [
-      { label: "Main Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running Lunaris AOSP + Sultan Kernel + KowSU", link: "https://store.google.com/product/pixel_8_pro" },
+      { label: "Main Phone", value: "Xiaomi 17 Ultra [Nezha]", notes: "Running HyperOS + LKM KowSU", link: "https://www.mi.com/global/product/xiaomi-17-ultra/" },
+      { label: "Old but still new Phone", value: "Google Pixel 8 Pro [Husky]", notes: "Running Crdroid + Custom built Sultan Kernel + KowSU", link: "https://store.google.com/product/pixel_8_pro" },
       {
         label: "Backup + Testing Phone",
         value: "Sony Xperia XA2 H3113 [Pioneer]",
