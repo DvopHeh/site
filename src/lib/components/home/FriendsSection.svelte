@@ -54,12 +54,13 @@
         width="88"
       />
     </a>
-    <a href="https://salamithecat.com/" target="_blank" rel="noopener noreferrer"><img src="https://salamithecat.com/button.webp" width="88" height="31" alt="peeblyweeb" /></a>
     <iframe
       sandbox="allow-top-navigation-by-user-activation"
       style="height: 31px; width: 88px; overflow: hidden; border: none"
       src="https://nekos.space/button.html"
       title="nekos.space"
     ></iframe>
+    <a href="https://piqs.eu/" target="_blank" rel="noopener"><img src="https://piqs.eu/assets/button/anim.webp" width="88" height="31" alt="piqseu" /></a>
+    <a href="https://starwarsk.me/" target="_blank" rel="noopener"><img src="https://starwarsk.me/wow.png" width="88" height="31" alt="StarWarsK" /></a>
   </div>
 </section>
